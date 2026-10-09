@@ -8,7 +8,7 @@ the device matches the PC.
 ## Honest status
 * The code and its tests run in CI (`pytest`). The tests use **synthetic data in the real UCI file layout**; they
   prove the code paths, not model quality.
-* **No results are published here yet.** The table below is filled only after running on the real dataset.
+* The results table below comes from **one run on the official UCI HAR data** (zip checksum in `docs/DATASETS.md`). It is a first baseline, not a tuned model: the depth was fixed before running, not picked on the test set.
 * The decision-tree exporter is tested by compiling the generated C with `gcc` and checking it returns the same
   class as scikit-learn on random inputs. It has not yet been run on a microcontroller.
 
@@ -31,10 +31,12 @@ python scripts/download_uci_har.py                     # official UCI zip, CC BY
 python scripts/train_har_baseline.py --depth 6
 ```
 
-## Results (fill in after running on real data)
+## Results (official UCI HAR data, run on 9 October 2026)
 | Model | Nodes | Test accuracy | Macro-F1 | Notes |
 |---|---|---|---|---|
-| Decision tree, depth 6 | _tbd_ | _tbd_ | _tbd_ | UCI's subject-disjoint test split |
+| Decision tree, depth 6 | 61 | 0.797 | 0.790 | UCI's subject-disjoint test split; features from total acceleration only (no gyroscope) |
+
+Per-class recall: walking 0.909, walking upstairs 0.715, walking downstairs 0.555, sitting 0.851, standing 0.703, laying 1.000. The weakest classes are walking downstairs and standing. This is a baseline to improve, not a strong result.
 
 ## Roadmap
 1. SparkFun Edge: hello world and wake-word from the TinyML book (log what worked).

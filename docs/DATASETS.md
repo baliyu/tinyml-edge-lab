@@ -20,3 +20,5 @@ anomaly detection (ADMOS toy car, dense model, 0.85 AUC) and streaming wake word
 2. Report accuracy **and** per-class recall and the confusion matrix.
 3. Record the dataset checksum printed by the download script.
 4. State the sampling rate. Features computed at 50 Hz are not comparable with 400 Hz or 12 kHz data.
+
+UCI HAR zip used for the published results (downloaded 2026-10-09 with curl): sha256 c00b803081a5c797cd5e4b83700a9810b38d53d9d84e01917e090e1fdbc81031
