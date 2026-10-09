@@ -22,6 +22,7 @@ the device matches the PC.
 | `src/tinyml_lab/plots.py` | Figures drawn from the saved results: confusion matrix, per-class recall, depth sweep, example windows, most-used features |
 | `src/tinyml_lab/har_compare.py` | Subject-grouped model selection, richer features and a random-forest comparison |
 | `src/tinyml_lab/cwru*.py` | CWRU bearing pipeline: verified download, windowing, features and honest evaluation |
+| `src/tinyml_lab/footprint*.py` | Real flash and RAM sizes of the exported models, measured with the ARM compiler |
 | `firmware/` | Notes for the SparkFun Edge and the Nano 33 BLE |
 | `docs/DATASETS.md` | Sources, licences, evaluation rules |
 
@@ -34,6 +35,7 @@ python scripts/download_uci_har.py                     # official UCI zip, CC BY
 python scripts/train_har_baseline.py --depth 6
 python scripts/make_figures.py                         # figures into results/figures/
 python scripts/compare_models.py                       # grouped CV, richer features, forest comparison
+python scripts/measure_footprint.py                # real flash sizes (needs the Zephyr SDK or an arm-none-eabi compiler)
 python scripts/download_cwru.py && python scripts/run_cwru.py   # CWRU bearings (about 300 MB download)
 ```
 
@@ -73,7 +75,7 @@ How the models were chosen:
 
 Adding the extra features moved the compact tree's test macro-F1 from 0.807 to 0.834 (33 nodes against 17). The random forest scored 0.877 with 2186 nodes in total. The extended tree's weakest class is walking downstairs (recall 0.669).
 
-These are single runs with 9 test volunteers, so differences of a few points should not be over-read. The forest was not exported to C, so its size is shown in nodes only.
+These are single runs with 9 test volunteers, so differences of a few points should not be over-read. Measured flash sizes, including the forest's, are in the flash-size section below.
 
 ![Choosing the depth](results/figures/cv_curves.png)
 ![Size against test macro-F1](results/figures/model_comparison.png)
@@ -109,6 +111,30 @@ How to read it:
 ![Vibration signatures](results/figures/cwru_signatures.png)
 ![Confusion matrix, forest, leave one load out](results/figures/cwru_confusion_forest.png)
 <!-- cwru:end -->
+
+<!-- footprint:start -->
+### Flash size on a microcontroller (measured with the ARM compiler)
+
+- Each exported classifier was linked for two Cortex-M targets with `arm-none-eabi-gcc (15:13.2.rel1-2) 13.2.1 20231009` at `-Os`. Flash is code plus constants plus initialised data plus any compiler helper routines (soft-float compares on the M0+), minus an identical build with an empty stub.
+- Static RAM counts static data only. **Not measured:** stack use, speed, and the feature extraction (FFT and statistics), which a device would also need. Nothing here ran on a board.
+- "Same class" is how often the compiled C function, run on this PC, returns the class scikit-learn predicts, over the 2,947 test windows.
+
+| Model | Nodes | Thresholds | Cortex-M0+ flash | Cortex-M4F flash | Static RAM (M4F) | Same class as scikit-learn |
+|---|---|---|---|---|---|---|
+| tree d6 | 61 | double thresholds | 1,964 B | 1,876 B | 0 B | 2947 of 2947 |
+| tree d6 | 61 | float thresholds | 928 B | 552 B | 0 B | 2947 of 2947 |
+| tree CV | 17 | double thresholds | 1,516 B | 1,308 B | 0 B | 2947 of 2947 |
+| tree CV | 17 | float thresholds | 584 B | 128 B | 0 B | 2947 of 2947 |
+| tree CV + extra features | 33 | double thresholds | 1,708 B | 1,564 B | 0 B | 2947 of 2947 |
+| tree CV + extra features | 33 | float thresholds | 744 B | 320 B | 0 B | 2947 of 2947 |
+| forest CV + extra features | 2186 | float thresholds | 52,244 B | 56,088 B | 0 B | 2947 of 2947 |
+
+For the extended tree on a Cortex-M4F, rounding the thresholds down to float32 takes 320 B against 1,564 B with doubles (4.9 times smaller), with the same predictions on all 2,947 test windows. The random forest needs 56,088 B on the M4F (175 times the tree) and 52,244 B on the M0+, and returns the same class as scikit-learn on 2,947 of 2,947 windows. For scale, an nRF52840 (Nano 33 BLE) or Apollo3 (SparkFun Edge) has 1024 KB of flash (datasheet value), so the forest is 5.3% of it.
+
+Why float thresholds are exact: for any float32 input x, `x <= t` and `x <= floor32(t)` are the same test, where floor32 rounds down to a float32. Rounding to the nearest float32 instead would flip a split when the midpoint of two adjacent floats rounds up; a test covers that case.
+
+![Measured flash sizes](results/figures/footprint.png)
+<!-- footprint:end -->
 
 ## Roadmap
 1. SparkFun Edge: hello world and wake-word from the TinyML book (log what worked).

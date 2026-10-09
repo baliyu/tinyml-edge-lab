@@ -36,7 +36,7 @@ def render_block(report):
               f"{weakest[0].lower().replace('_', ' ')} (recall {_f(weakest[1])}).",
               "",
               f"These are single runs with {n_te} test volunteers, so differences of a few points should not be over-read. "
-              "The forest was not exported to C, so its size is shown in nodes only.", "",
+              "Measured flash sizes, including the forest's, are in the flash-size section below.", "",
               "![Choosing the depth](results/figures/cv_curves.png)",
               "![Size against test macro-F1](results/figures/model_comparison.png)",
               "![Confusion matrix of the extended tree](results/figures/confusion_matrix_extended_tree.png)", END]
