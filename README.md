@@ -1,5 +1,6 @@
 # tinyml-edge-lab
-
+![CI](https://github.com/baliyu/tinyml-edge-lab/actions/workflows/ci.yml/badge.svg)
+   
 Small, tested building blocks for edge machine learning on my own boards (SparkFun Edge, Arduino Nano 33 BLE).
 The aim is a pipeline I can explain end to end: data, features, a baseline, an exported model, and checks that
 the device matches the PC.
