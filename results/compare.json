@@ -1,0 +1,550 @@
+{
+  "protocol": {
+    "cv_folds": 5,
+    "selection_data": "training volunteers only",
+    "selection_rule": "least complex model within one standard error of the best cross-validated macro-F1",
+    "fixed_depth": 6,
+    "n_bands": 4,
+    "seed": 0
+  },
+  "n_train": 7352,
+  "n_test": 2947,
+  "train_subjects": [
+    1,
+    3,
+    5,
+    6,
+    7,
+    8,
+    11,
+    14,
+    15,
+    16,
+    17,
+    19,
+    21,
+    22,
+    23,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30
+  ],
+  "test_subjects": [
+    2,
+    4,
+    9,
+    10,
+    12,
+    13,
+    18,
+    20,
+    24
+  ],
+  "n_features": {
+    "baseline": 40,
+    "extended": 123
+  },
+  "cv": {
+    "tree_baseline": [
+      {
+        "max_depth": 2,
+        "cv_macro_f1_mean": 0.3696580688424959,
+        "cv_macro_f1_se": 0.0012211112923192317
+      },
+      {
+        "max_depth": 3,
+        "cv_macro_f1_mean": 0.6980371257192598,
+        "cv_macro_f1_se": 0.013939311491402102
+      },
+      {
+        "max_depth": 4,
+        "cv_macro_f1_mean": 0.8190876231976215,
+        "cv_macro_f1_se": 0.031542838262061265
+      },
+      {
+        "max_depth": 5,
+        "cv_macro_f1_mean": 0.8106378594464854,
+        "cv_macro_f1_se": 0.03201841861224857
+      },
+      {
+        "max_depth": 6,
+        "cv_macro_f1_mean": 0.8158939357951821,
+        "cv_macro_f1_se": 0.03354481710272421
+      },
+      {
+        "max_depth": 7,
+        "cv_macro_f1_mean": 0.8194248354492748,
+        "cv_macro_f1_se": 0.028402295812593892
+      },
+      {
+        "max_depth": 8,
+        "cv_macro_f1_mean": 0.8070766879544904,
+        "cv_macro_f1_se": 0.020821239266139217
+      },
+      {
+        "max_depth": 9,
+        "cv_macro_f1_mean": 0.8141786023104182,
+        "cv_macro_f1_se": 0.025746430266757984
+      },
+      {
+        "max_depth": 10,
+        "cv_macro_f1_mean": 0.7948359010887122,
+        "cv_macro_f1_se": 0.02476607417012068
+      }
+    ],
+    "tree_extended": [
+      {
+        "max_depth": 2,
+        "cv_macro_f1_mean": 0.3692075756441226,
+        "cv_macro_f1_se": 0.0013564205269968551
+      },
+      {
+        "max_depth": 3,
+        "cv_macro_f1_mean": 0.7132015628776712,
+        "cv_macro_f1_se": 0.007890028117340369
+      },
+      {
+        "max_depth": 4,
+        "cv_macro_f1_mean": 0.8241048853695044,
+        "cv_macro_f1_se": 0.028439914496814402
+      },
+      {
+        "max_depth": 5,
+        "cv_macro_f1_mean": 0.8332059544129683,
+        "cv_macro_f1_se": 0.014095151748077732
+      },
+      {
+        "max_depth": 6,
+        "cv_macro_f1_mean": 0.8293646764052032,
+        "cv_macro_f1_se": 0.02599849669840631
+      },
+      {
+        "max_depth": 7,
+        "cv_macro_f1_mean": 0.8463615443706345,
+        "cv_macro_f1_se": 0.026056752460870206
+      },
+      {
+        "max_depth": 8,
+        "cv_macro_f1_mean": 0.8433247677677018,
+        "cv_macro_f1_se": 0.022243732324757595
+      },
+      {
+        "max_depth": 9,
+        "cv_macro_f1_mean": 0.8466232317181724,
+        "cv_macro_f1_se": 0.017755668948995513
+      },
+      {
+        "max_depth": 10,
+        "cv_macro_f1_mean": 0.8389775974416229,
+        "cv_macro_f1_se": 0.02262096489068734
+      }
+    ],
+    "forest_extended": [
+      {
+        "n_estimators": 10,
+        "max_depth": 6,
+        "total_nodes": 708,
+        "cv_macro_f1_mean": 0.8647623283442455,
+        "cv_macro_f1_se": 0.02682883809245604
+      },
+      {
+        "n_estimators": 10,
+        "max_depth": 10,
+        "total_nodes": 3390,
+        "cv_macro_f1_mean": 0.8814446084145375,
+        "cv_macro_f1_se": 0.030942842927571854
+      },
+      {
+        "n_estimators": 30,
+        "max_depth": 6,
+        "total_nodes": 2186,
+        "cv_macro_f1_mean": 0.8828271976110779,
+        "cv_macro_f1_se": 0.026303928202225907
+      },
+      {
+        "n_estimators": 30,
+        "max_depth": 10,
+        "total_nodes": 9656,
+        "cv_macro_f1_mean": 0.8908070211766599,
+        "cv_macro_f1_se": 0.02629291802804947
+      },
+      {
+        "n_estimators": 60,
+        "max_depth": 6,
+        "total_nodes": 4548,
+        "cv_macro_f1_mean": 0.8886459651870048,
+        "cv_macro_f1_se": 0.025654848621585638
+      },
+      {
+        "n_estimators": 60,
+        "max_depth": 10,
+        "total_nodes": 19330,
+        "cv_macro_f1_mean": 0.8972559273365841,
+        "cv_macro_f1_se": 0.028209572060670072
+      }
+    ]
+  },
+  "chosen": {
+    "tree_baseline": {
+      "max_depth": 4,
+      "cv_macro_f1_mean": 0.8190876231976215,
+      "cv_macro_f1_se": 0.031542838262061265
+    },
+    "tree_extended": {
+      "max_depth": 5,
+      "cv_macro_f1_mean": 0.8332059544129683,
+      "cv_macro_f1_se": 0.014095151748077732
+    },
+    "forest_extended": {
+      "n_estimators": 30,
+      "max_depth": 6,
+      "total_nodes": 2186,
+      "cv_macro_f1_mean": 0.8828271976110779,
+      "cv_macro_f1_se": 0.026303928202225907
+    }
+  },
+  "models": [
+    {
+      "id": "tree_fixed6",
+      "label": "Tree, depth 6 fixed in advance",
+      "short": "tree d6",
+      "features": "baseline",
+      "n_features": 40,
+      "choice": "fixed depth 6",
+      "selected_by_cv": false,
+      "nodes": 61,
+      "leaves": 31,
+      "cv_macro_f1_mean": 0.8158939357951821,
+      "cv_macro_f1_se": 0.03354481710272421,
+      "test_accuracy": 0.7974211062097047,
+      "test_macro_f1": 0.7895273641203765,
+      "per_class_recall": {
+        "WALKING": 0.9092741935483871,
+        "WALKING_UPSTAIRS": 0.7154989384288747,
+        "WALKING_DOWNSTAIRS": 0.5547619047619048,
+        "SITTING": 0.8513238289205702,
+        "STANDING": 0.7030075187969925,
+        "LAYING": 1.0
+      },
+      "confusion_matrix": [
+        [
+          451,
+          33,
+          12,
+          0,
+          0,
+          0
+        ],
+        [
+          112,
+          337,
+          22,
+          0,
+          0,
+          0
+        ],
+        [
+          140,
+          47,
+          233,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          418,
+          73,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          158,
+          374,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          537
+        ]
+      ]
+    },
+    {
+      "id": "tree_baseline_cv",
+      "label": "Tree, depth chosen by CV",
+      "short": "tree CV",
+      "features": "baseline",
+      "n_features": 40,
+      "choice": "depth 4 (CV)",
+      "selected_by_cv": true,
+      "nodes": 17,
+      "leaves": 9,
+      "cv_macro_f1_mean": 0.8190876231976215,
+      "cv_macro_f1_se": 0.031542838262061265,
+      "test_accuracy": 0.8096369189005769,
+      "test_macro_f1": 0.8065890566776388,
+      "per_class_recall": {
+        "WALKING": 0.8508064516129032,
+        "WALKING_UPSTAIRS": 0.7133757961783439,
+        "WALKING_DOWNSTAIRS": 0.6333333333333333,
+        "SITTING": 0.8207739307535642,
+        "STANDING": 0.793233082706767,
+        "LAYING": 1.0
+      },
+      "confusion_matrix": [
+        [
+          422,
+          58,
+          16,
+          0,
+          0,
+          0
+        ],
+        [
+          128,
+          336,
+          7,
+          0,
+          0,
+          0
+        ],
+        [
+          141,
+          13,
+          266,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          403,
+          88,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          110,
+          422,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          537
+        ]
+      ]
+    },
+    {
+      "id": "tree_extended_cv",
+      "label": "Tree, depth chosen by CV",
+      "short": "tree CV + extra features",
+      "features": "extended",
+      "n_features": 123,
+      "choice": "depth 5 (CV)",
+      "selected_by_cv": true,
+      "nodes": 33,
+      "leaves": 17,
+      "cv_macro_f1_mean": 0.8332059544129683,
+      "cv_macro_f1_se": 0.014095151748077732,
+      "test_accuracy": 0.8391584662368511,
+      "test_macro_f1": 0.8337175524880952,
+      "per_class_recall": {
+        "WALKING": 0.9395161290322581,
+        "WALKING_UPSTAIRS": 0.7430997876857749,
+        "WALKING_DOWNSTAIRS": 0.669047619047619,
+        "SITTING": 0.6904276985743381,
+        "STANDING": 0.9398496240601504,
+        "LAYING": 1.0
+      },
+      "confusion_matrix": [
+        [
+          466,
+          19,
+          11,
+          0,
+          0,
+          0
+        ],
+        [
+          115,
+          350,
+          6,
+          0,
+          0,
+          0
+        ],
+        [
+          101,
+          38,
+          281,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          339,
+          152,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          32,
+          500,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          537
+        ]
+      ]
+    },
+    {
+      "id": "forest_extended_cv",
+      "label": "Random forest, size chosen by CV",
+      "short": "forest CV + extra features",
+      "features": "extended",
+      "n_features": 123,
+      "choice": "30 trees, depth 6 (CV)",
+      "selected_by_cv": true,
+      "nodes": 2186,
+      "leaves": 1108,
+      "cv_macro_f1_mean": 0.8828271976110779,
+      "cv_macro_f1_se": 0.026303928202225907,
+      "test_accuracy": 0.8788598574821853,
+      "test_macro_f1": 0.8769203096391197,
+      "per_class_recall": {
+        "WALKING": 0.9798387096774194,
+        "WALKING_UPSTAIRS": 0.8641188959660298,
+        "WALKING_DOWNSTAIRS": 0.7690476190476191,
+        "SITTING": 0.8024439918533605,
+        "STANDING": 0.8327067669172933,
+        "LAYING": 1.0
+      },
+      "confusion_matrix": [
+        [
+          486,
+          6,
+          4,
+          0,
+          0,
+          0
+        ],
+        [
+          59,
+          407,
+          5,
+          0,
+          0,
+          0
+        ],
+        [
+          63,
+          34,
+          323,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          394,
+          96,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          89,
+          443,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          537
+        ]
+      ]
+    }
+  ],
+  "extended_tree_c_source_bytes": 2306,
+  "extended_tree_top_features": [
+    {
+      "name": "acc_x_rms",
+      "importance": 0.282078151124548
+    },
+    {
+      "name": "acc_mag_std",
+      "importance": 0.24404883105912673
+    },
+    {
+      "name": "acc_y_mean",
+      "importance": 0.16192133631906408
+    },
+    {
+      "name": "body_mag_std",
+      "importance": 0.13237236194557186
+    },
+    {
+      "name": "gyro_z_dom_freq",
+      "importance": 0.10245187917051612
+    },
+    {
+      "name": "acc_z_band1",
+      "importance": 0.025806428860555793
+    },
+    {
+      "name": "acc_z_band0",
+      "importance": 0.01719079244683647
+    },
+    {
+      "name": "body_mag_band2",
+      "importance": 0.010532970422859033
+    },
+    {
+      "name": "gyro_x_max",
+      "importance": 0.008691984520531925
+    },
+    {
+      "name": "gyro_x_min",
+      "importance": 0.004395331745943983
+    }
+  ],
+  "versions": {
+    "numpy": "2.5.3",
+    "scikit_learn": "1.9.1"
+  }
+}

@@ -44,3 +44,18 @@ def window_features(window, fs, n_bands=4):
 def batch_features(windows, fs, n_bands=4):
     """windows: (N, n_samples, n_channels) -> (N, n_features)."""
     return np.vstack([window_features(w, fs, n_bands) for w in windows])
+
+
+def with_magnitude(windows):
+    """Append the vector magnitude as an extra channel: (N, n, 3) -> (N, n, 4)."""
+    windows = np.asarray(windows, dtype=np.float64)
+    return np.concatenate([windows, np.linalg.norm(windows, axis=-1, keepdims=True)], axis=-1)
+
+
+def gravity_mean(total, body):
+    """Mean gravity vector of each window: UCI's total acceleration minus its body acceleration. Shape (N, 3)."""
+    return (np.asarray(total, dtype=np.float64) - np.asarray(body, dtype=np.float64)).mean(axis=1)
+
+
+def gravity_names():
+    return ["grav_x_mean", "grav_y_mean", "grav_z_mean"]

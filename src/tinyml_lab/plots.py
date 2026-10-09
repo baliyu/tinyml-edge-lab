@@ -116,3 +116,53 @@ def build_report_figures(root, results_dir="results", fig_dir=None):
     class_examples_fig(windows, y, uci_har.FS, fig_dir / "class_examples.png")
     top_features_fig(rep["top_features"], fig_dir / "top_features.png")
     return sorted(p.name for p in fig_dir.glob("*.png"))
+
+
+def cv_curves_fig(cv, chosen, path):
+    fig, ax = plt.subplots(figsize=(6.8, 4.3))
+    for key, label, color in (("tree_baseline", "baseline features", "#3b6fb6"),
+                              ("tree_extended", "extended features", "#c0632b")):
+        rows = cv[key]
+        ax.errorbar([r["max_depth"] for r in rows], [r["cv_macro_f1_mean"] for r in rows],
+                    yerr=[r["cv_macro_f1_se"] for r in rows], marker="o", capsize=3, label=label, color=color)
+        ax.plot(chosen[key]["max_depth"], chosen[key]["cv_macro_f1_mean"], marker="*", markersize=16,
+                linestyle="none", color=color)
+    ax.set_xlabel("maximum tree depth")
+    ax.set_ylabel("cross-validated macro-F1 (training volunteers)")
+    ax.set_title("Choosing the depth without the test set\n(grouped by volunteer; star = chosen by the one-standard-error rule)",
+                 fontsize=10)
+    ax.grid(alpha=0.3)
+    ax.legend(loc="lower right", fontsize=8)
+    _save(fig, path)
+
+
+def model_comparison_fig(models, n_test_volunteers, path):
+    fig, ax = plt.subplots(figsize=(7.0, 4.4))
+    colors = {"tree": "#3b6fb6", "forest": "#6a8f3a"}
+    offsets = [(8, 8), (8, -16), (8, 22), (8, -30)]   # staggered so labels of nearby points do not overlap
+    for i, m in enumerate(models):
+        kind = "forest" if m["id"].startswith("forest") else "tree"
+        ax.scatter(m["nodes"], m["test_macro_f1"], s=70, color=colors[kind])
+        ax.annotate(m["short"], (m["nodes"], m["test_macro_f1"]), textcoords="offset points",
+                    xytext=offsets[i % len(offsets)], fontsize=8,
+                    arrowprops={"arrowstyle": "-", "color": "grey", "lw": 0.6})
+    ax.set_xscale("log")
+    ax.set_xlabel("model size: total nodes (log scale)")
+    ax.set_ylabel("test macro-F1")
+    ax.set_title(f"Size against test macro-F1 (one run, {n_test_volunteers} test volunteers)", fontsize=10)
+    ax.grid(alpha=0.3)
+    ax.margins(x=0.25, y=0.15)
+    _save(fig, path)
+
+
+def build_compare_figures(results_dir="results", fig_dir=None):
+    """Draw the comparison figures from results/compare.json; return the file names."""
+    results_dir = Path(results_dir)
+    fig_dir = Path(fig_dir) if fig_dir else results_dir / "figures"
+    rep = json.loads((results_dir / "compare.json").read_text(encoding="utf-8"))
+    cv_curves_fig(rep["cv"], rep["chosen"], fig_dir / "cv_curves.png")
+    model_comparison_fig(rep["models"], len(rep["test_subjects"]), fig_dir / "model_comparison.png")
+    best = next(m for m in rep["models"] if m["id"] == "tree_extended_cv")
+    names = [SHORT[uci_har.LABELS[label]] for label in sorted(uci_har.LABELS)]
+    confusion_matrix_fig(best["confusion_matrix"], names, fig_dir / "confusion_matrix_extended_tree.png")
+    return ["cv_curves.png", "model_comparison.png", "confusion_matrix_extended_tree.png"]
