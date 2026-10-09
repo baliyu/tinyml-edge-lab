@@ -35,6 +35,9 @@ def run(root, depths=(2, 3, 4, 5, 6, 8, 10), out_dir="results", chosen_depth=6, 
 
     clf = DecisionTreeClassifier(max_depth=chosen_depth, random_state=0).fit(Xtr, ytr)
     pred = clf.predict(Xte)
+    names = feature_names(["x", "y", "z", "mag"], n_bands)
+    order = np.argsort(clf.feature_importances_)[::-1][:10]
+    top_features = [{"name": names[i], "importance": float(clf.feature_importances_[i])} for i in order]
     labels = sorted(uci_har.LABELS)
     report = {
         "n_train": int(len(ytr)), "n_test": int(len(yte)),
@@ -48,6 +51,7 @@ def run(root, depths=(2, 3, 4, 5, 6, 8, 10), out_dir="results", chosen_depth=6, 
                              zip(labels, recall_score(yte, pred, labels=labels, average=None))},
         "confusion_matrix": confusion_matrix(yte, pred, labels=labels).tolist(),
         "feature_names": feature_names(["x", "y", "z", "mag"], n_bands),
+        "top_features": top_features,
         "depth_sweep": sweep,
     }
     (out_dir / "har_baseline.json").write_text(json.dumps(report, indent=2), encoding="utf-8")

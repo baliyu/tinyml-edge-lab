@@ -19,6 +19,7 @@ the device matches the PC.
 | `src/tinyml_lab/uci_har.py` | Loader for the official UCI HAR data; refuses to run if a volunteer is in both splits |
 | `src/tinyml_lab/export_c.py` | Exports a scikit-learn decision tree as a C function |
 | `src/tinyml_lab/har_baseline.py` | Decision-tree baseline, depth sweep, per-class recall, confusion matrix |
+| `src/tinyml_lab/plots.py` | Figures drawn from the saved results: confusion matrix, per-class recall, depth sweep, example windows, most-used features |
 | `firmware/` | Notes for the SparkFun Edge and the Nano 33 BLE |
 | `docs/DATASETS.md` | Sources, licences, evaluation rules |
 
@@ -29,6 +30,7 @@ pip install -r requirements.txt
 pytest -q
 python scripts/download_uci_har.py                     # official UCI zip, CC BY 4.0
 python scripts/train_har_baseline.py --depth 6
+python scripts/make_figures.py                         # figures into results/figures/
 ```
 
 ## Results (official UCI HAR data, run on 9 October 2026)
@@ -37,6 +39,18 @@ python scripts/train_har_baseline.py --depth 6
 | Decision tree, depth 6 | 61 | 0.797 | 0.790 | UCI's subject-disjoint test split; features from total acceleration only (no gyroscope) |
 
 Per-class recall: walking 0.909, walking upstairs 0.715, walking downstairs 0.555, sitting 0.851, standing 0.703, laying 1.000. The weakest classes are walking downstairs and standing. This is a baseline to improve, not a strong result.
+
+### Figures
+
+Drawn by `scripts/make_figures.py` from the run above (`results/har_baseline.json` and the raw test windows).
+
+![Confusion matrix](results/figures/confusion_matrix.png)
+![Per-class recall](results/figures/per_class_recall.png)
+![Accuracy and size against depth](results/figures/depth_sweep.png)
+![One example window per activity](results/figures/class_examples.png)
+![Most-used features](results/figures/top_features.png)
+
+The depth plot shows test scores for information only. The depth was fixed before running and was not chosen from this plot.
 
 ## Roadmap
 1. SparkFun Edge: hello world and wake-word from the TinyML book (log what worked).

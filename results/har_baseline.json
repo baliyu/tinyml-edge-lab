@@ -140,6 +140,48 @@
     "mag_band2",
     "mag_band3"
   ],
+  "top_features": [
+    {
+      "name": "mag_std",
+      "importance": 0.2821552205937477
+    },
+    {
+      "name": "x_mean",
+      "importance": 0.278102764836025
+    },
+    {
+      "name": "y_mean",
+      "importance": 0.17157102252637324
+    },
+    {
+      "name": "x_max",
+      "importance": 0.12169673835895582
+    },
+    {
+      "name": "z_band0",
+      "importance": 0.09216687676829494
+    },
+    {
+      "name": "y_rms",
+      "importance": 0.016340270152155098
+    },
+    {
+      "name": "x_rms",
+      "importance": 0.010238252877563834
+    },
+    {
+      "name": "mag_dom_freq",
+      "importance": 0.005710376832223801
+    },
+    {
+      "name": "z_band1",
+      "importance": 0.005628670659990842
+    },
+    {
+      "name": "x_band1",
+      "importance": 0.005218588381792531
+    }
+  ],
   "depth_sweep": [
     {
       "max_depth": 2,
