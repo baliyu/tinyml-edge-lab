@@ -29,7 +29,17 @@ def render_block(report):
             f"{_f(fm['leave_one_load_out'])}; holding out a whole fault size (three fault types, no normal class) scored "
             f"{_f(fm['leave_one_size_out_fault_types'])}. After reducing the same recordings to 400 Hz, leave-one-load-out scored "
             f"{_f(fm['leave_one_load_out_400hz'])}.")
+    def folds(key, name, fmt):
+        pr = p[key]
+        accs = pr["models"]["forest"]["fold_accuracy"]
+        return ", ".join(f"{fmt(f[name])} {a:.3f}" for f, a in zip(pr["folds"], accs))
+
+    chance = 1.0 / len(p["leave_one_size_out_fault_types"]["models"]["forest"]["labels"])
     lines += ["", sent, "",
+              "Forest accuracy on each held-out fold (an average can hide a bad fold; a score below chance means the model was consistently wrong there):",
+              f"- leave one motor load out: {folds('leave_one_load_out', 'test_load', lambda v: f'{v} hp')}",
+              f"- leave one fault size out (chance is {chance:.3f}): {folds('leave_one_size_out_fault_types', 'test_size_in', lambda v: f'{v} in')}",
+              "",
               "How to read it:",
               "- Windows cut from the same recording are close neighbours, so a random split can let the model recognise the recording instead of the fault. That row is shown to expose the risk, not as a result.",
               "- Every damaged bearing was recorded at all four loads, so leaving a load out is easier than meeting a new bearing. Leaving a fault size out is the harder test, because each size is a different damaged bearing.",

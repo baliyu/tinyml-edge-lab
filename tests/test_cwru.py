@@ -142,6 +142,10 @@ def test_readme_block_comes_from_results_and_is_idempotent(fake_cwru, tmp_path):
     block = render_block(rep)
     for p in rep["protocols"].values():
         assert f"{p['models']['forest']['macro_f1']:.3f}" in block
+    for key in ("leave_one_load_out", "leave_one_size_out_fault_types"):        # per-fold numbers are shown, not just averages
+        for acc in rep["protocols"][key]["models"]["forest"]["fold_accuracy"]:
+            assert f"{acc:.3f}" in block
+    assert "held-out fold" in block and "chance is 0.333" in block
     readme = tmp_path / "README.md"
     readme.write_text("# T\n\n| Part | What |\n|---|---|\n| `src/tinyml_lab/plots.py` | figs |\n\n```bash\n"
                       "python scripts/compare_models.py   # x\n```\n\n## Roadmap\n1. next\n")

@@ -95,6 +95,10 @@ These are single runs with 9 test volunteers, so differences of a few points sho
 
 For the forest, a random split of windows scored macro-F1 0.989; holding out a whole motor load scored 0.943; holding out a whole fault size (three fault types, no normal class) scored 0.332. After reducing the same recordings to 400 Hz, leave-one-load-out scored 0.598.
 
+Forest accuracy on each held-out fold (an average can hide a bad fold; a score below chance means the model was consistently wrong there):
+- leave one motor load out: 0 hp 0.818, 1 hp 0.989, 2 hp 0.986, 3 hp 0.923
+- leave one fault size out (chance is 0.333): 0.007 in 0.525, 0.014 in 0.353, 0.021 in 0.112
+
 How to read it:
 - Windows cut from the same recording are close neighbours, so a random split can let the model recognise the recording instead of the fault. That row is shown to expose the risk, not as a result.
 - Every damaged bearing was recorded at all four loads, so leaving a load out is easier than meeting a new bearing. Leaving a fault size out is the harder test, because each size is a different damaged bearing.
