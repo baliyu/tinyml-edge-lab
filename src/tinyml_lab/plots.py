@@ -25,7 +25,9 @@ def _save(fig, path):
     plt.close(fig)
 
 
-def confusion_matrix_fig(cm, class_names, path):
+def confusion_matrix_fig(cm, class_names, path,
+                        title="Confusion matrix on UCI's test volunteers\n(each row sums to 100 % of that true class)",
+                        xlabel="predicted activity", ylabel="true activity"):
     cm = np.asarray(cm, dtype=float)
     norm = cm / np.maximum(cm.sum(axis=1, keepdims=True), 1.0)
     fig, ax = plt.subplots(figsize=(6.4, 5.5))
@@ -36,9 +38,9 @@ def confusion_matrix_fig(cm, class_names, path):
         for j in range(cm.shape[1]):
             ax.text(j, i, f"{norm[i, j] * 100:.0f}%\n({int(cm[i, j])})", ha="center", va="center", fontsize=8,
                     color="white" if norm[i, j] > 0.5 else "black")
-    ax.set_xlabel("predicted activity")
-    ax.set_ylabel("true activity")
-    ax.set_title("Confusion matrix on UCI's test volunteers\n(each row sums to 100 % of that true class)")
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel(ylabel)
+    ax.set_title(title)
     fig.colorbar(im, ax=ax, fraction=0.046, label="share of true class")
     _save(fig, path)
 

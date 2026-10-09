@@ -45,3 +45,41 @@ def bigger_uci_root(tmp_path):
     _write_split(root, "train", subjects=list(range(1, 9)), per_class=4, rng=rng)
     _write_split(root, "test", subjects=[9, 10, 11], per_class=4, rng=rng)
     return tmp_path
+
+
+
+# ---------------------------------------------------------------- synthetic CWRU-style data (NOT real data)
+def _fake_cwru_signal(rng, kind, size, load, n, fs=48000.0):
+    x = rng.normal(0, 0.05 * (1 + 0.1 * load), n)
+    if kind != "normal":
+        f_res = {"IR": 3000.0, "B": 5000.0, "OR": 7000.0}[kind]
+        rate = {"IR": 160.0, "B": 100.0, "OR": 220.0}[kind]
+        amp = 0.5 if size < 0.01 else 1.0
+        tau = np.arange(int(0.004 * fs)) / fs
+        burst = amp * np.exp(-tau / 0.0008) * np.sin(2 * np.pi * f_res * tau) * (1 + 0.1 * load)
+        for start in range(0, n - len(burst), int(fs / rate)):
+            x[start:start + len(burst)] += burst
+    return x
+
+
+@pytest.fixture
+def fake_cwru(tmp_path):
+    """(data_dir, manifest): 28 small .mat files named and keyed like CWRU's, with matching sizes and SHA-256 values."""
+    import hashlib
+    from scipy.io import savemat
+    rng = np.random.default_rng(0)
+    data = tmp_path / "cwru"
+    data.mkdir()
+    manifest, number = [], 1000
+    combos = [("normal", 0.0)] + [(k, s) for k in ("IR", "B", "OR") for s in (0.007, 0.014)]
+    for kind, size in combos:
+        for load in range(4):
+            number += 1
+            x = _fake_cwru_signal(rng, kind, size, load, 72000)
+            path = data / f"{number}.mat"
+            savemat(path, {f"X{number:03d}_DE_time": x[:, None], f"X{number:03d}RPM": np.array([[1797 - 20 * load]])})
+            cls = "normal" if kind == "normal" else f"{kind}{int(round(size * 1000)):03d}"
+            manifest.append({"number": number, "cls": cls, "kind": kind, "size_in": size, "load_hp": load,
+                             "rpm": 1797 - 20 * load, "bytes": path.stat().st_size,
+                             "sha256": hashlib.sha256(path.read_bytes()).hexdigest()})
+    return data, manifest

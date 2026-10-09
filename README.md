@@ -21,6 +21,7 @@ the device matches the PC.
 | `src/tinyml_lab/har_baseline.py` | Decision-tree baseline, depth sweep, per-class recall, confusion matrix |
 | `src/tinyml_lab/plots.py` | Figures drawn from the saved results: confusion matrix, per-class recall, depth sweep, example windows, most-used features |
 | `src/tinyml_lab/har_compare.py` | Subject-grouped model selection, richer features and a random-forest comparison |
+| `src/tinyml_lab/cwru*.py` | CWRU bearing pipeline: verified download, windowing, features and honest evaluation |
 | `firmware/` | Notes for the SparkFun Edge and the Nano 33 BLE |
 | `docs/DATASETS.md` | Sources, licences, evaluation rules |
 
@@ -33,6 +34,7 @@ python scripts/download_uci_har.py                     # official UCI zip, CC BY
 python scripts/train_har_baseline.py --depth 6
 python scripts/make_figures.py                         # figures into results/figures/
 python scripts/compare_models.py                       # grouped CV, richer features, forest comparison
+python scripts/download_cwru.py && python scripts/run_cwru.py   # CWRU bearings (about 300 MB download)
 ```
 
 ## Results (official UCI HAR data, run on 9 October 2026)
@@ -77,6 +79,32 @@ These are single runs with 9 test volunteers, so differences of a few points sho
 ![Size against test macro-F1](results/figures/model_comparison.png)
 ![Confusion matrix of the extended tree](results/figures/confusion_matrix_extended_tree.png)
 <!-- compare:end -->
+
+<!-- cwru:start -->
+### Bearing faults (CWRU, run on a PC)
+
+- Data: 40 official recordings (normal, and drive-end inner-race, ball and outer-race faults at 0.007, 0.014, 0.021 in, at motor loads 0, 1, 2, 3 hp), all at 48 kHz so every class was recorded the same way. Each file is checked against its SHA-256 value before use.
+- 4096-sample windows, five time-domain statistics and 12 spectral band fractions as features. A decision tree (depth 8) and a random forest (100 trees), settings fixed in advance and not tuned.
+
+| Evaluation | Tree accuracy / macro-F1 | Forest accuracy / macro-F1 |
+|---|---|---|
+| Random split of windows (leaky) | 0.944 / 0.944 | 0.989 / 0.989 |
+| Leave one motor load out | 0.911 / 0.909 | 0.946 / 0.943 |
+| Leave one fault size out (3 fault types, no normal class) | 0.362 / 0.354 | 0.329 / 0.332 |
+| Leave one motor load out, signals reduced to 400 Hz | 0.495 / 0.492 | 0.602 / 0.598 |
+
+For the forest, a random split of windows scored macro-F1 0.989; holding out a whole motor load scored 0.943; holding out a whole fault size (three fault types, no normal class) scored 0.332. After reducing the same recordings to 400 Hz, leave-one-load-out scored 0.598.
+
+How to read it:
+- Windows cut from the same recording are close neighbours, so a random split can let the model recognise the recording instead of the fault. That row is shown to expose the risk, not as a result.
+- Every damaged bearing was recorded at all four loads, so leaving a load out is easier than meeting a new bearing. Leaving a fault size out is the harder test, because each size is a different damaged bearing.
+- The 400 Hz row decimates the same recordings with an anti-alias filter. It shows what a 400 Hz sensor could see of these signals; it says nothing about any real sensor or machine.
+- CWRU is a small laboratory benchmark with seeded faults. These scores do not predict field performance.
+
+![Protocols compared](results/figures/cwru_protocols.png)
+![Vibration signatures](results/figures/cwru_signatures.png)
+![Confusion matrix, forest, leave one load out](results/figures/cwru_confusion_forest.png)
+<!-- cwru:end -->
 
 ## Roadmap
 1. SparkFun Edge: hello world and wake-word from the TinyML book (log what worked).
