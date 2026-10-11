@@ -65,8 +65,10 @@ def run_session(ser, *, session, subject, labels, seconds, note, port, baud, out
                     break
                 continue
             sm = r["summary"]
-            out(f"  saved {sm['n']} samples; measured {sm['rate_hz']:.2f} Hz; gaps {sm['gaps']}; "
+            out(f"  saved {sm['n']} samples over {sm['duration_s']:.1f} s; measured {sm['rate_hz']:.2f} Hz; gaps {sm['gaps']}; "
                 f"verdict {'OK' if not r['problems'] else 'PROBLEMS'}")
+            if r.get("stale_dropped"):
+                out(f"    (ignored {r['stale_dropped']} stale samples at the start, old data Windows handed over when the port opened)")
             for p in r["problems"]:
                 out("    - " + p)
             answer = input_fn("  Press Enter to keep it, or type r to record this gesture again: ")
