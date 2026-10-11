@@ -1,7 +1,7 @@
 # Edge IMU logger (fixed-rate CSV, 50 Hz)
 
-**Status: flashed and streaming on the board (first run seen in a terminal on 2026-10-11, see `../evidence/`); a labelled
-capture checked with `tools/edge_capture.py` is still to come.** This file will say "verified" only after that.
+**Status: verified on 2026-10-11 for one 35 s capture with the board lying still (see "First checked capture" below).
+It has not been used for any activity data yet.**
 
 A small firmware for the SparkFun Edge's LIS2DH12 accelerometer that prints one CSV line per sample, plus a PC tool that
 turns the stream into labelled files and reports how good each capture was. Purpose: collect my own labelled motion data
@@ -79,3 +79,14 @@ Copied from the terminal into `../evidence/logger_first_run_excerpts.txt`:
 * The single overrun is unexplained. One possibility is start-up (the three header lines take about 15 ms to print and
   the sensor is already sampling), but that is a guess. A capture of 30 s or more shows whether the count grows; the tool
   only reports overruns that happen during the capture.
+
+## First checked capture (2026-10-11)
+One 35 s capture with the board lying still: `py tools\edge_capture.py --port COM4 --label rest --seconds 35`.
+Console output: `../evidence/rest_capture_console_output.txt`. The capture itself: `../evidence/rest_capture_35s.csv`.
+* 1793 samples in 35.0 s. Measured rate 51.219 Hz, no gaps in the timestamps, no unreadable lines, verdict OK. The
+  verdict also means the firmware's overrun counter did not grow during the capture.
+* An independent check: the PC's own clock recorded for 35 s and received 1793 samples, about 51.2 Hz. The Edge's 32 kHz
+  crystal and the PC's clock are different clocks and they agree, so the timestamps can be trusted and the sensor really
+  does run about 2.4% above its nominal 50 Hz.
+* The tool also wrote a copy resampled to exactly 50 Hz: 1750 samples, which is 35 s x 50 Hz.
+* Not checked yet: the noise level and drift of the rest signal, any recording with motion, and runs longer than 35 s.
