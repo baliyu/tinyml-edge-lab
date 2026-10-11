@@ -172,11 +172,11 @@ def capture(ser, seconds: float, clock=time.monotonic, progress=None) -> dict:
 
 
 def write_csv(path: Path, result: dict, label: str, subject: str, note: str, port: str, baud: int, odr_hz: int,
-              tick_hz: int, timer: str, summary: dict, problems: list[str]) -> None:
+              tick_hz: int, timer: str, summary: dict, problems: list[str], session: str = "") -> None:
     ticks = unwrap_ticks([s[0] for s in result["samples"]])
     t0 = ticks[0]
     lines = ["# SparkFun Edge LIS2DH12 capture",
-             f"# label={label}", f"# subject={subject}", f"# note={note}",
+             f"# label={label}", f"# subject={subject}", f"# session={session}", f"# note={note}",
              f"# captured_at={datetime.now().isoformat(timespec='seconds')}", f"# port={port} baud={baud}",
              f"# odr_hz={odr_hz} fs_g=2 mode=hr12 units=mg tick_hz={tick_hz} timer={timer}",
              f"# measured_rate_hz={summary['rate_hz']:.3f} samples={summary['n']} duration_s={summary['duration_s']:.3f} "
@@ -199,17 +199,45 @@ def write_resampled(path: Path, result: dict, tick_hz: int, hz: int, label: str,
     return len(grid)
 
 
+def save_capture(result: dict, *, label: str, subject: str, session: str, note: str, port: str, baud: int,
+                 out_dir, now=None) -> dict:
+    """Turn a finished capture() result into files and a verdict. 'ok' is False when nothing usable was recorded."""
+    stats = result["stats"]
+    info = result["meta"] or ({"odr_hz": 0, "tick_hz": stats[-1]["tick_hz"], "timer": stats[-1]["timer"]} if stats else None)
+    if not result["samples"] or info is None:
+        return {"ok": False, "reason": "No usable data: no samples, or no settings line seen. Tap RST on the Edge just before "
+                                       "starting, or record for at least 12 s so a statistics line arrives."}
+    odr_hz = info["odr_hz"] or 50
+    unwrapped = unwrap_ticks([s[0] for s in result["samples"]])
+    summary = summarise(unwrapped, info["tick_hz"], odr_hz)
+    problems = verdict(summary, odr_hz, stats, result["bad_lines"])
+    now = now or datetime.now()
+    out_dir = Path(out_dir)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    stem = (f"{session}_" if session else "") + f"{label}_{now.strftime('%Y%m%d_%H%M%S')}"
+    path = out_dir / f"{stem}.csv"
+    write_csv(path, result, label, subject, note, port, baud, odr_hz, info["tick_hz"], info["timer"], summary, problems,
+              session=session)
+    rs_path = path.with_name(path.stem + f"_{odr_hz}hz.csv")
+    n_rs = write_resampled(rs_path, result, info["tick_hz"], odr_hz, label, subject)
+    return {"ok": True, "path": path, "resampled_path": rs_path, "n_resampled": n_rs, "summary": summary,
+            "problems": problems, "odr_hz": odr_hz, "rate_note": rate_note(summary, odr_hz)}
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("--port", required=True, help="serial port, e.g. COM4")
     ap.add_argument("--baud", type=int, default=115200)
     ap.add_argument("--seconds", type=float, default=60.0, help="how long to record (default 60)")
-    ap.add_argument("--label", required=True, help="what you are doing, e.g. walking, sitting, standing, laying")
-    ap.add_argument("--subject", default="s1", help="who is wearing it (default s1)")
+    ap.add_argument("--label", required=True, help="what you are doing, e.g. rest, shake_lr, circle")
+    ap.add_argument("--subject", default="s1", help="who is holding it (default s1)")
+    ap.add_argument("--session", default="", help="one sitting; use the same name for every gesture recorded in it "
+                                                  "(tools/record_session.py does this for you)")
     ap.add_argument("--note", default="", help="free text, e.g. where the board is fixed")
     ap.add_argument("--out-dir", default="data/own/edge")
     a = ap.parse_args(argv)
     label = safe_label(a.label)
+    session = safe_label(a.session) if a.session else ""
     if a.seconds < 12:
         print("Note: shorter than 12 s, so the firmware's first statistics line may not arrive; that is only needed "
               "when the settings line was missed.", file=sys.stderr)
@@ -228,27 +256,17 @@ def main(argv=None) -> int:
         ser.reset_input_buffer()
         result = capture(ser, a.seconds, progress=lambda n: print(f"  {n} samples", end="\r", flush=True))
     print()
-    info = result["meta"] or (({"odr_hz": 0, "tick_hz": result["stats"][-1]["tick_hz"], "timer": result["stats"][-1]["timer"]})
-                              if result["stats"] else None)
-    if not result["samples"] or info is None:
-        print("No usable data: no samples, or no settings line seen. Tap RST on the Edge just before starting, or record "
-              "for at least 12 s so a statistics line arrives.", file=sys.stderr)
+    r = save_capture(result, label=label, subject=a.subject, session=session, note=a.note, port=a.port, baud=a.baud,
+                     out_dir=a.out_dir)
+    if not r["ok"]:
+        print(r["reason"], file=sys.stderr)
         return 1
-    odr_hz = info["odr_hz"] or 50
-    unwrapped = unwrap_ticks([s[0] for s in result["samples"]])
-    summary = summarise(unwrapped, info["tick_hz"], odr_hz)
-    problems = verdict(summary, odr_hz, result["stats"], result["bad_lines"])
-    out_dir = Path(a.out_dir)
-    out_dir.mkdir(parents=True, exist_ok=True)
-    path = out_dir / f"{label}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
-    write_csv(path, result, label, a.subject, a.note, a.port, a.baud, odr_hz, info["tick_hz"], info["timer"], summary, problems)
-    n_rs = write_resampled(path.with_name(path.stem + f"_{odr_hz}hz.csv"), result, info["tick_hz"], odr_hz, label, a.subject)
+    summary, problems, odr_hz, path = r["summary"], r["problems"], r["odr_hz"], r["path"]
     print(f"Saved {summary['n']} samples ({summary['duration_s']:.1f} s) to {path}")
-    print(f"Also saved {n_rs} samples resampled to exactly {odr_hz} Hz: {path.stem}_{odr_hz}hz.csv")
+    print(f"Also saved {r['n_resampled']} samples resampled to exactly {odr_hz} Hz: {r['resampled_path'].name}")
     print(f"Measured rate {summary['rate_hz']:.3f} Hz (configured {odr_hz} Hz); gaps {summary['gaps']}; bad lines {result['bad_lines']}")
-    note = rate_note(summary, odr_hz)
-    if note:
-        print("Note: " + note)
+    if r["rate_note"]:
+        print("Note: " + r["rate_note"])
     print("Verdict: " + ("OK" if not problems else "PROBLEMS"))
     for p in problems:
         print("  - " + p)

@@ -25,6 +25,7 @@ the device matches the PC.
 | `src/tinyml_lab/footprint*.py` | Real flash and RAM sizes of the exported models, measured with the ARM compiler |
 | `firmware/` | Notes for the SparkFun Edge and the Nano 33 BLE |
 | `docs/DATASETS.md` | Sources, licences, evaluation rules |
+| `src/tinyml_lab/edge_gesture*.py` | Desk gestures from the Edge's own recordings: loader, resampling, session-wise evaluation |
 
 ## Quick start
 ```bash
@@ -37,6 +38,7 @@ python scripts/make_figures.py                         # figures into results/fi
 python scripts/compare_models.py                       # grouped CV, richer features, forest comparison
 python scripts/measure_footprint.py                # real flash sizes (needs the Zephyr SDK or an arm-none-eabi compiler)
 python scripts/download_cwru.py && python scripts/run_cwru.py   # CWRU bearings (about 300 MB download)
+python scripts/run_gestures.py                      # desk gestures: leave-one-session-out evaluation (needs recordings, see docs/GESTURES.md)
 ```
 
 ## Results (official UCI HAR data, run on 9 October 2026)
@@ -135,6 +137,12 @@ Why float thresholds are exact: for any float32 input x, `x <= t` and `x <= floo
 
 ![Measured flash sizes](results/figures/footprint.png)
 <!-- footprint:end -->
+
+<!-- gestures:start -->
+### Desk gestures (SparkFun Edge, run on a PC)
+
+Status: the recording tool, loader, evaluation and C export are written and tested on synthetic data only. No real gesture recordings exist yet, so there are no results to report. The recording protocol is in `docs/GESTURES.md`.
+<!-- gestures:end -->
 
 ## Roadmap
 1. SparkFun Edge: hello world is done and logged in `firmware/sparkfun_edge/`; the wake-word demo from the TinyML book is still to do.

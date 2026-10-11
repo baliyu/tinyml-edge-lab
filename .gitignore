@@ -8,3 +8,5 @@ __pycache__/
 *.bin
 
 data/own/
+data/synthetic/
+results/synthetic/
