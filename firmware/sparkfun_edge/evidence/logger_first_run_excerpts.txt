@@ -1,0 +1,20 @@
+SparkFun Edge, imu_logger firmware at 50 Hz, first run seen in miniterm on COM4 (115200 baud), 2026-10-11.
+Excerpts copied as printed. The boot header had already scrolled past before the terminal was opened.
+
+--- first lines seen ---
+1104730,40,-62,1047
+1105384,46,-66,1046
+1106015,42,-62,1046
+1106668,43,-56,1043
+1107299,40,-60,1042
+1107929,43,-59,1042
+1108583,42,-62,1047
+1109213,34,-62,1050
+1109867,38,-57,1046
+1110497,41,-56,1046
+
+--- the firmware's own statistics line, with the lines around it ---
+1281296,46,-94,1039
+# stats samples=500 overruns=1 i2c_err=0 rate_hz=51.220 tick_hz=32768 timer=xtal32k
+1281944,40,-92,1042
+1282574,42,-92,1039
