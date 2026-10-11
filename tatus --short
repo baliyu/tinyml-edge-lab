@@ -1,0 +1,33 @@
+[1mdiff --git a/README.md b/README.md[m
+[1mindex 1f3c591..826ec70 100644[m
+[1m--- a/README.md[m
+[1m+++ b/README.md[m
+[36m@@ -25,6 +25,7 @@[m [mthe device matches the PC.[m
+ | `src/tinyml_lab/footprint*.py` | Real flash and RAM sizes of the exported models, measured with the ARM compiler |[m
+ | `firmware/` | Notes for the SparkFun Edge and the Nano 33 BLE |[m
+ | `docs/DATASETS.md` | Sources, licences, evaluation rules |[m
+[32m+[m[32m| `src/tinyml_lab/edge_gesture*.py` | Desk gestures from the Edge's own recordings: loader, resampling, session-wise evaluation |[m
+ [m
+ ## Quick start[m
+ ```bash[m
+[36m@@ -37,6 +38,7 @@[m [mpython scripts/make_figures.py                         # figures into results/fi[m
+ python scripts/compare_models.py                       # grouped CV, richer features, forest comparison[m
+ python scripts/measure_footprint.py                # real flash sizes (needs the Zephyr SDK or an arm-none-eabi compiler)[m
+ python scripts/download_cwru.py && python scripts/run_cwru.py   # CWRU bearings (about 300 MB download)[m
+[32m+[m[32mpython scripts/run_gestures.py                      # desk gestures: leave-one-session-out evaluation (needs recordings, see docs/GESTURES.md)[m
+ ```[m
+ [m
+ ## Results (official UCI HAR data, run on 9 October 2026)[m
+[36m@@ -136,6 +138,12 @@[m [mWhy float thresholds are exact: for any float32 input x, `x <= t` and `x <= floo[m
+ ![Measured flash sizes](results/figures/footprint.png)[m
+ <!-- footprint:end -->[m
+ [m
+[32m+[m[32m<!-- gestures:start -->[m
+[32m+[m[32m### Desk gestures (SparkFun Edge, run on a PC)[m
+[32m+[m
+[32m+[m[32mStatus: the recording tool, loader, evaluation and C export are written and tested on synthetic data only. No real gesture recordings exist yet, so there are no results to report. The recording protocol is in `docs/GESTURES.md`.[m
+[32m+[m[32m<!-- gestures:end -->[m
+[32m+[m
+ ## Roadmap[m
+ 1. SparkFun Edge: hello world is done and logged in `firmware/sparkfun_edge/`; the wake-word demo from the TinyML book is still to do.[m
+ 2. Nano 33 BLE: IMU data logger with microSD and a TFT user interface; collect my own labelled data.[m
