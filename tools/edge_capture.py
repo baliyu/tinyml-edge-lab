@@ -135,6 +135,34 @@ def resample_uniform(t_s: list[float], values: list[tuple], hz: float):
     return grid, out
 
 
+def drop_stale_start(samples: list, tick_hz: int, odr_hz: int, search: int = 400, run: int = 25):
+    """Drop stale samples handed over when the port was opened.
+
+    Windows can give the first read of a port that has sat idle for hours a stale block of the stream (observed: one line
+    repeated 227 times, then a jump of the board's whole uptime). Such samples have impossible spacing: the same time twice,
+    or a jump. Looking only at the first `search` samples, everything up to the last impossible spacing is dropped, provided
+    a sustained stream of `run` samples with plausible spacing follows. A discontinuity later in the recording is left alone
+    so that verdict() still reports it. Returns (kept samples, number dropped).
+    """
+    n = len(samples)
+    if n < run + 2:
+        return samples, 0
+    nominal = 1.0 / odr_hz
+    dts = [((b[0] - a[0]) % WRAP) / tick_hz for a, b in zip(samples, samples[1:])]
+
+    def plausible(d):
+        return 0.5 * nominal <= d <= 2.0 * nominal
+
+    bad = [i for i in range(min(search, n - 1)) if not plausible(dts[i])]
+    if not bad:
+        return samples, 0
+    start = bad[-1] + 1
+    tail = dts[start:start + run]
+    if len(tail) < run or not all(plausible(d) for d in tail):
+        return samples, 0
+    return samples[start:], start
+
+
 def safe_label(label: str) -> str:
     s = re.sub(r"[^a-z0-9]+", "_", label.strip().lower()).strip("_")
     if not s:
@@ -172,7 +200,7 @@ def capture(ser, seconds: float, clock=time.monotonic, progress=None) -> dict:
 
 
 def write_csv(path: Path, result: dict, label: str, subject: str, note: str, port: str, baud: int, odr_hz: int,
-              tick_hz: int, timer: str, summary: dict, problems: list[str], session: str = "") -> None:
+              tick_hz: int, timer: str, summary: dict, problems: list[str], session: str = "", stale_dropped: int = 0) -> None:
     ticks = unwrap_ticks([s[0] for s in result["samples"]])
     t0 = ticks[0]
     lines = ["# SparkFun Edge LIS2DH12 capture",
@@ -181,6 +209,7 @@ def write_csv(path: Path, result: dict, label: str, subject: str, note: str, por
              f"# odr_hz={odr_hz} fs_g=2 mode=hr12 units=mg tick_hz={tick_hz} timer={timer}",
              f"# measured_rate_hz={summary['rate_hz']:.3f} samples={summary['n']} duration_s={summary['duration_s']:.3f} "
              f"gaps={summary['gaps']} missing_est={summary['missing_est']} bad_lines={result['bad_lines']}",
+             f"# stale_start_dropped={stale_dropped}",
              "# verdict=" + ("OK" if not problems else "PROBLEMS: " + "; ".join(problems)),
              "# rate_note=" + (rate_note(summary, odr_hz) or "none"),
              "t_s,x_mg,y_mg,z_mg"]
@@ -208,6 +237,8 @@ def save_capture(result: dict, *, label: str, subject: str, session: str, note: 
         return {"ok": False, "reason": "No usable data: no samples, or no settings line seen. Tap RST on the Edge just before "
                                        "starting, or record for at least 12 s so a statistics line arrives."}
     odr_hz = info["odr_hz"] or 50
+    kept, stale = drop_stale_start(result["samples"], info["tick_hz"], odr_hz)
+    result = dict(result, samples=kept)
     unwrapped = unwrap_ticks([s[0] for s in result["samples"]])
     summary = summarise(unwrapped, info["tick_hz"], odr_hz)
     problems = verdict(summary, odr_hz, stats, result["bad_lines"])
@@ -217,11 +248,11 @@ def save_capture(result: dict, *, label: str, subject: str, session: str, note: 
     stem = (f"{session}_" if session else "") + f"{label}_{now.strftime('%Y%m%d_%H%M%S')}"
     path = out_dir / f"{stem}.csv"
     write_csv(path, result, label, subject, note, port, baud, odr_hz, info["tick_hz"], info["timer"], summary, problems,
-              session=session)
+              session=session, stale_dropped=stale)
     rs_path = path.with_name(path.stem + f"_{odr_hz}hz.csv")
     n_rs = write_resampled(rs_path, result, info["tick_hz"], odr_hz, label, subject)
     return {"ok": True, "path": path, "resampled_path": rs_path, "n_resampled": n_rs, "summary": summary,
-            "problems": problems, "odr_hz": odr_hz, "rate_note": rate_note(summary, odr_hz)}
+            "problems": problems, "odr_hz": odr_hz, "rate_note": rate_note(summary, odr_hz), "stale_dropped": stale}
 
 
 def main(argv=None) -> int:
@@ -265,6 +296,8 @@ def main(argv=None) -> int:
     print(f"Saved {summary['n']} samples ({summary['duration_s']:.1f} s) to {path}")
     print(f"Also saved {r['n_resampled']} samples resampled to exactly {odr_hz} Hz: {r['resampled_path'].name}")
     print(f"Measured rate {summary['rate_hz']:.3f} Hz (configured {odr_hz} Hz); gaps {summary['gaps']}; bad lines {result['bad_lines']}")
+    if r["stale_dropped"]:
+        print(f"Note: ignored {r['stale_dropped']} stale samples at the start (old data Windows handed over when the port was opened).")
     if r["rate_note"]:
         print("Note: " + r["rate_note"])
     print("Verdict: " + ("OK" if not problems else "PROBLEMS"))
