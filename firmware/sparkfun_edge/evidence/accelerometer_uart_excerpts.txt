@@ -1,0 +1,26 @@
+SparkFun Edge, lis2dh12_accelerometer_uart example, serial output at 115200 baud (miniterm on COM4), 2026-10-11.
+Excerpts copied as printed. The full capture also contained one garbled line where the stream skipped a chunk
+(most likely the Windows console pausing while text was selected); it is not reproduced here.
+
+--- start of the run ---
+Whoami (should be 0x33): 0x33
+Accelerometer initialization successfulAcc [mg] 140.0 x, -434.0 y, 978.0 z, Temp [deg C] 29.0,
+Acc [mg] 77.0 x, -214.0 y, 473.0 z, Temp [deg C] 29.0,
+Acc [mg] 166.0 x, -426.0 y, 926.0 z, Temp [deg C] 29.75,
+Acc [mg] 165.0 x, -428.0 y, 932.0 z, Temp [deg C] 29.75,
+Acc [mg] 166.0 x, -425.0 y, 939.0 z, Temp [deg C] 29.50,
+
+--- board tilted ---
+Acc [mg] 110.0 x, -243.0 y, 994.0 z, Temp [deg C] 32.0,
+Acc [mg] 14.0 x, -158.0 y, 972.0 z, Temp [deg C] 31.75,
+Acc [mg] 3.0 x, -150.0 y, 967.0 z, Temp [deg C] 31.75,
+Acc [mg] -13.0 x, -116.0 y, 966.0 z, Temp [deg C] 31.75,
+Acc [mg] -42.0 x, -78.0 y, 1118.0 z, Temp [deg C] 31.75,
+Acc [mg] -40.0 x, -90.0 y, 1141.0 z, Temp [deg C] 32.0,
+Acc [mg] -52.0 x, -79.0 y, 1040.0 z, Temp [deg C] 32.0,
+Acc [mg] -102.0 x, -44.0 y, 1150.0 z, Temp [deg C] 31.75,
+Acc [mg] -108.0 x, -41.0 y, 999.0 z, Temp [deg C] 32.0,
+Acc [mg] -165.0 x, 27.0 y, 981.0 z, Temp [deg C] 31.75,
+Acc [mg] -316.0 x, 256.0 y, 1020.0 z, Temp [deg C] 31.75,
+Acc [mg] -314.0 x, 255.0 y, 979.0 z, Temp [deg C] 32.0,
+Acc [mg] -317.0 x, 254.0 y, 974.0 z, Temp [deg C] 31.75,

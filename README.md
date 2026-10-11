@@ -137,7 +137,7 @@ Why float thresholds are exact: for any float32 input x, `x <= t` and `x <= floo
 <!-- footprint:end -->
 
 ## Roadmap
-1. SparkFun Edge: hello world and wake-word from the TinyML book (log what worked).
+1. SparkFun Edge: hello world is done and logged in `firmware/sparkfun_edge/`; the wake-word demo from the TinyML book is still to do.
 2. Nano 33 BLE: IMU data logger with microSD and a TFT user interface; collect my own labelled data.
 3. Compare a decision tree with a small neural network (int8), reporting size, RAM and latency.
 4. Check on-device accuracy against the PC on a held-out set.
