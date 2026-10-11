@@ -1,0 +1,7 @@
+Recording 'rest' for 35 s on COM4. Do not click in this window.
+  1768 samples
+Saved 1793 samples (35.0 s) to data\own\edge\rest_20261011_094534.csv
+Also saved 1750 samples resampled to exactly 50 Hz: rest_20261011_094534_50hz.csv
+Measured rate 51.219 Hz (configured 50 Hz); gaps 0; bad lines 0
+Note: the sensor ran at 51.22 Hz, not exactly 50 Hz (its output rate comes from an internal oscillator with no published accuracy); the saved timestamps are real, so resample to 50 Hz before comparing with other 50 Hz data
+Verdict: OK
