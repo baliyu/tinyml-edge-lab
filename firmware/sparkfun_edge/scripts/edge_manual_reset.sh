@@ -4,7 +4,8 @@
 # Why: SparkFun's uploader resets the board itself through the adapter's DTR line, then says "Hello" within the
 # bootloader's 250 ms listening window. Your CP2102 module has no DTR pin, so you reset by hand, far too slowly.
 # The patched copy (asb_manual.py) keeps saying Hello (alternating 115200 and 921600 baud) until the bootloader
-# answers, so your manual RST tap can land anywhere inside the waiting time. SparkFun's own files are not modified.
+# REALLY answers (version 2 checks the reply, so text printed by a running program is never mistaken for it), so your
+# manual RST tap can land anywhere inside the waiting time. SparkFun's own files are not modified.
 #
 # Run it from WSL (after edge_build.sh has run):
 #   bash "$(ls -t /mnt/c/Users/*/Downloads/edge_manual_reset.sh | head -1)"
@@ -19,7 +20,9 @@ command -v python3 >/dev/null || fail "python3 is not installed in WSL."
 
 PY="$(mktemp)"; trap 'rm -f "$PY"' EXIT
 cat > "$PY" << 'EOF_PATCH'
-"""Make asb_manual.py from SparkFun's asb.py: keep saying Hello until the bootloader answers (for adapters with no DTR pin)."""
+"""Make asb_manual.py from SparkFun's asb.py: keep saying Hello until the bootloader REALLY answers (for adapters with no
+DTR pin). Version 2: a reply is only accepted if it has the bootloader's status-message type and length in it, so text that
+a running program is printing (or noise at the wrong baud rate) is never mistaken for an answer."""
 import sys
 
 src, dst = sys.argv[1], sys.argv[2]
@@ -28,15 +31,19 @@ old = "    verboseprint('Sending Hello.')\n    response = send_command(hello, 88
 if s.count(old) != 1:
     sys.exit("STOP: SparkFun's asb.py is not the version this patch was written for (anchor not found exactly once).")
 new = '''    verboseprint('Sending Hello.')
-    # ---- patched for USB adapters without a DTR pin (manual reset) ----
+    # ---- patched for USB adapters without a DTR pin (manual reset), version 2 ----
     # The bootloader only listens for about 250 ms after a reset, so instead of saying Hello once we keep saying it
-    # (alternating between the two documented baud rates) until the bootloader answers.
-    import os
+    # (alternating between the two documented baud rates) until the bootloader answers. A genuine answer is 88 bytes with
+    # the status-message type and length in bytes 4 to 7. Anything else, such as text that a running program is printing,
+    # or noise at the wrong baud rate, is ignored. The answer is searched for inside what was read, so a few stray bytes
+    # in front of it do no harm.
+    import os, struct
     _wait = float(os.environ.get("ASB_WAIT_SECONDS", "0"))
     if _wait > 0:
         _old_timeout = ser.timeout
         ser.timeout = 0.05
         _bauds = [args.baud] + [b for b in (115200, 921600) if b != args.baud]
+        _want = struct.pack("<I", (88 << 16) | AM_SECBOOT_WIRED_MSGTYPE_STATUS)
         _end = time.time() + _wait
         print("Saying Hello for up to %d seconds. NOW: hold button 14, tap RST, keep holding 14." % _wait, flush=True)
         response = False
@@ -44,7 +51,12 @@ new = '''    verboseprint('Sending Hello.')
         while response == False and time.time() < _end:
             ser.baudrate = _bauds[_n % len(_bauds)]
             ser.reset_input_buffer()
-            response = send_command(hello, 88, ser, lambda *a, **k: None)
+            ser.write(int_to_bytes(crc32(hello)))
+            ser.write(hello)
+            _data = bytes(ser.read(176))
+            _i = _data.find(_want)
+            if _i >= 4 and len(_data) >= _i - 4 + 88:
+                response = bytearray(_data[_i - 4:_i - 4 + 88])
             _n += 1
         ser.timeout = _old_timeout
         if response == False:
