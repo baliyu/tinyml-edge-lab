@@ -66,8 +66,13 @@ python scripts/run_gestures.py --data data/synthetic/edge_gestures --out results
 Synthetic files carry `# synthetic=1`. The loader refuses to mix them with real recordings, the README writer refuses their
 results, and `results/synthetic/` and `data/synthetic/` are ignored by git.
 
-## Running a model on the board (not done yet)
+## Running a model on the board (partly done)
 `python scripts/run_gestures.py --export-c` writes `results/gesture_tree.c` (float thresholds, checked against scikit-learn)
 and `results/gesture_model.json` (feature order and the gesture each number means). That tree is trained on every session, so
-it has no held-out score of its own. Computing the features on the Edge (mean removal, standard deviation, spectrum bands)
-is a separate piece of work that does not exist yet.
+it has no held-out score of its own.
+
+The features exist in C: `firmware/sparkfun_edge/gesture_features/` (about 1.3 KB of flash), checked against the Python
+features by `tests/test_edge_features_c.py` on synthetic and constructed windows. `python scripts/check_edge_features.py`
+repeats the comparison on your own recordings, including how often a trained model answers differently on the C features.
+Still missing: filling a 128-sample window from the sensor on the board, calling the tree, flashing it, and the on-device
+accuracy check on a held-out session.

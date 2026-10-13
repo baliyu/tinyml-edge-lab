@@ -26,6 +26,7 @@ the device matches the PC.
 | `firmware/` | Notes for the SparkFun Edge and the Nano 33 BLE |
 | `docs/DATASETS.md` | Sources, licences, evaluation rules |
 | `src/tinyml_lab/edge_gesture*.py` | Desk gestures from the Edge's own recordings: loader, resampling, session-wise evaluation |
+| `firmware/sparkfun_edge/gesture_features/` | The gesture features in C (1.3 KB of flash), checked against the Python features |
 
 ## Quick start
 ```bash
@@ -39,6 +40,7 @@ python scripts/compare_models.py                       # grouped CV, richer feat
 python scripts/measure_footprint.py                # real flash sizes (needs the Zephyr SDK or an arm-none-eabi compiler)
 python scripts/download_cwru.py && python scripts/run_cwru.py   # CWRU bearings (about 300 MB download)
 python scripts/run_gestures.py                      # desk gestures: leave-one-session-out evaluation (needs recordings, see docs/GESTURES.md)
+python scripts/check_edge_features.py             # the C gesture features against Python on your recordings (needs gcc)
 ```
 
 ## Results (official UCI HAR data, run on 9 October 2026)
