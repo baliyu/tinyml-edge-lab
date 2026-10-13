@@ -1,0 +1,64 @@
+{
+  "data": {
+    "windows": 155,
+    "synthetic": false
+  },
+  "feature_sets": {
+    "raw": {
+      "double_vs_python": {
+        "windows": 155,
+        "max_error_vs_feature_size": 1.0132711278609372e-15,
+        "worst_feature": "y_band0",
+        "windows_with_a_different_dominant_bin": 0
+      },
+      "float_vs_python": {
+        "windows": 155,
+        "max_error_vs_feature_size": 2.0132323065014095e-05,
+        "worst_feature": "mag_band2",
+        "windows_with_a_different_dominant_bin": 0
+      },
+      "prediction_agreement": {
+        "tree (depth 6)": {
+          "seen": {
+            "windows": 155,
+            "different": 0
+          }
+        },
+        "forest (100 trees)": {
+          "seen": {
+            "windows": 155,
+            "different": 0
+          }
+        }
+      }
+    },
+    "motion": {
+      "double_vs_python": {
+        "windows": 155,
+        "max_error_vs_feature_size": 1.238442489607812e-15,
+        "worst_feature": "y_band0",
+        "windows_with_a_different_dominant_bin": 0
+      },
+      "float_vs_python": {
+        "windows": 155,
+        "max_error_vs_feature_size": 3.8851424346938045e-05,
+        "worst_feature": "mag_band3",
+        "windows_with_a_different_dominant_bin": 0
+      },
+      "prediction_agreement": {
+        "tree (depth 6)": {
+          "seen": {
+            "windows": 155,
+            "different": 0
+          }
+        },
+        "forest (100 trees)": {
+          "seen": {
+            "windows": 155,
+            "different": 0
+          }
+        }
+      }
+    }
+  }
+}
