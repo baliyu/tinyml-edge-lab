@@ -143,7 +143,24 @@ Why float thresholds are exact: for any float32 input x, `x <= t` and `x <= floo
 <!-- gestures:start -->
 ### Desk gestures (SparkFun Edge, run on a PC)
 
-Status: the recording tool, loader, evaluation and C export are written and tested on synthetic data only. No real gesture recordings exist yet, so there are no results to report. The recording protocol is in `docs/GESTURES.md`.
+- Data: 15 recordings of 5 gestures (rest, shake_lr, shake_ud, circle, tilt) in 3 sessions (s1, s2, s3), one person and one board. Each recording was resampled to exactly 50 Hz (the accelerometer itself ran at 50.9 to 51.1 Hz for a configured 50 Hz), 2 s was trimmed at both ends, and 128-sample windows (2.56 s) were cut every 64 samples: 465 windows in total.
+- Features: `raw` includes the board's orientation (window means); `motion` removes each window's mean first, so how the board was held drops out to first order.
+- A decision tree (depth 6) and a random forest (100 trees), settings fixed in advance and not tuned.
+
+| Evaluation | Features | Tree accuracy / macro-F1 | Forest accuracy / macro-F1 |
+|---|---|---|---|
+| Random split of windows (leaky) | raw | 0.993 / 0.993 | 1.000 / 1.000 |
+| Random split of windows (leaky) | motion | 0.950 / 0.950 | 0.979 / 0.979 |
+| Leave one session out | raw | 0.837 / 0.829 | 0.918 / 0.918 |
+| Leave one session out | motion | 0.817 / 0.816 | 0.890 / 0.888 |
+
+Chance accuracy is 0.200; always answering the commonest training gesture scores 0.200 when a session is held out. The best honest setting, the forest on raw features, scored macro-F1 0.918 when a whole session was held out; the same model scored 1.000 on a random split of windows. Its accuracy per held-out session: s1 0.929, s2 0.955, s3 0.871. Its weakest gesture is shake ud (recall 0.763). The best setting leads the runner-up by 0.030 in macro-F1, which is less than the 0.084 spread in its accuracy between held-out sessions, so the ranking of the settings should not be over-read.
+
+These are 3 sessions from one person and one board, so the numbers say little about other people or other boards. Windows overlap by half, so neighbouring windows are not independent.
+
+![Protocols](results/figures/gestures_protocols.png)
+![Confusion matrix](results/figures/gestures_confusion.png)
+![Example windows](results/figures/gestures_examples.png)
 <!-- gestures:end -->
 
 ## Roadmap

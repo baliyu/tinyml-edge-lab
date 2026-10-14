@@ -372,6 +372,9 @@ def test_the_readme_block_is_generated_from_the_report_with_no_typed_in_numbers(
         elif isinstance(o, list):
             [walk(v) for v in o]
     walk(r)
+    _, _, best_scores = ev.best_honest(r)             # two numbers the block derives (a lead and a spread) rather than copies
+    others = [sc["macro_f1"] for ms in r["protocols"]["leave_one_session_out"]["results"].values() for sc in ms.values() if sc is not best_scores]
+    allowed |= {f"{best_scores['macro_f1'] - max(others):.3f}", f"{max(best_scores['fold_accuracy']) - min(best_scores['fold_accuracy']):.3f}"}
     shown = set(re.findall(r"\b\d\.\d{3}\b", block))
     assert shown and shown <= allowed, shown - allowed
     fset, model, best = ev.best_honest(r)
@@ -618,3 +621,37 @@ def test_recorder_to_evaluation_to_readme_on_non_synthetic_files(tmp_path):
     text = readme.read_bytes().decode()
     assert "15 recordings of 5 gestures" in text and "s1, s2, s3" in text and "SYNTHETIC" not in text and "No real gesture" not in text
     assert "![Protocols](results/figures/gestures_protocols.png)" in text and text.count("\r\n") == text.count("\n")
+
+
+
+def _ranking_report(syn_report, lead, folds=(0.95, 0.80)):
+    """A real-looking report in which the best leave-one-session-out setting leads every other by exactly `lead`."""
+    r = _real_looking_report(syn_report)
+    res = r["protocols"]["leave_one_session_out"]["results"]
+    for ms in res.values():
+        for sc in ms.values():
+            sc["macro_f1"], sc["fold_accuracy"], sc["confusion_matrix"] = 0.60, list(folds), np.diag([10] * 5).tolist()
+    res["raw"]["forest"]["macro_f1"] = 0.60 + lead
+    return r
+
+
+def test_the_readme_warns_when_the_best_setting_leads_by_less_than_the_spread_between_sessions(syn_report):
+    block = rp.render_block(_ranking_report(syn_report, lead=0.03))            # the spread between sessions is 0.150
+    assert "leads the runner-up by 0.030" in block and "less than the 0.150 spread" in block and "should not be over-read" in block
+
+
+def test_the_readme_does_not_warn_when_the_lead_is_larger_than_the_spread(syn_report):
+    assert "over-read" not in rp.render_block(_ranking_report(syn_report, lead=0.20))
+
+
+def test_the_readme_does_not_talk_about_a_lead_when_settings_are_tied(syn_report):
+    block = rp.render_block(_ranking_report(syn_report, lead=0.0))
+    assert "over-read" not in block and "leads the runner-up" not in block and "scored the same" in block
+
+
+def test_the_lead_is_measured_against_the_runner_up_not_the_weakest_setting(syn_report):
+    r = _ranking_report(syn_report, lead=0.03)
+    res = r["protocols"]["leave_one_session_out"]["results"]
+    for fset in res:
+        res[fset]["tree"]["macro_f1"] = 0.20                                    # two very weak settings must not inflate the lead
+    assert "leads the runner-up by 0.030" in rp.render_block(r)

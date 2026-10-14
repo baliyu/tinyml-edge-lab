@@ -112,6 +112,12 @@ def render_block(report):
     tie_text = f" ({ties} other setting{'s' if ties != 1 else ''} scored the same)" if ties else ""
     weakest_text = ("That model classified every window of the held-out sessions correctly." if weakest[1] >= 0.9995
                     else f"Its weakest gesture is {weakest[0].replace('_', ' ')} (recall {_f(weakest[1])}).")
+    others = [sc["macro_f1"] for ms in los["results"].values() for sc in ms.values() if sc is not best]
+    lead = best["macro_f1"] - max(others) if others else 0.0
+    spread = max(best["fold_accuracy"]) - min(best["fold_accuracy"])
+    ranking_text = (f" The best setting leads the runner-up by {_f(lead)} in macro-F1, which is less than the {_f(spread)} spread in its "
+                    "accuracy between held-out sessions, so the ranking of the settings should not be over-read."
+                    if 0 < lead < spread else "")
     caution = ("Scores this close to perfect on so few sessions say that the gestures are easy to tell apart, or that the "
                "sessions are too alike; they do not show that the model would work for another person or another board. "
                if best["macro_f1"] >= 0.98 else "")
@@ -136,7 +142,7 @@ def render_block(report):
               f"{_f(b['majority_accuracy_leave_one_session_out'])} when a session is held out. "
               f"The best honest setting, the {model} on {fset} features, scored macro-F1 {_f(best['macro_f1'])}{tie_text} when a whole "
               f"session was held out; the same model scored {_f(leaky['macro_f1'])} on a random split of windows. Its accuracy per "
-              f"held-out session: {folds}. {weakest_text}",
+              f"held-out session: {folds}. {weakest_text}{ranking_text}",
              "",
               f"{caution}These are {len(d['sessions'])} sessions from one person and one board, so the numbers say little about other "
               "people or other boards. Windows overlap by half, so neighbouring windows are not independent.",

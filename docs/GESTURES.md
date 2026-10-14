@@ -1,7 +1,8 @@
 # Desk gestures with the SparkFun Edge: design notes
 
-Everything here runs on a PC. **No real gesture recordings exist yet.** The pipeline has been tested on synthetic data only,
-which proves the code, not that gestures can be recognised from this sensor.
+Everything here runs on a PC. Three real recording sessions (12, 13 and 14 October 2026; one person, one board) have been recorded and
+evaluated: the results are in the README and in `results/gestures.md`. The synthetic data described below is used only for
+tests and dry runs; it proves the code, not that gestures can be recognised from this sensor.
 
 ## Why gestures
 The Edge is tethered to the PC by the serial adapter, so it cannot record walking or stairs. It can record what a hand does
