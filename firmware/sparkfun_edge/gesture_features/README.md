@@ -49,21 +49,21 @@ python scripts/check_edge_features.py                 # reads data/own/edge_gest
 
 <!-- real-check:start -->
 ## Checked on real recordings
-`python scripts/check_edge_features.py` on 155 windows from 5 real recordings (session s1). Errors are measured against each feature's own size.
+`python scripts/check_edge_features.py` on 465 windows from 15 real recordings (sessions s1, s2, s3). Errors are measured against each feature's own size.
 
 | Features | C as double vs Python | C as float vs Python | Different dominant bin (float) |
 |---|---|---|---|
-| raw | 1.0e-15 (y_band0) | 2.0e-05 (mag_band2) | 0 of 155 windows |
-| motion | 1.2e-15 (y_band0) | 3.9e-05 (mag_band3) | 0 of 155 windows |
+| raw | 1.0e-15 (x_band0) | 2.0e-05 (mag_band2) | 0 of 465 windows |
+| motion | 1.2e-15 (y_band0) | 3.0e-05 (mag_band1) | 0 of 465 windows |
 
 Windows on which a trained model answered differently on the float C features than on the Python features:
 
-* raw, tree (depth 6): 0 of 155 training windows
-* raw, forest (100 trees): 0 of 155 training windows
-* motion, tree (depth 6): 0 of 155 training windows
-* motion, forest (100 trees): 0 of 155 training windows
+* raw, tree (depth 6): 0 of 465 training windows; 0 of 465 windows from a session it never saw
+* raw, forest (100 trees): 0 of 465 training windows; 0 of 465 windows from a session it never saw
+* motion, tree (depth 6): 0 of 465 training windows; 0 of 465 windows from a session it never saw
+* motion, forest (100 trees): 0 of 465 training windows; 0 of 465 windows from a session it never saw
 
-The training-window figures are the optimistic case, because the model has seen those windows. With one session there is no unseen session to test; repeat the check once more sessions are recorded.
+The unseen-session figures are the ones that matter.
 <!-- real-check:end -->
 
 ## Two cases where the feature itself is arbitrary

@@ -1,0 +1,615 @@
+{
+  "settings": {
+    "fs_hz": 50.0,
+    "window_samples": 128,
+    "step_samples": 64,
+    "trim_s": 2.0,
+    "n_bands": 4,
+    "tree_max_depth": 6,
+    "forest_trees": 100,
+    "seed": 0,
+    "note": "model settings were fixed in advance and not tuned"
+  },
+  "data": {
+    "files": 15,
+    "windows": 465,
+    "sessions": [
+      "s1",
+      "s2",
+      "s3"
+    ],
+    "labels": [
+      "rest",
+      "shake_lr",
+      "shake_ud",
+      "circle",
+      "tilt"
+    ],
+    "windows_per_label": {
+      "rest": 93,
+      "shake_lr": 93,
+      "shake_ud": 93,
+      "circle": 93,
+      "tilt": 93
+    },
+    "sessions_per_label": {
+      "rest": 3,
+      "shake_lr": 3,
+      "shake_ud": 3,
+      "circle": 3,
+      "tilt": 3
+    },
+    "synthetic": false,
+    "recorded_rate_hz": {
+      "min": 50.899,
+      "mean": 50.97346666666666,
+      "max": 51.076
+    },
+    "skipped": [],
+    "design_problems": [],
+    "feature_names": {
+      "raw": [
+        "x_mean",
+        "x_std",
+        "x_rms",
+        "x_min",
+        "x_max",
+        "x_dom_freq",
+        "x_band0",
+        "x_band1",
+        "x_band2",
+        "x_band3",
+        "y_mean",
+        "y_std",
+        "y_rms",
+        "y_min",
+        "y_max",
+        "y_dom_freq",
+        "y_band0",
+        "y_band1",
+        "y_band2",
+        "y_band3",
+        "z_mean",
+        "z_std",
+        "z_rms",
+        "z_min",
+        "z_max",
+        "z_dom_freq",
+        "z_band0",
+        "z_band1",
+        "z_band2",
+        "z_band3",
+        "mag_mean",
+        "mag_std",
+        "mag_rms",
+        "mag_min",
+        "mag_max",
+        "mag_dom_freq",
+        "mag_band0",
+        "mag_band1",
+        "mag_band2",
+        "mag_band3"
+      ],
+      "motion": [
+        "x_std",
+        "x_rms",
+        "x_min",
+        "x_max",
+        "x_dom_freq",
+        "x_band0",
+        "x_band1",
+        "x_band2",
+        "x_band3",
+        "y_std",
+        "y_rms",
+        "y_min",
+        "y_max",
+        "y_dom_freq",
+        "y_band0",
+        "y_band1",
+        "y_band2",
+        "y_band3",
+        "z_std",
+        "z_rms",
+        "z_min",
+        "z_max",
+        "z_dom_freq",
+        "z_band0",
+        "z_band1",
+        "z_band2",
+        "z_band3",
+        "mag_mean",
+        "mag_std",
+        "mag_rms",
+        "mag_min",
+        "mag_max",
+        "mag_dom_freq",
+        "mag_band0",
+        "mag_band1",
+        "mag_band2",
+        "mag_band3"
+      ]
+    }
+  },
+  "baselines": {
+    "chance_accuracy": 0.2,
+    "majority_accuracy_leave_one_session_out": 0.2
+  },
+  "protocols": {
+    "random_windows": {
+      "title": "Random split of windows (leaky)",
+      "folds": [
+        {
+          "held_out": "random 30%",
+          "n_train": 325,
+          "n_test": 140
+        }
+      ],
+      "results": {
+        "raw": {
+          "tree": {
+            "accuracy": 0.9928571428571429,
+            "macro_f1": 0.9928548644338118,
+            "labels": [
+              "rest",
+              "shake_lr",
+              "shake_ud",
+              "circle",
+              "tilt"
+            ],
+            "confusion_matrix": [
+              [
+                28,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                28,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                27,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                28,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                28
+              ]
+            ],
+            "fold_accuracy": [
+              0.9928571428571429
+            ]
+          },
+          "forest": {
+            "accuracy": 1.0,
+            "macro_f1": 1.0,
+            "labels": [
+              "rest",
+              "shake_lr",
+              "shake_ud",
+              "circle",
+              "tilt"
+            ],
+            "confusion_matrix": [
+              [
+                28,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                28,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                28,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                28,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                28
+              ]
+            ],
+            "fold_accuracy": [
+              1.0
+            ]
+          }
+        },
+        "motion": {
+          "tree": {
+            "accuracy": 0.95,
+            "macro_f1": 0.9503465385861029,
+            "labels": [
+              "rest",
+              "shake_lr",
+              "shake_ud",
+              "circle",
+              "tilt"
+            ],
+            "confusion_matrix": [
+              [
+                28,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                27,
+                0,
+                1,
+                0
+              ],
+              [
+                0,
+                1,
+                26,
+                1,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                26,
+                1
+              ],
+              [
+                0,
+                1,
+                0,
+                1,
+                26
+              ]
+            ],
+            "fold_accuracy": [
+              0.95
+            ]
+          },
+          "forest": {
+            "accuracy": 0.9785714285714285,
+            "macro_f1": 0.9787867374308054,
+            "labels": [
+              "rest",
+              "shake_lr",
+              "shake_ud",
+              "circle",
+              "tilt"
+            ],
+            "confusion_matrix": [
+              [
+                28,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                27,
+                0,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                28,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                28,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                2,
+                26
+              ]
+            ],
+            "fold_accuracy": [
+              0.9785714285714285
+            ]
+          }
+        }
+      }
+    },
+    "leave_one_session_out": {
+      "title": "Leave one session out",
+      "folds": [
+        {
+          "held_out": "s1",
+          "n_train": 310,
+          "n_test": 155,
+          "train_sessions": [
+            "s2",
+            "s3"
+          ]
+        },
+        {
+          "held_out": "s2",
+          "n_train": 310,
+          "n_test": 155,
+          "train_sessions": [
+            "s1",
+            "s3"
+          ]
+        },
+        {
+          "held_out": "s3",
+          "n_train": 310,
+          "n_test": 155,
+          "train_sessions": [
+            "s1",
+            "s2"
+          ]
+        }
+      ],
+      "results": {
+        "raw": {
+          "tree": {
+            "accuracy": 0.8365591397849462,
+            "macro_f1": 0.8288434515129843,
+            "labels": [
+              "rest",
+              "shake_lr",
+              "shake_ud",
+              "circle",
+              "tilt"
+            ],
+            "confusion_matrix": [
+              [
+                93,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                75,
+                3,
+                10,
+                5
+              ],
+              [
+                0,
+                1,
+                45,
+                30,
+                17
+              ],
+              [
+                0,
+                1,
+                5,
+                87,
+                0
+              ],
+              [
+                0,
+                2,
+                1,
+                1,
+                89
+              ]
+            ],
+            "fold_accuracy": [
+              0.9161290322580645,
+              0.7870967741935484,
+              0.8064516129032258
+            ]
+          },
+          "forest": {
+            "accuracy": 0.9182795698924732,
+            "macro_f1": 0.9178047643523997,
+            "labels": [
+              "rest",
+              "shake_lr",
+              "shake_ud",
+              "circle",
+              "tilt"
+            ],
+            "confusion_matrix": [
+              [
+                93,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                80,
+                4,
+                2,
+                7
+              ],
+              [
+                0,
+                22,
+                71,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                92,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                1,
+                91
+              ]
+            ],
+            "fold_accuracy": [
+              0.9290322580645162,
+              0.9548387096774194,
+              0.8709677419354839
+            ]
+          }
+        },
+        "motion": {
+          "tree": {
+            "accuracy": 0.8172043010752689,
+            "macro_f1": 0.8162030775262178,
+            "labels": [
+              "rest",
+              "shake_lr",
+              "shake_ud",
+              "circle",
+              "tilt"
+            ],
+            "confusion_matrix": [
+              [
+                93,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                78,
+                8,
+                2,
+                5
+              ],
+              [
+                0,
+                12,
+                60,
+                10,
+                11
+              ],
+              [
+                0,
+                1,
+                13,
+                71,
+                8
+              ],
+              [
+                0,
+                6,
+                6,
+                3,
+                78
+              ]
+            ],
+            "fold_accuracy": [
+              0.9225806451612903,
+              0.7935483870967742,
+              0.7354838709677419
+            ]
+          },
+          "forest": {
+            "accuracy": 0.8903225806451613,
+            "macro_f1": 0.8879883076248399,
+            "labels": [
+              "rest",
+              "shake_lr",
+              "shake_ud",
+              "circle",
+              "tilt"
+            ],
+            "confusion_matrix": [
+              [
+                93,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                83,
+                3,
+                4,
+                3
+              ],
+              [
+                0,
+                13,
+                65,
+                9,
+                6
+              ],
+              [
+                0,
+                0,
+                1,
+                91,
+                1
+              ],
+              [
+                0,
+                4,
+                3,
+                4,
+                82
+              ]
+            ],
+            "fold_accuracy": [
+              0.9612903225806452,
+              0.9096774193548387,
+              0.8
+            ]
+          }
+        }
+      }
+    }
+  },
+  "versions": {
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "scikit_learn": "1.9.1"
+  }
+}
