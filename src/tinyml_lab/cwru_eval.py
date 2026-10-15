@@ -96,6 +96,9 @@ def _py(v):
 
 
 def run_cwru(data_dir, out_dir="results", manifest=None, win_48k=4096, win_400=256, n_bands=12, seed=0, log=print):
+    """The CWRU bearing evaluation: a random split of windows against holding out a motor load and against holding out a fault size, with a tree and
+    a forest. Writes cwru.json and cwru.md to out_dir and returns the report.
+    """
     manifest = list(cwru.MANIFEST if manifest is None else manifest)
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)

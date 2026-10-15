@@ -24,6 +24,7 @@ N_FEATURES = {"raw": 40, "motion": 37}
 
 
 def find_gcc():
+    """The path of a host C compiler ('gcc', else 'cc'), or None if there is none."""
     return shutil.which("gcc") or shutil.which("cc")
 
 

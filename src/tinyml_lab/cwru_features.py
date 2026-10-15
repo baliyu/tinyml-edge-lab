@@ -8,10 +8,12 @@ TIME_NAMES = ["rms", "peak", "crest", "kurtosis", "skewness"]
 
 
 def feature_names(n_bands=12):
+    """Names of the features batch_features returns: the time-domain names, then band0_fraction, band1_fraction, ... for n_bands bands."""
     return TIME_NAMES + [f"band{b}_fraction" for b in range(n_bands)]
 
 
 def band_edges(fs, n_bands=12, lo_frac=0.004, hi_frac=0.9):
+    """Edges in Hz of n_bands log-spaced bands from lo_frac to hi_frac of the Nyquist frequency fs/2: n_bands + 1 values."""
     return (fs / 2.0) * np.geomspace(lo_frac, hi_frac, n_bands + 1)
 
 

@@ -12,6 +12,7 @@ from .features import batch_features, feature_names
 
 
 def build_features(root, split, n_bands=4):
+    """Features of one UCI HAR split: the total-acceleration windows with their magnitude added as a fourth channel. Returns (X, labels, subjects)."""
     windows, y, subjects = uci_har.load_split(root, split)
     mag = np.linalg.norm(windows, axis=-1, keepdims=True)
     windows = np.concatenate([windows, mag], axis=-1)  # x, y, z and magnitude
@@ -19,6 +20,9 @@ def build_features(root, split, n_bands=4):
 
 
 def run(root, depths=(2, 3, 4, 5, 6, 8, 10), out_dir="results", chosen_depth=6, n_bands=4):
+    """The UCI HAR baseline: decision trees of several depths trained on the train split and scored on the volunteer-disjoint test split, with
+    chosen_depth exported as C. Writes har_baseline.json, har_tree.c and depth_sweep.md to out_dir and returns the report.
+    """
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     Xtr, ytr, str_ = build_features(root, "train", n_bands)

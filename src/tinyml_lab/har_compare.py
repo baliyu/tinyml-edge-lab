@@ -42,10 +42,12 @@ def build_features(root, split, n_bands=4):
 
 
 def forest_nodes(rf):
+    """The total number of nodes over all trees of a fitted random forest."""
     return int(sum(t.tree_.node_count for t in rf.estimators_))
 
 
 def forest_leaves(rf):
+    """The total number of leaves over all trees of a fitted random forest."""
     return int(sum(t.get_n_leaves() for t in rf.estimators_))
 
 
@@ -88,6 +90,9 @@ def _metrics(model, X, y, labels):
 
 def run_compare(root, out_dir="results", depths=tuple(range(2, 11)), rf_grid=tuple(RF_GRID), n_splits=5,
                 fixed_depth=6, seed=0, n_bands=4, log=print):
+    """The UCI HAR comparison of baseline against richer features, and of trees against random forests, with size chosen by volunteer-grouped
+    cross-validation and the test volunteers used once. Writes compare.json, compare.md and har_tree_extended.c to out_dir and returns the report.
+    """
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     log("computing features for the training volunteers ...")

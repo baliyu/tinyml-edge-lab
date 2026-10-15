@@ -36,6 +36,9 @@ def f32_literal(t):
 
 
 def tree_to_c(clf, func_name="tree_predict", thresholds="double"):
+    """A fitted scikit-learn decision tree as one C function `int func_name(const float *x)` that returns the class label. With thresholds='float' they
+    are rounded so that every float32 input takes the same branch as in Python; 'double' keeps them as they are.
+    """
     if thresholds not in ("double", "float"):
         raise ValueError("thresholds must be 'double' or 'float'")
     t = clf.tree_
