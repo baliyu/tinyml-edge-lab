@@ -258,7 +258,7 @@ def test_the_board_build_is_small_uses_little_stack_and_needs_no_maths_library(t
                    check=True, capture_output=True, text=True, cwd=tmp_path)
     sizes = subprocess.run(["arm-none-eabi-size", str(obj)], check=True, capture_output=True, text=True).stdout.splitlines()[1].split()
     text, data, bss = int(sizes[0]), int(sizes[1]), int(sizes[2])
-    assert text < 2048 and data == 0 and bss == 0               # measured: 1260 bytes, all of it code and the cosine table
+    assert text < 2048 and data == 0 and bss == 0               # measured: 1504 bytes, all of it code and the cosine table
     undefined = subprocess.run(["arm-none-eabi-nm", "-u", str(obj)], check=True, capture_output=True, text=True).stdout.split()
     assert undefined == []                                      # the square root is a single FPU instruction
     stack = {}
@@ -266,7 +266,7 @@ def test_the_board_build_is_small_uses_little_stack_and_needs_no_maths_library(t
         parts = line.split("\t")
         stack[parts[0].split(":")[-1]] = int(parts[1])
     peak = max(stack["ef_motion_features"], stack["ef_raw_features"]) + stack["channel_features"]
-    assert peak < 4096                                          # measured: about 2.9 KB
+    assert peak < 4096                                          # measured: about 3.5 KB
 
 
 # ---------------------------------------------------------------- the helper module and the script

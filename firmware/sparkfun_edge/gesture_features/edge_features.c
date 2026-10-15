@@ -57,6 +57,53 @@ static int band_edge(int b)
     return (int)(((long)b * EF_BINS) / EF_BANDS);
 }
 
+/* Power spectrum |X[k]|^2, k = 1 .. N/2, of a real window by an in-place radix-2 FFT (decimation in time), spec[0] = 0.
+ * The window x is used as scratch and is destroyed. The twiddle factors e^(-2*pi*i*j/N) = cos - i*sin come from COS_TAB.
+ * About 450 butterflies per channel. The direct transform this replaced took 8192 multiply-accumulate steps per channel, which
+ * was about 16 ms for the four channels on the Edge (measured), against a sample every 19.6 ms. The result equals
+ * numpy.fft.rfft to rounding. */
+static void power_spectrum(ef_real *x, ef_real *spec)
+{
+    ef_real im[EF_WINDOW];
+    unsigned i, j, bit, len, half, step, a, b, k;
+    ef_real t;
+
+    j = 0;                                             /* bit-reversal permutation, in place */
+    for (i = 0; i < EF_WINDOW; i++) {
+        im[i] = 0;
+        if (j > i) {
+            t = x[i];
+            x[i] = x[j];
+            x[j] = t;
+        }
+        bit = EF_WINDOW >> 1;                          /* add 1 to the bit-reversed counter */
+        while (bit && (j & bit)) {
+            j ^= bit;
+            bit >>= 1;
+        }
+        j |= bit;
+    }
+    for (len = 2; len <= EF_WINDOW; len <<= 1) {
+        half = len >> 1;
+        step = EF_WINDOW / len;
+        for (k = 0; k < half; k++) {
+            const ef_real wr = COS_TAB[k * step];
+            const ef_real wi = -COS_TAB[(k * step + EF_SIN_SHIFT) & EF_MASK];
+            for (a = k; a < EF_WINDOW; a += len) {
+                b = a + half;
+                const ef_real tr = x[b] * wr - im[b] * wi;
+                const ef_real ti = x[b] * wi + im[b] * wr;
+                x[b] = x[a] - tr;
+                im[b] = im[a] - ti;
+                x[a] += tr;
+                im[a] += ti;
+            }
+        }
+    }
+    spec[0] = 0;
+    for (k = 1; k < EF_BINS; k++) spec[k] = x[k] * x[k] + im[k] * im[k];
+}
+
 /* Features of one channel, in the order mean, std, rms, min, max, dom_freq, band0..band3, exactly as
  * tinyml_lab.features.window_features computes them. */
 static void channel_features(const ef_real *x, ef_real *f)
@@ -78,18 +125,9 @@ static void channel_features(const ef_real *x, ef_real *f)
         var += xc[i] * xc[i];
     }
 
-    /* Power spectrum of the mean-removed window by a direct transform, DC dropped. 64 bins x 128 samples = 8192 steps,
-     * a few milliseconds on the Edge, once per window. */
-    spec[0] = 0;
+    /* Power spectrum of the mean-removed window, DC dropped. */
+    power_spectrum(xc, spec);
     for (k = 1; k < EF_BINS; k++) {
-        ef_real re = 0, im = 0;
-        unsigned idx = 0;                              /* (k * i) mod N, kept without a multiply */
-        for (i = 0; i < EF_WINDOW; i++) {
-            re += xc[i] * COS_TAB[idx];
-            im += xc[i] * COS_TAB[(idx + EF_SIN_SHIFT) & EF_MASK];
-            idx = (idx + (unsigned)k) & EF_MASK;
-        }
-        spec[k] = re * re + im * im;
         total += spec[k];
         if (spec[k] > best) {                          /* strict: the first of equal maxima wins, like numpy.argmax; in
                                                           practice a tie is decided by rounding, in Python as much as here */

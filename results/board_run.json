@@ -1,0 +1,43 @@
+{
+  "tick_hz": 3000000,
+  "runs": [
+    {
+      "label": "FFT features",
+      "file": "data/own/edge_live/second_run.csv",
+      "windows": 69,
+      "mean_ms": 3.782985507246377,
+      "median_ms": 3.797,
+      "min_ms": 3.67,
+      "max_ms": 3.851,
+      "duration_s": 89.60031366666666,
+      "median_interval_s": 1.275754,
+      "windows_not_consecutive": 1,
+      "gesture_counts": {
+        "tilt": 18,
+        "rest": 15,
+        "shake_lr": 26,
+        "shake_ud": 10
+      }
+    },
+    {
+      "label": "direct-transform features (first build)",
+      "file": "data/own/edge_live/first_run.csv",
+      "windows": 68,
+      "mean_ms": 16.081676470588235,
+      "median_ms": 16.0785,
+      "min_ms": 16.002,
+      "max_ms": 16.188,
+      "duration_s": 88.31044566666667,
+      "median_interval_s": 1.2758093333333334,
+      "windows_not_consecutive": 1,
+      "gesture_counts": {
+        "rest": 31,
+        "tilt": 18,
+        "shake_lr": 6,
+        "shake_ud": 6,
+        "circle": 7
+      }
+    }
+  ],
+  "note": "Timing on the chip from short runs by hand. It says nothing about accuracy: the gestures were not done in a known order."
+}

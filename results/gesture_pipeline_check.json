@@ -32,7 +32,7 @@
       "windows": 465,
       "class_mismatches": 0,
       "extra_c_windows": 15,
-      "worst_feature_error": 6.469393835620884e-13,
+      "worst_feature_error": 6.4602381692812e-13,
       "worst_feature": "x_band3 in s2_shake_ud_20261013_122621.csv",
       "windows_with_a_different_dominant_bin": 0
     },
@@ -42,7 +42,7 @@
       "windows": 465,
       "class_mismatches": 0,
       "extra_c_windows": 15,
-      "worst_feature_error": 2.292693873852432e-05,
+      "worst_feature_error": 2.2995397938776897e-05,
       "worst_feature": "mag_band3 in s2_rest_20261013_122353.csv",
       "windows_with_a_different_dominant_bin": 0
     }
@@ -56,7 +56,7 @@
       "windows": 31,
       "extra_c_windows": 1,
       "class_mismatches": 0,
-      "max_error_vs_feature_size": 4.9956157219731975e-06,
+      "max_error_vs_feature_size": 4.761170515244803e-06,
       "worst_feature": "mag_band3",
       "windows_with_a_different_dominant_bin": 0
     },
@@ -80,8 +80,8 @@
       "windows": 31,
       "extra_c_windows": 1,
       "class_mismatches": 0,
-      "max_error_vs_feature_size": 8.764018992986464e-07,
-      "worst_feature": "mag_band2",
+      "max_error_vs_feature_size": 9.953213357562484e-07,
+      "worst_feature": "mag_band3",
       "windows_with_a_different_dominant_bin": 0
     },
     {
@@ -92,8 +92,8 @@
       "windows": 31,
       "extra_c_windows": 1,
       "class_mismatches": 0,
-      "max_error_vs_feature_size": 5.634380226752417e-07,
-      "worst_feature": "y_band2",
+      "max_error_vs_feature_size": 5.479757313631232e-07,
+      "worst_feature": "z_band0",
       "windows_with_a_different_dominant_bin": 0
     },
     {
@@ -104,7 +104,7 @@
       "windows": 31,
       "extra_c_windows": 1,
       "class_mismatches": 0,
-      "max_error_vs_feature_size": 2.965819542937335e-06,
+      "max_error_vs_feature_size": 2.78023783753516e-06,
       "worst_feature": "mag_band3",
       "windows_with_a_different_dominant_bin": 0
     },
@@ -116,8 +116,8 @@
       "windows": 31,
       "extra_c_windows": 1,
       "class_mismatches": 0,
-      "max_error_vs_feature_size": 2.2063036436489515e-06,
-      "worst_feature": "mag_band3",
+      "max_error_vs_feature_size": 2.373904945352253e-06,
+      "worst_feature": "z_band3",
       "windows_with_a_different_dominant_bin": 0
     },
     {
@@ -128,7 +128,7 @@
       "windows": 31,
       "extra_c_windows": 1,
       "class_mismatches": 0,
-      "max_error_vs_feature_size": 2.292693873852432e-05,
+      "max_error_vs_feature_size": 2.2995397938776897e-05,
       "worst_feature": "mag_band3",
       "windows_with_a_different_dominant_bin": 0
     },
@@ -140,7 +140,7 @@
       "windows": 31,
       "extra_c_windows": 1,
       "class_mismatches": 0,
-      "max_error_vs_feature_size": 1.5164485062821145e-06,
+      "max_error_vs_feature_size": 1.6285984439619642e-06,
       "worst_feature": "mag_band3",
       "windows_with_a_different_dominant_bin": 0
     },
@@ -152,7 +152,7 @@
       "windows": 31,
       "extra_c_windows": 1,
       "class_mismatches": 0,
-      "max_error_vs_feature_size": 1.213985878027394e-06,
+      "max_error_vs_feature_size": 1.151470960805613e-06,
       "worst_feature": "mag_band2",
       "windows_with_a_different_dominant_bin": 0
     },
@@ -164,7 +164,7 @@
       "windows": 31,
       "extra_c_windows": 1,
       "class_mismatches": 0,
-      "max_error_vs_feature_size": 1.681138151857711e-06,
+      "max_error_vs_feature_size": 1.5722879325898301e-06,
       "worst_feature": "z_band2",
       "windows_with_a_different_dominant_bin": 0
     },
@@ -176,7 +176,7 @@
       "windows": 31,
       "extra_c_windows": 1,
       "class_mismatches": 0,
-      "max_error_vs_feature_size": 3.193219056457055e-06,
+      "max_error_vs_feature_size": 3.160690384613994e-06,
       "worst_feature": "mag_band3",
       "windows_with_a_different_dominant_bin": 0
     },
@@ -188,7 +188,7 @@
       "windows": 31,
       "extra_c_windows": 1,
       "class_mismatches": 0,
-      "max_error_vs_feature_size": 1.728312764297921e-05,
+      "max_error_vs_feature_size": 1.7450761989785753e-05,
       "worst_feature": "mag_band3",
       "windows_with_a_different_dominant_bin": 0
     },
@@ -200,7 +200,7 @@
       "windows": 31,
       "extra_c_windows": 1,
       "class_mismatches": 0,
-      "max_error_vs_feature_size": 1.5597789643633558e-06,
+      "max_error_vs_feature_size": 1.4437893951310508e-06,
       "worst_feature": "mag_band3",
       "windows_with_a_different_dominant_bin": 0
     },
@@ -212,7 +212,7 @@
       "windows": 31,
       "extra_c_windows": 1,
       "class_mismatches": 0,
-      "max_error_vs_feature_size": 2.4932540274785708e-06,
+      "max_error_vs_feature_size": 2.2566487358034387e-06,
       "worst_feature": "mag_band3",
       "windows_with_a_different_dominant_bin": 0
     },
@@ -224,7 +224,7 @@
       "windows": 31,
       "extra_c_windows": 1,
       "class_mismatches": 0,
-      "max_error_vs_feature_size": 9.771442293441715e-07,
+      "max_error_vs_feature_size": 9.99599509513444e-07,
       "worst_feature": "mag_band2",
       "windows_with_a_different_dominant_bin": 0
     }
@@ -233,9 +233,9 @@
     "compiler": "arm-none-eabi-gcc (15:13.2.rel1-2) 13.2.1 20231009",
     "flash_bytes": {
       "pipeline": 506,
-      "features": 1264,
+      "features": 1504,
       "model": 73955,
-      "total": 75725
+      "total": 75965
     },
     "state_ram_bytes": 1768,
     "stack_bytes": {
@@ -247,7 +247,7 @@
       "gp_restarts": 0,
       "gp_ignored": 0,
       "fill_channels": 32,
-      "channel_features": 800,
+      "channel_features": 1352,
       "ef_raw_features": 2064,
       "ef_motion_features": 2120,
       "tree_1": 0,
@@ -303,7 +303,7 @@
       "gesture_model_forest": 72,
       "gesture_model_predict": 0
     },
-    "deepest_stack_estimate_bytes": 3096,
+    "deepest_stack_estimate_bytes": 3648,
     "undefined_symbols": [
       "ef_raw_features",
       "gesture_model_predict",

@@ -1,17 +1,19 @@
-# Gesture chain for the SparkFun Edge: tested on the PC, not yet on the board
+# Gesture chain for the SparkFun Edge: runs on the board, accuracy not yet measured
 
 The whole path from a sensor sample to a gesture name, in plain C99 with no malloc and no hardware access: resample the sensor's
 slightly uneven samples onto an exact 50 Hz grid, cut 128-sample windows, compute the features
 (`../gesture_features/edge_features.c`), and ask the trained model (`gesture_model.c`) which gesture it is.
 
-**Status: written and checked on the PC against the Python chain. Not flashed yet. The model was trained on every recording, so it
-has no held-out accuracy; the on-device accuracy will come from a session recorded after the model was trained.**
+**Status: the chain and the firmware's main loop are checked on the PC, and the firmware has been flashed and run on a SparkFun Edge (see "Measured on the board"). The model was trained on every
+recording, so it has no held-out accuracy; the on-device accuracy will come from a session recorded after the model was trained.**
 
 ## What is here
 | File | What it is |
 |---|---|
 | `gesture_pipeline.h`, `gesture_pipeline.c` | The chain. The board calls `gp_push()` once per sensor sample. |
 | `gesture_model.c`, `gesture_model.h`, `gesture_model.json` | The trained model as C, written by `python scripts/export_gesture_model.py` (default: a random forest on the raw features). The JSON lists the feature order, the gesture each number means and what the model was trained on. Generated: do not edit by hand. |
+| `main.c` | The firmware for the SparkFun Edge. It sets up the accelerometer exactly as the logger does, calls `gp_push()` for every sample and prints one line per window. |
+| `host_sim/` | A fake board (an accelerometer that replays a file, a timer, a UART) so that `main.c` itself runs on the PC in the tests. A test aid, not firmware. |
 
 ## The contract
 - **One call per sample:** `gp_push(&g, ticks, x_mg, y_mg, z_mg)`. `ticks` is the free-running 32-bit counter the logger already uses (it may
@@ -27,6 +29,23 @@ has no held-out accuracy; the on-device accuracy will come from a session record
 - **`skip`** drops that many grid samples once, at start-up, not after a gap.
 - State is one `gp_state` (about 1.8 KB). Nothing else is allocated.
 
+## The firmware, and how to run it
+`main.c` is derived from the logger (`../imu_logger/main.c`). The accelerometer is set up identically (50 Hz, +-2 g, 12-bit), so the samples look
+like the recordings the model was trained on. The timer is fixed to the internal 3 MHz oscillator, which timed every recording. It prints
+`G,window,t_ticks,gesture,compute_us` every 1.28 s (64 samples of the 50 Hz grid; `compute_us` is the time the chain took for the sample that completed the window) and
+a `# stats` line every 20 windows with the counts of sensor overruns, failed reads, restarts and repeated timestamps.
+
+Build (WSL; needs the SDK from `edge_build.sh` and the model from `python scripts/export_gesture_model.py`):
+
+    bash firmware/sparkfun_edge/scripts/edge_demo_build.sh
+
+It derives SparkFun's Makefile at build time (that file is not copied into this repo), adds the chain's source files, builds with `-Os`, stages
+`gesture_asb.bin` and prints the flash command, the same method as for the logger. Watch it (Windows PowerShell, no other serial program open):
+
+    py tools\edge_gesture_monitor.py --port COM4 --seconds 60
+
+The monitor shows each gesture as it arrives and points out lost lines, sensor overruns and slow windows.
+
 ## How it is tested
 - `tests/test_gesture_pipeline_c.py` builds the chain with the host gcc and compares it with the Python chain on synthetic recordings at both
   tick rates: built as double it must equal Python to machine precision, built as float (what the board runs) closely. It also checks known
@@ -35,6 +54,9 @@ has no held-out accuracy; the on-device accuracy will come from a session record
 - The tests were also checked by breaking the C code in 15 deliberate ways; each break was caught.
 - `python scripts/check_gesture_pipeline.py` does the same comparison on your own recordings, feeding them in sample by sample as the board
   would receive them.
+- `tests/test_gesture_demo_main.py` runs the firmware's real `main.c` on the PC against the fake board in `host_sim/`: its start-up text, one line per
+  window, the error counters, how the sensor and the timer are set up, and exactly what it hands to the chain. It was checked by breaking `main.c` in
+  16 ways; each break was caught. It says nothing about the chip's own I2C, timer or UART. `tests/test_edge_gesture_monitor.py` tests the monitor.
 
 <!-- pipeline-check:start -->
 ## Checked on real recordings
@@ -45,14 +67,25 @@ has no held-out accuracy; the on-device accuracy will come from a session record
 | as double (proves the algorithm) | 0 of 465 | 6.5e-13 | 0 |
 | as float (what the board runs) | 0 of 465 | 2.3e-05 | 0 |
 
-Board build (arm-none-eabi-gcc, Cortex-M4F, -Os): flash 75,725 B (the chain 1,770 B, the model 73,955 B), state RAM 1,768 B, deepest stack about 3,096 B. These sizes come from the compiler; nothing has run on the board.
+Board build (arm-none-eabi-gcc, Cortex-M4F, -Os): flash 75,965 B (the chain 2,010 B, the model 73,955 B), state RAM 1,768 B, deepest stack about 3,648 B. These sizes come from the compiler.
 
 The model in this folder is identical to a fresh export from these recordings.
 
 This compares the two chains on recordings the model was trained on. It shows that the C code does what the Python code does. It says nothing about accuracy on new sessions.
 <!-- pipeline-check:end -->
 
+<!-- board-run:start -->
+## Measured on the board
+`python scripts/record_board_run.py` read the monitor's own log files (`tools/edge_gesture_monitor.py --log`). One person, one SparkFun Edge, short runs by hand: they show that the chain runs on the chip and how long a window takes, not how accurate it is.
+
+| Build | Windows | Mean time per window | Slowest |
+|---|---|---|---|
+| FFT features | 69 | 3.8 ms | 3.9 ms |
+| direct-transform features (first build) | 68 | 16.1 ms | 16.2 ms |
+
+Time per window is what `gp_push()` took for the sample that completed the window (resampling, features and the model), read from the chip's 3 MHz timer. A sensor sample arrives about every 19.6 ms (the roughly 51 Hz the recordings measured), so the fastest build here spends 19 % of one sample period on a window, and a window comes every 1.28 s.
+<!-- board-run:end -->
+
 ## Not done yet
-- Flashing it: a `main.c` that reads the accelerometer (the logger's code does), calls `gp_push()` and prints the gesture.
+- A long run: the runs so far lasted about a minute each, so whether sensor samples are ever missed over minutes or hours is not measured. The sizes above come from the compiler.
 - The live accuracy: a new session, recorded after the model was trained, with the gestures done in a known order. One person, one board.
-- Time per window on the chip. The sizes above come from the compiler; nothing has run on the board.

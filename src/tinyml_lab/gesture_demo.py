@@ -90,7 +90,7 @@ def write_model(clf, labels, feature_set: str, model: str, out_dir=DEMO_DIR, ds=
     return meta
 
 
-def _stage(model_dir: Path, workdir: Path) -> Path:
+def _stage(model_dir: Path, workdir: Path, with_main: bool = False) -> Path:
     """A folder holding the chain's own two files and the model under test, nothing else. The compiler looks for a quoted #include next
     to the including file first, so building straight from the firmware folder would pick up whatever gesture_model.h is committed
     there instead of the model we mean to test."""
@@ -101,7 +101,7 @@ def _stage(model_dir: Path, workdir: Path) -> Path:
     if stage.exists():
         shutil.rmtree(stage)
     stage.mkdir(parents=True)
-    for name in ("gesture_pipeline.c", "gesture_pipeline.h"):
+    for name in ("gesture_pipeline.c", "gesture_pipeline.h", *(("main.c",) if with_main else ())):
         shutil.copy(DEMO_DIR / name, stage / name)
     for name in ("gesture_model.c", "gesture_model.h"):
         shutil.copy(model_dir / name, stage / name)
@@ -253,3 +253,47 @@ def arm_footprint(model_dir, workdir=None) -> dict | None:
     return {"compiler": subprocess.run([cc, "--version"], check=True, capture_output=True, text=True).stdout.splitlines()[0],
             "flash_bytes": {**flash, "total": sum(flash.values())}, "state_ram_bytes": state_bytes, "stack_bytes": stack,
             "deepest_stack_estimate_bytes": int(deepest), "undefined_symbols": undefined}
+
+
+# ------------------------------------------------------------------------------------------------ the firmware's main loop, on the PC
+def build_host_sim(model_dir, workdir=None) -> Path:
+    """The real firmware main.c built for the PC against a fake board (host_sim/): a fake accelerometer replays a file of samples, the
+    timer is each sample's own tick and the UART is stdout. Returns the executable. It tests main.c's loop, counters and output format,
+    not the hardware: nothing here says how the chip's I2C, timer or UART behave."""
+    gcc = find_gcc()
+    if gcc is None:
+        raise RuntimeError("no C compiler found (install gcc)")
+    model_dir = Path(model_dir)
+    work = Path(workdir) if workdir else Path(tempfile.mkdtemp(prefix="gesture_sim_"))
+    work.mkdir(parents=True, exist_ok=True)
+    stage = _stage(model_dir, work, with_main=True)
+    sim = DEMO_DIR / "host_sim"
+    exe = work / "gesture_demo_sim"
+    cflags = [gcc, "-std=c11", "-O1", "-Wall", "-Wextra", "-Werror", "-pedantic", "-I", str(sim), "-I", str(FEATURES_DIR), "-I", str(stage)]
+    objs = []
+    for name, src, extra in (("main", stage / "main.c", ["-Dgp_push=sim_push"]), ("host_sim", sim / "host_sim.c", []),
+                             ("pipeline", stage / "gesture_pipeline.c", []), ("features", FEATURES_DIR / "edge_features.c", []),
+                             ("model", stage / "gesture_model.c", [])):
+        obj = work / f"{name}.o"
+        subprocess.run([*cflags, *extra, "-c", str(src), "-o", str(obj)], check=True, capture_output=True, text=True)
+        objs.append(str(obj))
+    subprocess.run([gcc, *objs, "-o", str(exe), "-lm"], check=True, capture_output=True, text=True)
+    return exe
+
+
+def run_host_sim(exe, ticks, xyz, flags=None, whoami: str | None = None, workdir=None, timeout: int = 120, log: bool = False):
+    """Replay samples through the simulated firmware; returns the lines it printed (and, with log=True, the log of what it configured and handed to the chain). flags: per-sample bit 0 = sensor overrun, bit 1 = status read error."""
+    work = Path(workdir) if workdir else Path(tempfile.mkdtemp(prefix="gesture_sim_run_"))
+    work.mkdir(parents=True, exist_ok=True)
+    xyz = np.asarray(xyz).astype(np.int64)
+    flags = np.zeros(len(xyz), dtype=int) if flags is None else np.asarray(flags)
+    path = work / "samples.txt"
+    path.write_text("".join(f"{int(t)},{x},{y},{z},{int(f)}\n" for t, (x, y, z), f in zip(np.asarray(ticks, dtype=np.uint64).tolist(), xyz.tolist(), flags.tolist())))
+    logpath = work / "sim.log"
+    logpath.unlink(missing_ok=True)
+    env = {"SIM_SAMPLES": str(path), "SIM_LOG": str(logpath), **({"SIM_WHOAMI": whoami} if whoami else {})}
+    out = subprocess.run([str(exe)], capture_output=True, text=True, env=env, timeout=timeout, check=True).stdout
+    lines = out.replace("\r", "").splitlines()
+    if log:
+        return lines, (logpath.read_text().splitlines() if logpath.exists() else [])
+    return lines
