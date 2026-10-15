@@ -7,8 +7,8 @@
     "raw": {
       "double_vs_python": {
         "windows": 465,
-        "max_error_vs_feature_size": 1.0220046443351427e-15,
-        "worst_feature": "x_band0",
+        "max_error_vs_feature_size": 1.026199119148487e-15,
+        "worst_feature": "x_band2",
         "windows_with_a_different_dominant_bin": 0
       },
       "float_vs_python": {
@@ -43,13 +43,13 @@
     "motion": {
       "double_vs_python": {
         "windows": 465,
-        "max_error_vs_feature_size": 1.226034393940849e-15,
+        "max_error_vs_feature_size": 1.1145767217644084e-15,
         "worst_feature": "y_band0",
         "windows_with_a_different_dominant_bin": 0
       },
       "float_vs_python": {
         "windows": 465,
-        "max_error_vs_feature_size": 3.0297314637965e-05,
+        "max_error_vs_feature_size": 3.0675690418750444e-05,
         "worst_feature": "mag_band1",
         "windows_with_a_different_dominant_bin": 0
       },

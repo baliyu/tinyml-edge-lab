@@ -3,7 +3,7 @@
 The desk-gesture features, as C code that can run on the SparkFun Edge: `edge_features.c` and `edge_features.h`.
 
 **Status: written and checked on the PC against the Python features, on synthetic and constructed windows and on real
-recordings (see "Checked on real recordings"). Not yet run on the board.**
+recordings (see "Checked on real recordings"). It runs on the board as part of the gesture demo (`../gesture_demo/`).**
 
 It is a port of `tinyml_lab.features.window_features` and `tinyml_lab.edge_gestures.feature_matrix`. The Python code is the
 reference: a model is trained on the Python features, so the board must compute the same numbers.
@@ -15,8 +15,9 @@ One window of 128 samples (2.56 s at 50 Hz), x, y, z interleaved in milli-g, int
   `feature_names_for("motion")`.
 
 Per channel: mean, standard deviation, rms, minimum, maximum, dominant frequency (DC excluded) and the share of spectral energy
-in four equal bands from 0 to 25 Hz. The spectrum comes from a direct 128-point transform with one 128-entry cosine table: 8,192
-multiply-adds per channel, a few milliseconds on the Edge, once per window. There is no FFT library.
+in four equal bands from 0 to 25 Hz. The spectrum comes from a small in-place radix-2 FFT (128 points, about 450 butterflies per
+channel) that reads its twiddle factors from the one 128-entry cosine table; there is no FFT library. A direct transform came first and was
+replaced: it took 8,192 multiply-adds per channel, which measured about 16 ms for the four channels on the Edge, against a sample every 19.6 ms.
 
 ```c
 #include "edge_features.h"
@@ -27,8 +28,8 @@ ef_motion_features(window, f);
 ```
 
 ## What it costs on the Edge (Cortex-M4F, `-Os`, measured)
-* Flash: **1,264 bytes** in all (about 750 bytes of code and the 512-byte cosine table). No RAM is held between calls.
-* Stack: about 3 KB at the deepest point.
+* Flash: **1,504 bytes** in all (about 990 bytes of code and the 512-byte cosine table). No RAM is held between calls.
+* Stack: about 3.5 KB at the deepest point (the FFT's scratch array is on the stack).
 * Dependencies: none, if built with `-fno-math-errno`, which lets the compiler use the processor's square-root instruction.
   Without that flag the link needs `sqrtf` from the maths library.
 
@@ -40,7 +41,7 @@ ef_motion_features(window, f);
 * A trained tree and forest gave the **same answer** on the float C features as on the Python features for every window of
   synthetic data, including windows from a session the model never saw. That is a result about synthetic data only.
 * The ARM build is checked for size, stack and missing symbols. The tests were also checked by deliberately breaking the C code
-  in a dozen ways; each break was caught.
+  in a dozen ways, and again in eleven ways when the direct transform was replaced by the FFT; each break was caught.
 
 To repeat the comparison on your own recordings (needs `gcc`):
 ```
@@ -53,8 +54,8 @@ python scripts/check_edge_features.py                 # reads data/own/edge_gest
 
 | Features | C as double vs Python | C as float vs Python | Different dominant bin (float) |
 |---|---|---|---|
-| raw | 1.0e-15 (x_band0) | 2.0e-05 (mag_band2) | 0 of 465 windows |
-| motion | 1.2e-15 (y_band0) | 3.0e-05 (mag_band1) | 0 of 465 windows |
+| raw | 1.0e-15 (x_band2) | 2.0e-05 (mag_band2) | 0 of 465 windows |
+| motion | 1.1e-15 (y_band0) | 3.1e-05 (mag_band1) | 0 of 465 windows |
 
 Windows on which a trained model answered differently on the float C features than on the Python features:
 

@@ -26,9 +26,10 @@ the device matches the PC.
 | `firmware/` | Notes for the SparkFun Edge and the Nano 33 BLE |
 | `docs/DATASETS.md` | Sources, licences, evaluation rules |
 | `src/tinyml_lab/edge_gesture*.py` | Desk gestures from the Edge's own recordings: loader, resampling, session-wise evaluation |
-| `firmware/sparkfun_edge/gesture_features/` | The gesture features in C (1.3 KB of flash), checked against the Python features |
-| `firmware/sparkfun_edge/gesture_demo/` | The whole on-device chain in C (resample to 50 Hz, window, features, model), checked against the Python chain on the PC; not yet on the board |
+| `firmware/sparkfun_edge/gesture_features/` | The gesture features in C (1.5 KB of flash), checked against the Python features |
+| `firmware/sparkfun_edge/gesture_demo/` | The whole on-device chain in C (resample to 50 Hz, window, features, model), checked against the Python chain on the PC and running on the Edge |
 | `src/tinyml_lab/gesture_demo.py` | Trains and exports the deployable model, builds the C chain for the PC and compares it with the Python chain |
+| `tools/edge_gesture_monitor.py` | Watches the board's gesture output over serial and points out lost lines, sensor overruns and slow windows |
 
 ## Quick start
 ```bash

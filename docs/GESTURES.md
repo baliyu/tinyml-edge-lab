@@ -72,10 +72,12 @@ results, and `results/synthetic/` and `data/synthetic/` are ignored by git.
 and `results/gesture_model.json` (feature order and the gesture each number means). That tree is trained on every session, so
 it has no held-out score of its own.
 
-The features exist in C: `firmware/sparkfun_edge/gesture_features/` (about 1.3 KB of flash), checked against the Python
+The features exist in C: `firmware/sparkfun_edge/gesture_features/` (about 1.5 KB of flash), checked against the Python
 features by `tests/test_edge_features_c.py` on synthetic and constructed windows. `python scripts/check_edge_features.py`
 repeats the comparison on your own recordings, including how often a trained model answers differently on the C features.
 The whole chain exists in C too: `firmware/sparkfun_edge/gesture_demo/` resamples the sensor's samples onto the 50 Hz grid, fills the
 128-sample windows, and calls the features and the model (`python scripts/export_gesture_model.py` writes the model; the default is the
 random forest). `tests/test_gesture_pipeline_c.py` and `python scripts/check_gesture_pipeline.py` hold it to the Python chain, sample by
-sample, on the PC. Still missing: flashing it, and the on-device accuracy check on a session recorded after the model was trained.
+sample, on the PC. The firmware that runs it on the Edge, `main.c` in the same folder, builds with
+`firmware/sparkfun_edge/scripts/edge_demo_build.sh`, and its loop is tested on the PC against a fake board. It has been flashed and run on the board (time per window: see the demo README). Still missing: the on-device
+accuracy check on a session recorded after the model was trained.
