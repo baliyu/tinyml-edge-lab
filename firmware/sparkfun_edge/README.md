@@ -77,4 +77,4 @@ To read the output: `py -m serial.tools.miniterm COM4 115200`, then tap RST (wit
 * The factory speech demo was overwritten and has not been restored (SparkFun's `tensorflow_micro_speech` example can
   restore it with the same flashing method).
 * The patched uploader has worked once, with one board and one adapter.
-* No machine learning has run on this board yet.
+* <!-- live:board -->A gesture model (a 100-tree forest) has since run on this board, see `gesture_demo/README.md`: its live accuracy was 0.967 in 1 sitting, one person and one board.<!-- /live:board -->

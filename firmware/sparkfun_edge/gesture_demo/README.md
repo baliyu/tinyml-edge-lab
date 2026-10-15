@@ -1,11 +1,10 @@
-# Gesture chain for the SparkFun Edge: runs on the board, accuracy not yet measured
+# Gesture chain for the SparkFun Edge: <!-- live:title -->runs on the board, live accuracy 0.967 (1 sitting, one person, one board)<!-- /live:title -->
 
 The whole path from a sensor sample to a gesture name, in plain C99 with no malloc and no hardware access: resample the sensor's
 slightly uneven samples onto an exact 50 Hz grid, cut 128-sample windows, compute the features
 (`../gesture_features/edge_features.c`), and ask the trained model (`gesture_model.c`) which gesture it is.
 
-**Status: the chain and the firmware's main loop are checked on the PC, and the firmware has been flashed and run on a SparkFun Edge (see "Measured on the board"). The model was trained on every
-recording, so it has no held-out accuracy; the on-device accuracy will come from a session recorded after the model was trained.**
+**Status: the chain and the firmware's main loop are checked on the PC, and the firmware has been flashed and run on a SparkFun Edge (see "Measured on the board"). <!-- live:status -->The model was trained on every recording, so it has no held-out accuracy of its own; its live accuracy was measured in live1, which is not among its training sessions: 0.967 on 180 windows in 15 blocks, one person and one board (see "Live accuracy on the board" below).<!-- /live:status -->**
 
 ## What is here
 | File | What it is |
@@ -86,6 +85,38 @@ This compares the two chains on recordings the model was trained on. It shows th
 Time per window is what `gp_push()` took for the sample that completed the window (resampling, features and the model), read from the chip's 3 MHz timer. A sensor sample arrives about every 19.6 ms (the roughly 51 Hz the recordings measured), so the fastest build here spends 19 % of one sample period on a window, and a window comes every 1.28 s.
 <!-- board-run:end -->
 
+<!-- live-accuracy:start -->
+## Live accuracy on the board
+`python scripts/evaluate_live_accuracy.py` scored the model running on the board against gestures done in a known order (test session: live1; `tools/live_accuracy_test.py`). Each block was one gesture for 20 s, the gestures in a shuffled order, every gesture the same number of times (15 blocks completed). A window counted only if all of its 2.56 s lay inside a block, after a 2 s lead-in and 0.5 s before the block ended; the board's own prediction for it was compared with the gesture shown.
+
+The model was trained on sessions s1, s2, s3 only; the test session is not among them (model file SHA-256 `bbbee3fdb422`; it is assumed that the board runs an image built from that file).
+
+**180 windows counted in 15 blocks: accuracy 0.967, macro-F1 0.967** (chance is 0.200).
+
+95 % intervals from resampling whole blocks within each gesture (2000 resamples): accuracy 0.922 to 1.000, macro-F1 0.921 to 1.000. They are wide because there are few blocks per gesture.
+
+| Gesture | Windows | Recall | Precision |
+|---|---|---|---|
+| rest | 36 | 1.000 | 1.000 |
+| shake lr | 36 | 1.000 | 0.973 |
+| shake ud | 36 | 0.972 | 1.000 |
+| circle | 36 | 0.889 | 0.970 |
+| tilt | 36 | 0.972 | 0.897 |
+
+The weakest gesture is circle (recall 0.889).
+
+![Live confusion matrix](results/figures/live_confusion.png)
+
+For comparison, the same model type (forest, raw features) scored macro-F1 0.918 offline when a whole session was held out (465 windows, `results/gestures.json`). That figure lies outside the live interval above.
+
+What this does and does not show:
+- One person and one board. A different person, or the board held differently, may do better or worse.
+- 15 blocks are few, and windows within a block overlap by half, so they are not independent; that is why the interval resamples blocks.
+- The PC's arrival time of each line stands in for the moment its window ended; the serial link adds some milliseconds, which the lead-in and end margin are meant to absorb (not measured).
+- Windows dropped: 152 in pauses, lead-ins or end margins, 0 that arrived late and could not be placed in time, 0 in a block that was not finished.
+- Session live1: the board reported: the sensor overwrote 1 samples before they were read.
+<!-- live-accuracy:end -->
+
 ## Not done yet
 - A long run: the runs so far lasted about a minute each, so whether sensor samples are ever missed over minutes or hours is not measured. The sizes above come from the compiler.
-- The live accuracy: a new session, recorded after the model was trained, with the gestures done in a known order. One person, one board.
+- <!-- live:notdone -->More live sittings: so far 1 sitting (live1), by one person on one board. Another day, another person or another board would show whether 0.967 holds; none of these has been tested.<!-- /live:notdone -->

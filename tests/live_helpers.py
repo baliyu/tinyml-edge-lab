@@ -99,3 +99,35 @@ def synthetic_run(session="live1", seed=1, rounds=3, wrong=None, model_sha="ab" 
             "pause_s": pause_s, "lead_in_s": la.LEAD_IN_S, "tail_guard_s": la.TAIL_GUARD_S, "schedule": schedule, "completed_s": schedule[-1]["end_s"],
             "interrupted": False, "monitor_problems": [], "model": {"file": "gesture_model.c", "sha256": model_sha, "trained_on": {"sessions": list(trained), "windows": 465}}}
     return meta, windows
+
+
+# ---------------------------------------------------------------- READMEs with the old "not measured" wording (the sentences the repository had before the live test)
+ORIGINAL_FILES = {
+    "firmware/sparkfun_edge/gesture_demo/README.md": (
+        "# Gesture chain for the SparkFun Edge: runs on the board, accuracy not yet measured\n\nintro line\n\n"
+        "**Status: checked on the PC. The model was trained on every\nrecording, so it has no held-out accuracy; the on-device accuracy will come from a session "
+        "recorded after the model was trained.**\n\n## Measured\ntext\n\n## Not done yet\n- A long run: not measured.\n"
+        "- The live accuracy: a new session, recorded after the model was trained, with the gestures done in a known order. One person, one board.\n"),
+    "firmware/sparkfun_edge/gesture_features/README.md": (
+        "# Features\n\ntext\n\n## Not done yet\nFilling the 128-sample window from the sensor on the board, calling the tree, flashing it, and the on-device accuracy check on a\n"
+        "held-out session.\n"),
+    "firmware/sparkfun_edge/README.md": "# Board\n\n## Not done yet\n* The sample rate was not measured.\n* No machine learning has run on this board yet.\n",
+    "README.md": "# Lab\n\n## Roadmap\n1. A thing.\n4. Check on-device accuracy against the PC on a held-out set.\n5. Another thing.\n",
+    "firmware/sparkfun_edge/gesture_demo/gesture_model.json": '{"model": "forest", "trees": 100}\n',
+}
+
+
+def make_root(tmp_path, files=None):
+    """A folder laid out like the repository, holding the READMEs as they were before the live test. Returns its path."""
+    for rel, text in (files or ORIGINAL_FILES).items():
+        p = tmp_path / rel
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_text(text, encoding="utf-8")
+    return tmp_path
+
+
+def two_runs(**kw):
+    """Two finished runs of a board that is wrong in two blocks of the first run (guaranteed wrong: it names the next gesture in the list)."""
+    sched = la.make_schedule(la.LABELS, 3, 1, 20.0, 8.0)
+    wrong = {i: la.LABELS[(la.LABELS.index(sched[i]["target"]) + 1) % len(la.LABELS)] for i in (2, 6)}
+    return [synthetic_run("live1", seed=1, wrong=wrong, **kw), synthetic_run("live2", seed=2, **kw)]

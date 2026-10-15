@@ -1,0 +1,255 @@
+{
+  "model": {
+    "file": "firmware/sparkfun_edge/gesture_demo/gesture_model.c",
+    "sha256": "bbbee3fdb4226a25d2789c7d39df6ba6bd52edab712902d8944d98753e8f7cf3",
+    "trained_on": {
+      "windows": 465,
+      "sessions": [
+        "s1",
+        "s2",
+        "s3"
+      ]
+    },
+    "assumption": "the image on the board was built from this file; the tool cannot check that"
+  },
+  "protocol": {
+    "block_s": 20.0,
+    "pause_s": 8.0,
+    "lead_in_s": 2.0,
+    "tail_guard_s": 0.5,
+    "window_s": 2.56,
+    "labels": [
+      "rest",
+      "shake_lr",
+      "shake_ud",
+      "circle",
+      "tilt"
+    ]
+  },
+  "runs": [
+    {
+      "session": "live1",
+      "started_at": "2026-10-15T20:14:53",
+      "seed": 91692,
+      "blocks": 15,
+      "completed_blocks": 15,
+      "windows_received": 332,
+      "counted": 180,
+      "dropped": {
+        "outside_scored_zone": 152,
+        "unfinished_block": 0,
+        "delayed": 0
+      },
+      "problems": [
+        "the board reported: the sensor overwrote 1 samples before they were read"
+      ]
+    }
+  ],
+  "dropped_total": {
+    "outside_scored_zone": 152,
+    "unfinished_block": 0,
+    "delayed": 0
+  },
+  "result": {
+    "labels": [
+      "rest",
+      "shake_lr",
+      "shake_ud",
+      "circle",
+      "tilt"
+    ],
+    "n_windows": 180,
+    "n_blocks": 15,
+    "confusion_matrix": [
+      [
+        36,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        36,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        1,
+        35,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        32,
+        4
+      ],
+      [
+        0,
+        0,
+        0,
+        1,
+        35
+      ]
+    ],
+    "accuracy": 0.9666666666666667,
+    "macro_f1": 0.9666172856076303,
+    "chance_accuracy": 0.2,
+    "per_class": {
+      "rest": {
+        "support": 36,
+        "recall": 1.0,
+        "precision": 1.0,
+        "f1": 1.0
+      },
+      "shake_lr": {
+        "support": 36,
+        "recall": 1.0,
+        "precision": 0.972972972972973,
+        "f1": 0.9863013698630136
+      },
+      "shake_ud": {
+        "support": 36,
+        "recall": 0.9722222222222222,
+        "precision": 1.0,
+        "f1": 0.9859154929577465
+      },
+      "circle": {
+        "support": 36,
+        "recall": 0.8888888888888888,
+        "precision": 0.9696969696969697,
+        "f1": 0.927536231884058
+      },
+      "tilt": {
+        "support": 36,
+        "recall": 0.9722222222222222,
+        "precision": 0.8974358974358975,
+        "f1": 0.9333333333333333
+      }
+    },
+    "per_block": [
+      {
+        "block": "live1#0",
+        "target": "circle",
+        "windows": 12,
+        "correct": 12
+      },
+      {
+        "block": "live1#1",
+        "target": "shake_lr",
+        "windows": 12,
+        "correct": 12
+      },
+      {
+        "block": "live1#2",
+        "target": "rest",
+        "windows": 12,
+        "correct": 12
+      },
+      {
+        "block": "live1#3",
+        "target": "tilt",
+        "windows": 12,
+        "correct": 12
+      },
+      {
+        "block": "live1#4",
+        "target": "shake_ud",
+        "windows": 12,
+        "correct": 12
+      },
+      {
+        "block": "live1#5",
+        "target": "tilt",
+        "windows": 12,
+        "correct": 12
+      },
+      {
+        "block": "live1#6",
+        "target": "shake_ud",
+        "windows": 12,
+        "correct": 12
+      },
+      {
+        "block": "live1#7",
+        "target": "shake_lr",
+        "windows": 12,
+        "correct": 12
+      },
+      {
+        "block": "live1#8",
+        "target": "rest",
+        "windows": 12,
+        "correct": 12
+      },
+      {
+        "block": "live1#9",
+        "target": "circle",
+        "windows": 12,
+        "correct": 8
+      },
+      {
+        "block": "live1#10",
+        "target": "tilt",
+        "windows": 12,
+        "correct": 11
+      },
+      {
+        "block": "live1#11",
+        "target": "rest",
+        "windows": 12,
+        "correct": 12
+      },
+      {
+        "block": "live1#12",
+        "target": "shake_ud",
+        "windows": 12,
+        "correct": 11
+      },
+      {
+        "block": "live1#13",
+        "target": "circle",
+        "windows": 12,
+        "correct": 12
+      },
+      {
+        "block": "live1#14",
+        "target": "shake_lr",
+        "windows": 12,
+        "correct": 12
+      }
+    ],
+    "ci": {
+      "level": 0.95,
+      "method": "resampling whole blocks within each gesture",
+      "n_boot": 2000,
+      "seed": 91692,
+      "accuracy": [
+        0.9222222222222223,
+        1.0
+      ],
+      "macro_f1": [
+        0.9206923682140047,
+        1.0
+      ]
+    },
+    "ci_unavailable": null
+  },
+  "note": "One person, one board. Windows overlap by half; the interval resamples whole blocks.",
+  "offline_reference": {
+    "macro_f1": 0.9178047643523997,
+    "accuracy": 0.9182795698924732,
+    "windows": 465,
+    "sessions": [
+      "s1",
+      "s2",
+      "s3"
+    ],
+    "source": "results/gestures.json"
+  }
+}

@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 from . import live_accuracy as la
@@ -137,3 +138,78 @@ def update_readme(path, block):
             raise SystemExit(f"STOP: cannot find the place for the section in {path}.")
         s = s.replace(marker, "\n" + block + "\n" + marker)
     p.write_bytes((s.replace("\n", "\r\n") if crlf else s).encode("utf-8"))
+
+
+# ---------------------------------------------------------------- the other places that said "accuracy not yet measured"
+DEMO = "firmware/sparkfun_edge/gesture_demo/README.md"
+MODEL_JSON = "firmware/sparkfun_edge/gesture_demo/gesture_model.json"
+# key: (file under the repository root, regular expression for the original sentence that the first run replaces)
+CLAIM_PLACES = {
+    "title": (DEMO, r"runs on the board, accuracy not yet measured"),
+    "status": (DEMO, r"The model was trained on every\s+recording, so it has no held-out accuracy; the on-device accuracy will come from a session recorded after the model was trained\."),
+    "notdone": (DEMO, r"The live accuracy: a new session, recorded after the model was trained, with the gestures done in a known order\. One person, one board\."),
+    "features": ("firmware/sparkfun_edge/gesture_features/README.md",
+                 r"Filling the 128-sample window from the sensor on the board, calling the tree, flashing it, and the on-device accuracy check on a\s+held-out session\."),
+    "board": ("firmware/sparkfun_edge/README.md", r"No machine learning has run on this board yet\."),
+    "roadmap": ("README.md", r"Check on-device accuracy against the PC on a held-out set\."),
+}
+
+
+def _join(names):
+    return names[0] if len(names) == 1 else ", ".join(names[:-1]) + " and " + names[-1]
+
+
+def claim_texts(report, model=None):
+    """The sentences that replace the old 'accuracy not yet measured' wording, written from the report ({key: text}). `model` is gesture_model.json, if known."""
+    r, sessions = report["result"], [x["session"] for x in report["runs"]]
+    k, acc, sess = len(sessions), f"{report['result']['accuracy']:.3f}", _join(sessions)
+    sit = f"{k} sitting" + ("" if k == 1 else "s")
+    kind = f"a {model['trees']}-tree {model['model']}" if model and model.get("trees") and model.get("model") else "a model"
+    return {
+        "title": f"runs on the board, live accuracy {acc} ({sit}, one person, one board)",
+        "status": (f"The model was trained on every recording, so it has no held-out accuracy of its own; its live accuracy was measured in {sess}, "
+                   f"which {'is' if k == 1 else 'are'} not among its training sessions: {acc} on {r['n_windows']} windows in {r['n_blocks']} blocks, one person and one board "
+                   f"(see \"Live accuracy on the board\" below)."),
+        "notdone": (f"More live sittings: so far {sit} ({sess}), by one person on one board. Another day, another person or another board would show "
+                    f"whether {acc} holds; none of these has been tested."),
+        "features": (f"Done since, in `../gesture_demo/`: the 128-sample window is filled from the sensor, the model ({kind}) is called, the firmware is flashed, "
+                     f"and its live accuracy was measured in {sit} ({sess}): {acc} on {r['n_windows']} windows, one person and one board. "
+                     "Still not done: more sittings, other people and other boards."),
+        "board": (f"A gesture model ({kind}) has since run on this board, see `gesture_demo/README.md`: its live accuracy was {acc} in {sit}, "
+                  "one person and one board."),
+        "roadmap": (f"On-device accuracy: measured live in {sit} (one person, one board): {acc} over {r['n_windows']} windows. More sittings, other people and "
+                    "other boards are still to do; see `firmware/sparkfun_edge/gesture_demo/README.md`."),
+    }
+
+
+def _swap(s, key, original, inner):
+    """Put `inner` between <!-- live:key --> markers: replace the marked text if it is there, else the original sentence (which must occur exactly once)."""
+    op, cl = f"<!-- live:{key} -->", f"<!-- /live:{key} -->"
+    new = op + inner + cl
+    region = re.compile(re.escape(op) + r".*?" + re.escape(cl), re.S)
+    if region.search(s):
+        if len(region.findall(s)) != 1:
+            raise ValueError(f"the marker for '{key}' occurs more than once")
+        return region.sub(lambda m: new, s)
+    if len(re.findall(original, s)) != 1:
+        raise ValueError(f"cannot find the one sentence to replace for '{key}'")
+    return re.sub(original, lambda m: new, s)
+
+
+def update_claims(root, report):
+    """Rewrite the six places that said the on-device accuracy was not measured, from the report. All or nothing: if any place cannot be found, nothing is written (ValueError)."""
+    root = Path(root)
+    mj = root / MODEL_JSON
+    texts = claim_texts(report, json.loads(mj.read_text(encoding="utf-8")) if mj.is_file() else None)
+    files = {}
+    for key, (rel, original) in CLAIM_PLACES.items():
+        if rel not in files:
+            raw = (root / rel).read_bytes().decode("utf-8")
+            files[rel] = ("\r\n" in raw, raw.replace("\r\n", "\n"))
+        crlf, s = files[rel]
+        try:
+            files[rel] = (crlf, _swap(s, key, original, texts[key]))
+        except ValueError as e:
+            raise ValueError(f"{rel}: {e}") from None
+    for rel, (crlf, s) in files.items():
+        (root / rel).write_bytes((s.replace("\n", "\r\n") if crlf else s).encode("utf-8"))

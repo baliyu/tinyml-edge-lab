@@ -76,5 +76,4 @@ The unseen-session figures are the ones that matter.
   much as in C, so the dominant frequency of such a window can differ between the two.
 
 ## Not done yet
-Filling the 128-sample window from the sensor on the board, calling the tree, flashing it, and the on-device accuracy check on a
-held-out session.
+<!-- live:features -->Done since, in `../gesture_demo/`: the 128-sample window is filled from the sensor, the model (a 100-tree forest) is called, the firmware is flashed, and its live accuracy was measured in 1 sitting (live1): 0.967 on 180 windows, one person and one board. Still not done: more sittings, other people and other boards.<!-- /live:features -->

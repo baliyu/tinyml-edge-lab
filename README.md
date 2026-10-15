@@ -176,7 +176,7 @@ These are 3 sessions from one person and one board, so the numbers say little ab
 1. SparkFun Edge: hello world is done and logged in `firmware/sparkfun_edge/`; the wake-word demo from the TinyML book is still to do.
 2. Nano 33 BLE: IMU data logger with microSD and a TFT user interface; collect my own labelled data.
 3. Compare a decision tree with a small neural network (int8), reporting size, RAM and latency.
-4. Check on-device accuracy against the PC on a held-out set.
+4. <!-- live:roadmap -->On-device accuracy: measured live in 1 sitting (one person, one board): 0.967 over 180 windows. More sittings, other people and other boards are still to do; see `firmware/sparkfun_edge/gesture_demo/README.md`.<!-- /live:roadmap -->
 5. Signed model updates (reusing the secure-boot work).
 
 ## Licence

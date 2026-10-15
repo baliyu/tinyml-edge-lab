@@ -2,11 +2,13 @@
 """Score the live accuracy test(s) of the gesture model running on the SparkFun Edge, and write the results.
 
 Usage: python scripts/evaluate_live_accuracy.py --run data/own/edge_live/live1_live.json [--run data/own/edge_live/live2_live.json]
-                                               [--out results] [--readme firmware/sparkfun_edge/gesture_demo/README.md] [--no-readme]
+                                               [--out results] [--root .] [--no-readme]
 Reads the runs written by tools/live_accuracy_test.py, counts the windows that lie fully inside a block, and scores the board's predictions against the
 gesture that was shown: confusion matrix, accuracy, macro-F1, recall and precision per gesture, and an interval that resamples whole blocks. Give every run
 you made: a run is not left out because it went badly. Writes <out>/live_accuracy.json, <out>/figures/live_confusion.png and the "Live accuracy on the board"
-section of the demo README, all from the runs, with no typed-in numbers. It refuses runs of a session the model was trained on.
+section of the demo README, all from the runs, with no typed-in numbers. It also rewrites the six sentences elsewhere (the demo README's title, status and
+not-done list, two firmware READMEs and the root README's roadmap) that used to say the on-device accuracy was not measured; each sits between invisible
+<!-- live:... --> markers, so a later run replaces it instead of adding another. It refuses runs of a session the model was trained on.
 """
 import argparse
 import json
@@ -17,15 +19,15 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from tinyml_lab import live_accuracy as la  # noqa: E402
 from tinyml_lab import live_accuracy_report as rep  # noqa: E402
 
-DEFAULT_README = Path(__file__).resolve().parents[1] / "firmware" / "sparkfun_edge" / "gesture_demo" / "README.md"
+ROOT = Path(__file__).resolve().parents[1]
 
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("--run", action="append", required=True, metavar="FILE.json", help="a run written by tools/live_accuracy_test.py; repeat for more than one")
     ap.add_argument("--out", default="results")
-    ap.add_argument("--readme", default=str(DEFAULT_README))
-    ap.add_argument("--no-readme", action="store_true", help="write the results and the figure but leave the README alone")
+    ap.add_argument("--root", default=str(ROOT), help="the repository whose READMEs are updated")
+    ap.add_argument("--no-readme", action="store_true", help="write the results and the figure but leave every README alone")
     a = ap.parse_args(argv)
     runs = []
     for f in a.run:
@@ -51,8 +53,14 @@ def main(argv=None) -> int:
     rep.confusion_fig(report["result"], out / "figures" / "live_confusion.png")
     print(f"\nwrote {out / 'live_accuracy.json'} and {out / 'figures' / 'live_confusion.png'}")
     if not a.no_readme:
-        rep.update_readme(a.readme, rep.render_block(report, offline))
-        print(f"updated {a.readme}")
+        demo = Path(a.root) / rep.DEMO
+        try:
+            rep.update_claims(a.root, report)                      # first: it writes nothing unless every place is found
+        except (ValueError, OSError) as e:
+            print(f"STOP: {e}", file=sys.stderr)
+            return 1
+        rep.update_readme(demo, rep.render_block(report, offline))
+        print(f"updated {demo} and the other README sentences that used to say the accuracy was not measured")
     return 0
 
 
