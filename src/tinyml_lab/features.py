@@ -7,6 +7,9 @@ import numpy as np
 
 
 def feature_names(channels, n_bands=4):
+    """Names of the features window_features and batch_features return, in order: for each channel its mean, std, rms, min, max, dom_freq and then
+    band0 .. band{n_bands-1}, each prefixed with the channel name, e.g. 'x_mean'.
+    """
     base = ["mean", "std", "rms", "min", "max", "dom_freq"]
     base += [f"band{b}" for b in range(n_bands)]
     return [f"{ch}_{name}" for ch in channels for name in base]
@@ -58,4 +61,5 @@ def gravity_mean(total, body):
 
 
 def gravity_names():
+    """Names of the three gravity-mean features that gravity_mean returns: grav_x_mean, grav_y_mean, grav_z_mean."""
     return ["grav_x_mean", "grav_y_mean", "grav_z_mean"]

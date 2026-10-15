@@ -10,6 +10,9 @@ from sklearn.model_selection import GroupKFold
 
 
 def group_folds(groups, n_splits=5):
+    """A GroupKFold with at most n_splits folds (fewer if there are fewer groups). Raises ValueError for fewer than two distinct groups,
+    where grouped cross-validation is impossible.
+    """
     groups = np.asarray(groups)
     k = min(n_splits, len(np.unique(groups)))
     if k < 2:

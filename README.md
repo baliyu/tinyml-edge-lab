@@ -30,6 +30,7 @@ the device matches the PC.
 | `firmware/sparkfun_edge/gesture_demo/` | The whole on-device chain in C (resample to 50 Hz, window, features, model), checked against the Python chain on the PC and running on the Edge |
 | `src/tinyml_lab/gesture_demo.py` | Trains and exports the deployable model, builds the C chain for the PC and compares it with the Python chain |
 | `tools/edge_gesture_monitor.py` | Watches the board's gesture output over serial and points out lost lines, sensor overruns and slow windows |
+| `docs/API.md` | The interfaces: the C headers, the serial protocol, the Python package and the command-line tools. Its generated parts are checked by a test, so it cannot fall behind the code |
 
 ## Quick start
 ```bash
@@ -46,6 +47,7 @@ python scripts/run_gestures.py                      # desk gestures: leave-one-s
 python scripts/check_edge_features.py             # the C gesture features against Python on your recordings (needs gcc)
 python scripts/export_gesture_model.py            # train on every recording and write the model as C for the board
 python scripts/check_gesture_pipeline.py          # the whole C chain against the Python chain on your recordings (needs gcc)
+python scripts/make_api_docs.py                  # rewrite the generated parts of docs/API.md after changing a public function (a test checks it is current)
 ```
 
 ## Results (official UCI HAR data, run on 9 October 2026)

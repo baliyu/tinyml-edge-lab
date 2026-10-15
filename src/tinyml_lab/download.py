@@ -12,6 +12,7 @@ UCI_HAR_URLS = [
 
 
 def sha256_of(path):
+    """The SHA-256 of a file, as hex, read in 1 MiB chunks."""
     h = hashlib.sha256()
     with open(path, "rb") as f:
         for chunk in iter(lambda: f.read(1 << 20), b""):

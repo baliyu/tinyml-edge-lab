@@ -30,6 +30,9 @@ _TEXT_KEYS = ("label", "subject", "session", "note", "verdict", "rate_note")
 
 @dataclass
 class Capture:
+    """One capture file as read by read_capture: its label, subject, session and note, the verdict and timing from its header, and the samples
+    (t_s in seconds, xyz_mg in milli-g).
+    """
     path: Path
     label: str
     subject: str
@@ -47,6 +50,9 @@ class Capture:
 
 @dataclass
 class Dataset:
+    """Windows cut from every usable capture under a folder (load_dataset): the windows (N, win, 3) in milli-g, with each window's gesture, session,
+    subject and file, the settings used, and the files used and skipped.
+    """
     windows: np.ndarray           # (N, win, 3) milli-g
     y: np.ndarray                 # (N,) gesture names
     session: np.ndarray           # (N,) session names
@@ -127,6 +133,7 @@ def resample_to_grid(t_s, xyz, fs: float = FS) -> np.ndarray:
 
 
 def trim_edges(x: np.ndarray, fs: float = FS, trim_s: float = TRIM_S) -> np.ndarray:
+    """Drop trim_s seconds from both ends of a recording (getting started, stopping). No change if trim_s is half a sample or less."""
     k = int(round(trim_s * fs))
     return x[k:len(x) - k] if k > 0 else x
 
@@ -209,6 +216,9 @@ def design_problems(ds: Dataset) -> list[str]:
 
 
 def feature_names_for(feature_set: str, n_bands: int = N_BANDS) -> list[str]:
+    """Feature names of a feature set: 'raw' (x, y, z and the magnitude, 10 features each) or 'motion' (the same without the x, y and z means, so
+    orientation drops out). Raises ValueError for any other name.
+    """
     if feature_set == "raw":
         return feature_names(["x", "y", "z", "mag"], n_bands)
     if feature_set == "motion":

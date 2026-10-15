@@ -84,12 +84,17 @@ def _majority_accuracy(y, folds):
 
 
 def ordered_labels(y):
+    """The gestures present in y, in the project's fixed order (edge_gestures.GESTURES) and then any others alphabetically. This order gives the class numbers."""
     present = set(y.tolist())
     return [g for g in eg.GESTURES if g in present] + sorted(present - set(eg.GESTURES))
 
 
 def run_gestures(data_dir, out_dir="results", fs=eg.FS, win=eg.WINDOW, step=eg.STEP, trim_s=eg.TRIM_S, n_bands=eg.N_BANDS,
                  seed=0, allow_problems=False, log=print):
+    """Evaluate the desk-gesture recordings under data_dir: leave-one-session-out against a leaky random split of windows, for the raw and the
+    motion features, with a tree and a forest. Writes gestures.json and gestures.md to out_dir and returns the report. Raises ValueError with fewer
+    than two gestures or two sessions. log receives progress lines.
+    """
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     ds = eg.load_dataset(data_dir, fs, win, step, trim_s, allow_problems)
