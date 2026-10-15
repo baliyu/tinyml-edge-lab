@@ -4,7 +4,7 @@ import sys
 from pathlib import Path
 
 import pytest
-from live_helpers import synthetic_run
+from live_helpers import make_root, synthetic_run, two_runs
 
 from tinyml_lab import live_accuracy as la
 from tinyml_lab import live_accuracy_report as rep
@@ -16,13 +16,6 @@ sys.modules["evaluate_live_accuracy"] = script
 spec.loader.exec_module(script)
 
 README = "# Demo\n\nintro\n\n## Measured\ntext\n\n## Not done yet\n- a long run\n"
-
-
-def two_runs(**kw):
-    """Two finished runs of a board that is wrong in two blocks of the first run (guaranteed wrong: it names the next gesture in the list)."""
-    sched = la.make_schedule(la.LABELS, 3, 1, 20.0, 8.0)
-    wrong = {i: la.LABELS[(la.LABELS.index(sched[i]["target"]) + 1) % len(la.LABELS)] for i in (2, 6)}
-    return [synthetic_run("live1", seed=1, wrong=wrong, **kw), synthetic_run("live2", seed=2, **kw)]
 
 
 # ---------------------------------------------------------------- pooling
@@ -142,30 +135,30 @@ def saved_runs(tmp_path, runs):
 
 
 def test_the_script_writes_results_figure_and_readme_and_a_second_run_changes_nothing(tmp_path, capsys):
-    args = saved_runs(tmp_path, two_runs())
-    readme = tmp_path / "README.md"
-    readme.write_text(README)
+    args = saved_runs(tmp_path / "runs", two_runs())
+    root = make_root(tmp_path / "repo")
     out = tmp_path / "results"
-    assert script.main([*args, "--out", str(out), "--readme", str(readme)]) == 0
-    first = (readme.read_text(), (out / "live_accuracy.json").read_text())
+    assert script.main([*args, "--out", str(out), "--root", str(root)]) == 0
+    snapshot = lambda: {p.relative_to(root).as_posix(): p.read_bytes() for p in root.rglob("*") if p.is_file()}
+    first = (snapshot(), (out / "live_accuracy.json").read_text())
     saved = json.loads(first[1])
     assert saved["result"]["n_blocks"] == 30 and saved["offline_reference"] is None and saved["model"]["sha256"] == "ab" * 32
-    assert (out / "figures" / "live_confusion.png").stat().st_size > 1000 and rep.START in first[0]
+    assert (out / "figures" / "live_confusion.png").stat().st_size > 1000 and rep.START in (root / rep.DEMO).read_text()
     assert "accuracy" in capsys.readouterr().out
-    assert script.main([*args, "--out", str(out), "--readme", str(readme)]) == 0
-    assert (readme.read_text(), (out / "live_accuracy.json").read_text()) == first
+    assert script.main([*args, "--out", str(out), "--root", str(root)]) == 0
+    assert (snapshot(), (out / "live_accuracy.json").read_text()) == first
 
 
-def test_the_script_can_leave_the_readme_alone(tmp_path):
-    args = saved_runs(tmp_path, [synthetic_run("live1"), synthetic_run("live2", seed=2)])
-    readme = tmp_path / "README.md"
-    readme.write_text(README)
-    assert script.main([*args, "--out", str(tmp_path / "r"), "--readme", str(readme), "--no-readme"]) == 0
-    assert readme.read_text() == README and (tmp_path / "r" / "live_accuracy.json").is_file()
+def test_the_script_can_leave_every_readme_alone(tmp_path):
+    args = saved_runs(tmp_path / "runs", [synthetic_run("live1"), synthetic_run("live2", seed=2)])
+    root = make_root(tmp_path / "repo")
+    before = {p: p.read_bytes() for p in root.rglob("*") if p.is_file()}
+    assert script.main([*args, "--out", str(tmp_path / "r"), "--root", str(root), "--no-readme"]) == 0
+    assert {p: p.read_bytes() for p in root.rglob("*") if p.is_file()} == before and (tmp_path / "r" / "live_accuracy.json").is_file()
 
 
 def test_the_script_refuses_a_training_session_and_a_missing_file(tmp_path, capsys):
-    args = saved_runs(tmp_path, [synthetic_run("s1")])
+    args = saved_runs(tmp_path / "runs", [synthetic_run("s1")])
     assert script.main([*args, "--out", str(tmp_path / "r"), "--no-readme"]) == 1
     assert "STOP" in capsys.readouterr().err and not (tmp_path / "r").exists()
     assert script.main(["--run", str(tmp_path / "nope.json"), "--out", str(tmp_path / "r")]) == 2
@@ -175,8 +168,16 @@ def test_the_script_uses_the_offline_score_when_the_results_folder_has_one(tmp_p
     out = tmp_path / "results"
     out.mkdir()
     (out / "gestures.json").write_text(json.dumps({"data": {"windows": 465, "sessions": []}, "protocols": {"leave_one_session_out": {"results": {"raw": {"forest": {"macro_f1": 0.918, "accuracy": 0.92}}}}}}))
-    args = saved_runs(tmp_path, two_runs())
-    readme = tmp_path / "README.md"
-    readme.write_text(README)
-    assert script.main([*args, "--out", str(out), "--readme", str(readme)]) == 0
-    assert "macro-F1 0.918 offline" in readme.read_text() and json.loads((out / "live_accuracy.json").read_text())["offline_reference"]["windows"] == 465
+    args = saved_runs(tmp_path / "runs", two_runs())
+    root = make_root(tmp_path / "repo")
+    assert script.main([*args, "--out", str(out), "--root", str(root)]) == 0
+    assert "macro-F1 0.918 offline" in (root / rep.DEMO).read_text() and json.loads((out / "live_accuracy.json").read_text())["offline_reference"]["windows"] == 465
+
+
+def test_the_script_stops_and_writes_no_readme_when_a_sentence_to_replace_is_missing(tmp_path, capsys):
+    args = saved_runs(tmp_path / "runs", two_runs())
+    root = make_root(tmp_path / "repo")
+    (root / "firmware/sparkfun_edge/README.md").write_text("# Board\n\nnothing to replace here\n")
+    before = {p: p.read_bytes() for p in root.rglob("*") if p.is_file()}
+    assert script.main([*args, "--out", str(tmp_path / "r"), "--root", str(root)]) == 1
+    assert "STOP" in capsys.readouterr().err and {p: p.read_bytes() for p in root.rglob("*") if p.is_file()} == before
