@@ -30,6 +30,8 @@ the device matches the PC.
 | `firmware/sparkfun_edge/gesture_demo/` | The whole on-device chain in C (resample to 50 Hz, window, features, model), checked against the Python chain on the PC and running on the Edge |
 | `src/tinyml_lab/gesture_demo.py` | Trains and exports the deployable model, builds the C chain for the PC and compares it with the Python chain |
 | `tools/edge_gesture_monitor.py` | Watches the board's gesture output over serial and points out lost lines, sensor overruns and slow windows |
+| `tools/live_accuracy_test.py` | Live accuracy test: gestures done in a known, shuffled order while the board predicts; logs every prediction against the gesture shown |
+| `src/tinyml_lab/live_accuracy*.py` | Scores a live run: which windows count, confusion matrix, accuracy and macro-F1 with an interval that resamples whole blocks |
 | `docs/API.md` | The interfaces: the C headers, the serial protocol, the Python package and the command-line tools. Its generated parts are checked by a test, so it cannot fall behind the code |
 
 ## Quick start
