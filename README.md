@@ -27,6 +27,8 @@ the device matches the PC.
 | `docs/DATASETS.md` | Sources, licences, evaluation rules |
 | `src/tinyml_lab/edge_gesture*.py` | Desk gestures from the Edge's own recordings: loader, resampling, session-wise evaluation |
 | `firmware/sparkfun_edge/gesture_features/` | The gesture features in C (1.3 KB of flash), checked against the Python features |
+| `firmware/sparkfun_edge/gesture_demo/` | The whole on-device chain in C (resample to 50 Hz, window, features, model), checked against the Python chain on the PC; not yet on the board |
+| `src/tinyml_lab/gesture_demo.py` | Trains and exports the deployable model, builds the C chain for the PC and compares it with the Python chain |
 
 ## Quick start
 ```bash
@@ -41,6 +43,8 @@ python scripts/measure_footprint.py                # real flash sizes (needs the
 python scripts/download_cwru.py && python scripts/run_cwru.py   # CWRU bearings (about 300 MB download)
 python scripts/run_gestures.py                      # desk gestures: leave-one-session-out evaluation (needs recordings, see docs/GESTURES.md)
 python scripts/check_edge_features.py             # the C gesture features against Python on your recordings (needs gcc)
+python scripts/export_gesture_model.py            # train on every recording and write the model as C for the board
+python scripts/check_gesture_pipeline.py          # the whole C chain against the Python chain on your recordings (needs gcc)
 ```
 
 ## Results (official UCI HAR data, run on 9 October 2026)
