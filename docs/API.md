@@ -389,7 +389,40 @@ blocks; they are internal and may change.
 | `arm_footprint` | `(model_dir, workdir=None)` | Flash, stack and undefined symbols of the board build (Cortex-M4F, -Os, as the Apollo3 runs), or None without an ARM compiler. Nothing is run: these are sizes from the compiler. The stack figure adds the frames along the deepest call path (an estimate). |
 | `build_host_sim` | `(model_dir, workdir=None)` | The real firmware main.c built for the PC against a fake board (host_sim/): a fake accelerometer replays a file of samples, the timer is each sample's own tick and the UART is stdout. Returns the executable. |
 | `run_host_sim` | `(exe, ticks, xyz, flags=None, whoami=None, workdir=None, timeout=120, log=False)` | Replay samples through the simulated firmware; returns the lines it printed (and, with log=True, the log of what it configured and handed to the chain). flags: per-sample bit 0 = sensor overrun, bit 1 = status read error. |
+
+#### `tinyml_lab.live_accuracy`: Live accuracy of the gesture model running on the SparkFun Edge: the board's own predictions scored against gestures done in a known order.
+
+| Name | Parameters | What it does |
+|---|---|---|
+| `make_schedule` | `(labels=..., rounds=3, seed=1, block_s=20.0, pause_s=8.0)` | Blocks of one gesture each: `rounds` shuffled passes through the gestures, never the same gesture twice in a row. |
+| `min_windows_per_block` | `(block_s=20.0, lead_in_s=2.0, tail_guard_s=0.5)` | The fewest windows that always fit in a block's scored zone, wherever the 1.28 s window grid happens to fall. |
+| `timely_flags` | `(windows, tolerance_s=0.25)` | For each window (dicts with t_s, the PC arrival time, and t_ticks), whether it arrived on time. |
+| `assign_windows` | `(windows, blocks, completed_s=None, lead_in_s=2.0, tail_guard_s=0.5, tag='')` | Decide which windows count. Returns (rows, dropped). |
+| `evaluate` | `(rows, labels=..., seed=1, n_boot=2000)` | Score the counted windows: confusion matrix, accuracy, macro-F1, per-gesture recall and precision, per-block results and an interval. |
+| `run_paths` | `(out_dir, session)` | (csv path, json path) of a run: <out_dir>/<session>_live.csv and .json. |
+| `write_run` | `(out_dir, meta, windows)` | Save a run (the windows as CSV, everything else as JSON). Refuses to overwrite: every attempt is kept, none is replaced by a better one. |
+| `read_run` | `(json_path)` | Load a run saved by write_run: (meta, windows). Unreadable CSV rows are skipped. |
+| `score_run` | `(meta, windows)` | Place one run's windows in its blocks. Returns (rows, dropped, problems); problems are things that make the run less trustworthy. |
+| `summary_text` | `(res)` | The result as plain text for a terminal (ASCII only, so a Windows console prints it). |
 <!-- api:python:end -->
+
+### The files of a live accuracy test
+`tools/live_accuracy_test.py` writes two files per run into `data/own/edge_live/` and never overwrites them: `<session>_live.csv`, one row for every window the
+board printed, and `<session>_live.json`, which says how the run was made. `scripts/evaluate_live_accuracy.py` reads both.
+
+```text
+t_s,window,t_ticks,predicted,compute_us
+```
+
+`t_s` is the PC time the line arrived, in seconds after the first window (the schedule's clock starts then). The rest are the board's own `G,` fields; `predicted`
+is the board's gesture. The JSON holds these keys (`schedule` is a list of blocks, each with `index`, `round`, `target`, `start_s` and `end_s`):
+
+```text
+session, started_at, port, baud, seed, labels, rounds, block_s, pause_s, lead_in_s, tail_guard_s, schedule, completed_s, interrupted,
+windows_received, stale_lines, stale_fragments, config_seen, board_config, monitor_problems, model, note
+```
+
+`model` names the model file in the repository (SHA-256, and what it was trained on) and says plainly that the tool cannot check that the board runs that file.
 
 ### Examples
 ```python
@@ -425,6 +458,7 @@ Scripts run from the repository root with `python scripts/<name>.py`. The tools 
 | `scripts/compare_models.py` | Grouped model selection, richer features and a random-forest comparison on the real UCI HAR data. Usage: python scripts/compare_models.py [--root data/raw] [--out results] [--readme README.md] [--no-readme] |
 | `scripts/download_cwru.py` | Download the 40 official CWRU recordings used here into data/raw/cwru/ (about 300 MB) and verify each one. |
 | `scripts/download_uci_har.py` | Download the official UCI HAR dataset into data/raw/ (never committed to Git). |
+| `scripts/evaluate_live_accuracy.py` | Score the live accuracy test(s) of the gesture model running on the SparkFun Edge, and write the results. |
 | `scripts/export_gesture_model.py` | Train the desk-gesture model on EVERY recording and write it as C for the board. |
 | `scripts/make_api_docs.py` | Keep docs/API.md in step with the code: write its generated sections (C headers, Python reference, command-line tools), or check them. |
 | `scripts/make_figures.py` | Draw the report figures from results/har_baseline.json. Run train_har_baseline.py first. |
@@ -436,5 +470,6 @@ Scripts run from the repository root with `python scripts/<name>.py`. The tools 
 | `scripts/train_har_baseline.py` | Train and evaluate the decision-tree baseline. Usage: python scripts/train_har_baseline.py [--root data/raw] [--depth 6] |
 | `tools/edge_capture.py` | Capture the SparkFun Edge's CSV accelerometer stream from a serial port into a labelled CSV file. |
 | `tools/edge_gesture_monitor.py` | Watch the SparkFun Edge's gesture demo over a serial port. |
+| `tools/live_accuracy_test.py` | Test the gesture model live on the SparkFun Edge: do gestures in a known order while the board predicts, then score it. |
 | `tools/record_session.py` | Record one desk-gesture session from the SparkFun Edge: every gesture in turn, same session name, one command. |
 <!-- api:tools:end -->

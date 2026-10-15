@@ -44,9 +44,11 @@ API_PYTHON = {
     "edge_features_c": ["find_gcc", "CFeatures", "compare_features", "prediction_agreement"],
     "gesture_demo": ["train_deployable", "model_sources", "write_model", "CPipeline", "ticks_from_seconds", "python_chain", "compare_chains",
                      "check_recordings", "arm_footprint", "build_host_sim", "run_host_sim"],
+    "live_accuracy": ["make_schedule", "min_windows_per_block", "timely_flags", "assign_windows", "evaluate", "run_paths", "write_run", "read_run",
+                      "score_run", "summary_text"],
 }
 # Modules that draw figures or write README blocks: not part of the API.
-INTERNAL_MODULES = {"plots", "cwru_plots", "edge_gesture_report", "footprint_report", "cwru_readme", "readme_block"}
+INTERNAL_MODULES = {"plots", "cwru_plots", "edge_gesture_report", "footprint_report", "cwru_readme", "readme_block", "live_accuracy_report"}
 
 
 def public_names(mod) -> list[str]:
