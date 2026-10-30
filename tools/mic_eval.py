@@ -61,18 +61,23 @@ def read_files(directory: Path, sessions: list[str]):
     return out
 
 
-def build(directory: Path, sessions: list[str], calibrate: bool):
+def build(directory: Path, sessions: list[str], calibrate: bool, drop_cal: bool = True):
+    """Features, labels and resampling blocks of the valid windows of `sessions`. drop_cal: leave each session's calibration
+    windows (the first CAL_WINDOWS of its quiet recording) out, as every score from --compare does; mic_plot.py passes False
+    to reproduce the first six results in the README, which used every valid window."""
     files = read_files(directory, sessions)
     cal = {}
     for s in sessions:
         qs = [f for f in files if f["session"] == s and f["label"] == "quiet"]
+        if not (calibrate or drop_cal):
+            break
         if not qs or len(qs[0]["rows"]) <= CAL_WINDOWS:
             raise SystemExit(f"Session {s!r} needs a quiet recording with more than {CAL_WINDOWS} valid windows.")
         first = qs[0]["rows"][:CAL_WINDOWS]
         cal[s] = {k: float(np.median([float(r[k]) for r in first])) for k in RATIO}
     X, y, blk = [], [], []
     for fi, f in enumerate(files):
-        rows = f["rows"][CAL_WINDOWS:] if f["label"] == "quiet" else f["rows"]   # calibration windows never scored
+        rows = f["rows"][CAL_WINDOWS:] if (f["label"] == "quiet" and drop_cal) else f["rows"]   # calibration windows never scored
         for r in rows:
             v = []
             for k in FEATURES:

@@ -69,6 +69,14 @@ Not independent (reported for completeness): trained on A, b, c, d and tested on
 - **The cause is probably the laptop's power state.** I have one 20 s recording for each condition, not a controlled comparison. A fan-load test did not work (the fan did not speed up), so the fan is not ruled out.
 - **Calibration helped on the exploratory check.** It was chosen after I saw the failures, so it is not confirmed.
 
+## Figures
+
+Drawn by `tools/mic_plot.py` from the recordings. The first shows the quiet-room level of each session (power state is marked only where I recorded it); the second shows the macro-F1 of each held-out test from the table above.
+
+![Quiet-room rms of each recording: about 140 in sitting A, about 85 in b and c, about 105 to 110 in d and e](../../../results/figures/mic_quiet_levels.png)
+
+![Macro-F1 of every train/test split, decision tree and random forest](../../../results/figures/mic_heldout_f1.png)
+
 ## Limits
 
 - One person, one board, one desk. I have not tested other people, other rooms or other sounds.

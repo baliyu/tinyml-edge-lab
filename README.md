@@ -32,6 +32,9 @@ the device matches the PC.
 | `tools/edge_gesture_monitor.py` | Watches the board's gesture output over serial and points out lost lines, sensor overruns and slow windows |
 | `tools/live_accuracy_test.py` | Live accuracy test: gestures done in a known, shuffled order while the board predicts; logs every prediction against the gesture shown |
 | `src/tinyml_lab/live_accuracy*.py` | Scores a live run: which windows count, confusion matrix, accuracy and macro-F1 with an interval that resamples whole blocks |
+| `firmware/sparkfun_edge/mic_logger/` | The Edge's microphone: a logger that prints one line of summary numbers every 0.25 s, and a held-out test of a quiet / speech / knock classifier. Mixed result: quiet detection fails when the room's noise level changes between sittings. Its README has the results and the limits |
+| `firmware/sparkfun_edge/mic_features/` | The microphone summary features (rms, peak, zero crossings, high-frequency change, clipping) in plain C, with a host test |
+| `tools/mic_*.py` | Record microphone sessions over serial, mark which windows are valid, test a classifier on a sitting it never saw, and draw the figures |
 | `docs/API.md` | The interfaces: the C headers, the serial protocol, the Python package and the command-line tools. Its generated parts are checked by a test, so it cannot fall behind the code |
 
 ## Quick start
@@ -50,6 +53,7 @@ python scripts/check_edge_features.py             # the C gesture features again
 python scripts/export_gesture_model.py            # train on every recording and write the model as C for the board
 python scripts/check_gesture_pipeline.py          # the whole C chain against the Python chain on your recordings (needs gcc)
 python scripts/make_api_docs.py                  # rewrite the generated parts of docs/API.md after changing a public function (a test checks it is current)
+python tools/mic_plot.py                       # microphone figures into results/figures/ (needs your own recordings, see firmware/sparkfun_edge/mic_logger/README.md)
 ```
 
 ## Results (official UCI HAR data, run on 9 October 2026)
