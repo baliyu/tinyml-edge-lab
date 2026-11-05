@@ -475,6 +475,7 @@ Scripts run from the repository root with `python scripts/<name>.py`. The tools 
 | `tools/mic_eval.py` | Held-out evaluation of the microphone classes (quiet / speech / knock) from the Edge's summary lines. Built with AI assistance (Claude). |
 | `tools/mic_peek.py` | Quick look at one recorded microphone session: for each class, the median and the 10th to 90th percentile of every summary number, over the valid windows only. A look at the data, not a model and not a result. Built with AI assistance (Claude). |
 | `tools/mic_plot.py` | Draw two figures from the microphone recordings: the quiet-room level of every recording, and the held-out score of every train/test split. Built with AI assistance (Claude). |
+| `tools/mic_quiet_ab.py` | Decide, by a rule fixed before any recording, whether the laptop's power state changes the SparkFun Edge microphone's quiet level. Built with AI assistance (Claude). |
 | `tools/mic_record_session.py` | Record one microphone session from the SparkFun Edge: quiet, speech and knock in turn, same session name, one command. Built with AI assistance (Claude). |
 | `tools/record_session.py` | Record one desk-gesture session from the SparkFun Edge: every gesture in turn, same session name, one command. |
 <!-- api:tools:end -->
