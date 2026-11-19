@@ -80,6 +80,7 @@ def make_model1_figure(pred_npz, result_json, out_png):
     fig.tight_layout()
     out_png = Path(out_png)
     out_png.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(out_png, dpi=150)
+    with open(out_png, "wb") as f:
+        fig.savefig(f, format="png", dpi=150)
     plt.close(fig)
     return out_png

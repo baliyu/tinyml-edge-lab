@@ -52,3 +52,19 @@ def test_int8_file_is_smaller_than_float(trained):
 
 def test_accuracy_function():
     assert accuracy([1, 2, 3, 4], [1, 2, 0, 0]) == 0.5
+
+
+def test_exported_models_have_only_the_expected_ops(trained):
+    import contextlib
+    import io
+    import re
+
+    import tensorflow as tf
+
+    _, float_blob, int8_blob, _, _ = trained
+    for blob in (float_blob, int8_blob):
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf), contextlib.redirect_stderr(buf):
+            tf.lite.experimental.Analyzer.analyze(model_content=blob)
+        ops = re.findall(r"Op#\d+ (\w+)\(", buf.getvalue())
+        assert ops == ["CONV_2D", "CONV_2D", "RESHAPE", "FULLY_CONNECTED"]

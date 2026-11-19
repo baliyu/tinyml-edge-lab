@@ -61,3 +61,17 @@ step,id,prediction,pct,event_happened,result,note
 61,61d,Git does not ignore the tflite npz or png files,70,yes,hit,
 62,62a,pytest reports 21 passed,85,yes,hit,
 62,62b,Figure PNG is written and over 30 KB,75,yes,hit,95 KB
+63,63a,pytest reports 21 passed,90,yes,hit,
+63,63b,Tally prints 62 51 11,85,yes,hit,Chat table first said miss in error
+64,64a,Both models contain only CONV_2D and RESHAPE and FULLY_CONNECTED ops,75,no,miss,Keras Flatten adds SHAPE and STRIDED_SLICE and PACK
+64,64b,int8 model has the same number of ops as float,70,yes,hit,7 ops each
+64,64c,Library defines AddConv2D and AddFullyConnected and AddReshape,90,yes,hit,
+64,64d,Library has arena_used_bytes,90,yes,hit,
+64,64e,hello_world builds a MicroInterpreter with 4 arguments,75,yes,hit,
+65,65a,pytest reports 22 passed,70,yes,hit,
+65,65b,New ops test passes so both models have exactly 4 ops,65,yes,hit,
+65,65c,All three accuracies identical to the previous run,55,yes,hit,
+65,65d,Both tflite files smaller than before,80,yes,hit,float 10120 and int8 5640 bytes
+65,65e,int8 file under 5000 bytes,15,no,hit,5640 bytes
+66,66a,pytest reports 22 passed,90,yes,hit,
+66,66b,Figure writes without an error,70,yes,hit,First attempt in step 65 failed on the figure write and rolled back

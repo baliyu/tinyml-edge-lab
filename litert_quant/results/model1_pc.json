@@ -14,8 +14,8 @@
   "agree_keras_float": 1.0,
   "agree_float_int8": 0.9972222222222222,
   "disagree_float_int8": 1,
-  "float_bytes": 10924,
-  "int8_bytes": 6456,
+  "float_bytes": 10120,
+  "int8_bytes": 5640,
   "input_scale": 0.003921568859368563,
   "input_zero_point": -128,
   "versions": {

@@ -7,10 +7,10 @@ import tensorflow as tf
 from ai_edge_litert.interpreter import Interpreter
 
 
-def build_cnn():
+def build_cnn(batch_size=None):
     return tf.keras.Sequential(
         [
-            tf.keras.layers.Input(shape=(8, 8, 1)),
+            tf.keras.layers.Input(shape=(8, 8, 1), batch_size=batch_size),
             tf.keras.layers.Conv2D(8, 3, activation="relu"),
             tf.keras.layers.Conv2D(16, 3, strides=2, activation="relu"),
             tf.keras.layers.Flatten(),
@@ -35,8 +35,19 @@ def train(x_train, y_train, epochs=40, seed=0):
     return model
 
 
+def fixed_batch_copy(model):
+    """Same weights with the batch size fixed at 1.
+
+    The exported graph then has no shape-handling ops, which would only
+    add kernels to the flash image of a microcontroller.
+    """
+    copy = build_cnn(batch_size=1)
+    copy.set_weights(model.get_weights())
+    return copy
+
+
 def to_float_tflite(model):
-    return tf.lite.TFLiteConverter.from_keras_model(model).convert()
+    return tf.lite.TFLiteConverter.from_keras_model(fixed_batch_copy(model)).convert()
 
 
 def to_int8_tflite(model, x_rep):
@@ -44,7 +55,7 @@ def to_int8_tflite(model, x_rep):
 
     x_rep is the representative set used to choose the scales.
     """
-    conv = tf.lite.TFLiteConverter.from_keras_model(model)
+    conv = tf.lite.TFLiteConverter.from_keras_model(fixed_batch_copy(model))
     conv.optimizations = [tf.lite.Optimize.DEFAULT]
 
     def rep():
