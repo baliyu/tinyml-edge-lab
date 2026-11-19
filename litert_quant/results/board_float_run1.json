@@ -1,0 +1,19 @@
+{
+  "log_file": "board_float_run1.txt",
+  "log_sha256": "3f5ca269aa9571bdd4cc01b39bf20dfbedb7be7446ad9b49abda2543addc0cb4",
+  "model": "float",
+  "count": 360,
+  "arena_used_bytes": 2304,
+  "model_bytes": 10120,
+  "cycles": {
+    "min": 288938,
+    "median": 288943.0,
+    "mean": 288942.7,
+    "max": 288943,
+    "first": 288943
+  },
+  "comparison_to": "float",
+  "agree_with_pc": 360,
+  "disagree_with_pc": 0,
+  "board_accuracy": 0.9361111111111111
+}

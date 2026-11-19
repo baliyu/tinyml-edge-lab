@@ -1,0 +1,40 @@
+{
+  "samples": 360,
+  "outputs": 3600,
+  "before_fix": {
+    "dense_weight_scales": 10,
+    "per_class_exact_board_vs_pc": [
+      359,
+      6,
+      8,
+      30,
+      26,
+      29,
+      35,
+      15,
+      47,
+      20
+    ],
+    "exact_board_vs_pc": 575,
+    "recompute_own_scales_vs_pc": 3595,
+    "recompute_own_scales_vs_board": 576,
+    "recompute_channel0_scale_vs_board": 3598
+  },
+  "after_fix": {
+    "dense_weight_scales": 1,
+    "per_class_exact_board_vs_pc": [
+      358,
+      358,
+      358,
+      360,
+      359,
+      359,
+      359,
+      359,
+      359,
+      358
+    ],
+    "exact_board_vs_pc": 3587,
+    "max_abs_diff_board_vs_pc": 1
+  }
+}

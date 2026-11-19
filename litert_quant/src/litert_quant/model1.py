@@ -66,6 +66,9 @@ def to_int8_tflite(model, x_rep):
     conv.target_spec.supported_ops = [tf.lite.OpsSet.TFLITE_BUILTINS_INT8]
     conv.inference_input_type = tf.int8
     conv.inference_output_type = tf.int8
+    # TFLite Micro applies one output scale to every output of a dense layer,
+    # so dense weights must be per-tensor (measured on the Nano 33 BLE).
+    conv._experimental_disable_per_channel_quantization_for_dense_layers = True
     return conv.convert()
 
 

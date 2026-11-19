@@ -1,0 +1,19 @@
+{
+  "log_file": "board_int8_fixed_run1.txt",
+  "log_sha256": "f6b12a0ef4fd8680943ee610e00fab2e5da0aaca5f1a55bc89f4b4f62137c36d",
+  "model": "int8",
+  "count": 360,
+  "arena_used_bytes": 1764,
+  "model_bytes": 5424,
+  "cycles": {
+    "min": 105064,
+    "median": 105067.0,
+    "mean": 105066.7,
+    "max": 105067,
+    "first": 105067
+  },
+  "comparison_to": "int8",
+  "agree_with_pc": 360,
+  "disagree_with_pc": 0,
+  "board_accuracy": 0.9388888888888889
+}

@@ -75,3 +75,167 @@ step,id,prediction,pct,event_happened,result,note
 65,65e,int8 file under 5000 bytes,15,no,hit,5640 bytes
 66,66a,pytest reports 22 passed,90,yes,hit,
 66,66b,Figure writes without an error,70,yes,hit,First attempt in step 65 failed on the figure write and rolled back
+67,67a,pytest reports 26 passed,80,yes,hit,
+67,67b,Generated headers total under 400 KB,85,yes,hit,272 KB
+67,67c,Test that rebuilds PC predictions from int8 inputs passes,85,yes,hit,
+67,67d,Tally prints 76 64 12,85,yes,hit,
+68,68a,pytest reports 29 passed,85,yes,hit,
+68,68b,Both variants compile without an error,65,yes,hit,
+68,68c,int8 build uses less flash than the 354792 bytes of hello_world,65,yes,hit,169792 bytes
+68,68d,int8 build uses less flash than the float build,50,yes,hit,169792 against 174280 bytes
+68,68e,Both compiles together take under 10 minutes,60,no,miss,765 s because the extra flag rebuilt the core for each variant
+69,69a,Both bin files exist and are copied,90,yes,hit,
+69,69b,Float ELF has no test_input_int8 symbol,70,yes,hit,
+69,69c,int8 ELF has g_model_int8 of size 5640 bytes,85,yes,hit,
+69,69d,Tally prints 85 72 13,85,yes,hit,
+70,70a,Nano shows up as a COM port in the list,80,yes,hit,Only one port: COM14 (identity unconfirmed at the time)
+70,70b,bossac.exe found on PATH or in the Arduino15 folder,60,yes,hit,Two versions in Arduino15
+70,70c,Both bin files listed in the builds folder,95,yes,hit,
+71,71a,Device ID for COM14 contains VID_2341,70,no,miss,VID was 2FE3 (Zephyr firmware on the Nano)
+71,71b,Device ID contains PID_805A,60,no,miss,PID was 0004
+71,71c,COM14 is the only COM device listed,90,yes,hit,
+72,72a,A device with VID_2341 appears,70,yes,hit,
+72,72b,Its product ID is 005A,65,yes,hit,
+72,72c,The VID_2FE3 device is no longer listed,80,yes,hit,
+72,72d,COM number differs from COM14,65,yes,hit,Bootloader on COM7
+73,73a,platform.txt bossac pattern has -e -w and -R,85,yes,hit,
+73,73b,That pattern includes -U,70,yes,hit,
+73,73c,boards.txt lists the nano33ble upload tool as bossac,85,yes,hit,
+73,73d,An offset option appears for the Nano upload,70,no,miss,No offset in the pattern
+74,74a,bossac exits with code 0,80,yes,hit,
+74,74b,Write reaches 100 percent,80,yes,hit,42 of 42 pages
+74,74c,Flash takes under 60 seconds,75,yes,hit,9 s
+75,75a,A COM device with VID_2341 and PID_805A appears,70,yes,hit,COM6
+75,75b,Python found and import serial works,65,yes,hit,Python 3.13.6 and pyserial 3.5
+75,75c,Only one COM device is listed,90,yes,hit,
+76,76a,pytest reports 42 passed,70,yes,hit,
+76,76b,Tally prints 109 93 16,85,yes,hit,
+76,76c,Em-dash check finds none,95,yes,hit,
+77,77a,Capture ends with DONE and exit code 0,80,no,miss,COM6 did not exist (Nano in bootloader on COM7); 77b to 77g not scored because no run happened; repeated as 81b to 81g
+78,78a,A device with VID_2341 is listed,75,yes,hit,COM7 in bootloader mode
+78,78b,Its COM number is not COM6,60,yes,hit,
+78,78c,Its product ID is 805A,60,no,miss,PID was 005A (bootloader)
+78,78d,Only one COM device is listed,85,yes,hit,
+79,79a,After one reset press a 805A device appears,70,no,miss,Still 005A (scored assuming reset was pressed)
+79,79b,Its COM number is COM6,45,no,hit,
+79,79c,Only one COM device is listed,85,yes,hit,
+80,80a,All guards pass and bossac exits with code 0,85,yes,hit,
+80,80b,Write reaches 100 percent,85,yes,hit,42 of 42 pages
+80,80c,After the flash a 805A device is listed,75,yes,hit,
+80,80d,It is on COM6,55,yes,hit,
+81,81a,Capture ends with DONE and exit code 0,80,yes,hit,
+81,81b,Log has 360 S lines and analysis accepts it,80,yes,hit,
+81,81c,Board reports 338 correct,80,no,miss,335 correct
+81,81d,Board agrees with PC int8 on all 360 samples,80,no,miss,346 of 360
+81,81e,Median cycles under 1000000,70,yes,hit,105178
+81,81f,Median cycles under 200000,35,yes,miss,105178
+81,81g,Arena used between 2000 and 8000 bytes,65,no,miss,1764 bytes
+82,82a,PC rerun on stored inputs gives exactly 346 agreements,85,yes,hit,
+82,82b,At least 10 samples have a tied top score,50,no,miss,3 ties
+82,82c,All 14 disagreements are tied samples,40,no,hit,1 of 14
+82,82d,Board matches last-index tie-break on all 360,35,no,hit,345 of 360
+83,83a,Reference-kernel option is available and runs,80,yes,hit,
+83,83b,Reference kernels agree with board on all 360,45,no,hit,346
+83,83c,Reference kernels agree with board on at least 355,60,no,miss,346
+83,83d,Reference kernels get exactly 335 correct,40,no,hit,338
+83,83e,Reference and XNNPACK predictions differ on at least 10,60,no,miss,0 differ; logits differ by at most 1 on 21 samples
+84,84a,Sketch copies test_input_int8 straight into the input tensor,70,yes,hit,
+84,84b,Int8 build quantises test_pixels at run time,20,no,hit,
+85,85a,Edit applies once and pytest still says 42 passed,80,yes,hit,
+85,85b,Compile succeeds,85,yes,hit,
+85,85c,Compile takes under 3 minutes,60,yes,hit,14 s
+85,85d,New bin is between 169800 and 170800 bytes,65,yes,hit,169872
+86,86a,All guards pass and bossac exits with code 0,85,yes,hit,
+86,86b,After the flash a 805A device appears,85,yes,hit,COM6
+86,86c,Capture ends with DONE and exit code 0,80,yes,hit,
+86,86d,Log has 360 L lines,80,yes,hit,722 lines in all
+86,86e,Board again reports 335 correct,90,yes,hit,
+86,86f,Median cycles within 5 of 105178,80,no,miss,105067 (same event as 87e)
+87,87a,L values parse cleanly and argmax matches the S predictions,90,yes,hit,
+87,87b,At least 100 of 360 samples differ from PC outputs,60,yes,hit,360 of 360
+87,87c,Largest absolute output difference is 3 or more,55,yes,hit,54
+87,87d,All 14 disagreeing samples show an output difference,95,yes,hit,
+87,87e,Median cycles within 5 of 105178,80,no,miss,105067 (same event as 86f)
+88,88a,Dense weight tensor has 10 per-channel scales,75,yes,hit,
+88,88b,Output channel 0 matches PC on at least 340 of 360,70,yes,hit,357
+88,88c,Channels 1 to 9 each match on fewer than 108 samples,65,yes,hit,6 to 48
+89,89a,Unchanged retrain gives byte-identical int8 and float files,70,yes,hit,
+89,89b,Dense option exists and the patched run succeeds,85,yes,hit,
+89,89c,Patched model dense weights have a single scale,85,no,miss,Check printed a different (10 64) tensor; step 91 shows the FC op weights have one scale; miss kept
+89,89d,Patched int8 accuracy between 0.925 and 0.95,75,yes,hit,0.9389
+89,89e,Patched int8 file smaller than 5640 bytes,60,yes,hit,5456
+90,90a,No tensor in the all-per-tensor model has more than one scale,80,no,miss,A (10 64) tensor kept 10 scales; see step 91
+90,90b,All-per-tensor int8 accuracy within 0.02 of 0.9389,75,yes,hit,0.9389
+90,90c,All-per-tensor int8 file smaller than 5456 bytes,70,yes,hit,4912
+90,90d,Dense-option model has a different per-channel set than committed,85,yes,hit,Dense bias became per-tensor
+91,91a,Per-channel recompute matches PC on at least 95 percent,85,yes,hit,3595 of 3600
+91,91b,Channel-0 recompute matches board on at least 95 percent,70,yes,hit,3598 of 3600
+91,91c,Channel-0 recompute matches board better than per-channel recompute,90,yes,hit,3598 vs 576
+91,91d,Dense scales in the all-per-tensor model are all identical,35,yes,miss,Single scale 0.00651 in both patched models
+92,92a,pytest still reports 42 passed with the new rows,90,yes,hit,
+92,92b,Tally prints 173 142 31,90,yes,hit,
+92,92c,Printed function builds its converter with from_keras_model,75,yes,hit,
+93,93a,New test fails before the edit,80,yes,hit,Failed but for the wrong reason: the test read the XNNPACK delegate view (see step 94)
+93,93b,New test passes after the edit,85,no,miss,Still failed: same delegate view; 93c and 93d not reached so not scored
+94,94a,Dense weights show 10 scales without the option,80,yes,hit,
+94,94b,Dense weights show 1 scale with the option,70,no,miss,Default interpreter applies the XNNPACK delegate; step 91 used no delegates and saw 1 scale
+94,94c,Both runs finish without an exception,65,yes,hit,
+94,94d,Op list has exactly one FULLY_CONNECTED,85,yes,hit,
+95,95a,Before the edit the test fails with 10 == 1,80,yes,hit,
+95,95b,After the edit the new test passes,80,yes,hit,
+95,95c,Full suite says 43 passed,80,yes,hit,
+95,95d,Tally prints 182 149 33,90,yes,hit,
+96,96a,Float model file is byte-identical to before,85,yes,hit,
+96,96b,Int8 file is 5456 bytes,80,no,miss,5424 bytes
+96,96c,accuracy_int8_tflite in the results JSON is 0.9389,75,yes,hit,
+96,96d,New int8 predictions differ from the old on at most 3 samples,70,yes,hit,0 samples
+96,96e,Real int8 model dense weights show 1 scale with no delegates,85,yes,hit,
+96,96f,Full suite says 43 passed,85,yes,hit,
+97,97a,pytest says 43 passed and tally prints 192 158 34,85,yes,hit,
+97,97b,Compile succeeds,90,yes,hit,
+97,97c,Compile takes under 60 seconds,75,yes,hit,12 s
+97,97d,New bin is between 169500 and 169800 bytes,65,yes,hit,169656
+98,98a,All guards pass and bossac exits with code 0,85,yes,hit,
+98,98b,After the flash the sketch port appears,85,yes,hit,COM6
+98,98c,Capture ends with DONE and exit code 0,80,yes,hit,
+98,98d,DONE line reports 338 correct,70,yes,hit,
+98,98e,Arena used is between 1700 and 1800 bytes,70,yes,hit,1764
+99,99a,Board agrees with PC on at least 358 of 360,80,yes,hit,360 of 360
+99,99b,Board outputs match no-delegate PC on at least 3500 of 3600 values,75,yes,hit,3587
+99,99c,Largest absolute output difference is 1 or less,70,yes,hit,1
+99,99d,Median cycles between 100000 and 110000,85,yes,hit,105067
+100,100a,pytest says 43 passed and tally prints 205 171 34,90,yes,hit,
+100,100b,Float compile succeeds,90,yes,hit,
+100,100c,Float compile takes under 60 seconds,75,yes,hit,11 s
+100,100d,New float bin is between 174000 and 174600 bytes,65,yes,hit,174288 and same SHA-256 as the earlier build
+101,101a,All guards pass and bossac exits with code 0,85,yes,hit,
+101,101b,After the flash the sketch port appears,85,yes,hit,COM6
+101,101c,Capture ends with DONE and exit code 0,80,yes,hit,
+101,101d,DONE line reports 337 correct,75,yes,hit,
+101,101e,Arena used is more than 1764 and under 12000 bytes,85,yes,hit,2304
+102,102a,Board agrees with PC float on at least 358 of 360,80,yes,hit,360 of 360
+102,102b,Float median cycles under 500000,70,yes,hit,288943
+102,102c,Float is slower than int8,55,yes,hit,
+102,102d,Float is more than twice as slow as int8,35,yes,miss,2.75 times
+102,102e,Tally prints 214 180 34,90,yes,hit,
+103,103a,Tally prints 219 184 35,90,yes,hit,
+103,103b,Compile summary files have 2 lines each with flash 169648 and 174280,90,yes,hit,
+103,103c,pytest says 48 passed,75,yes,hit,
+103,103d,Figure script exits cleanly on the first try,80,yes,hit,
+103,103e,Figure file is between 40 KB and 200 KB,70,yes,hit,141480 bytes
+104,104a,Tally prints 224 189 35,90,yes,hit,
+104,104b,README is written and the em-dash check finds none,95,yes,hit,119 lines
+104,104c,pytest says 48 passed,90,yes,hit,
+105,105a,rust-pid-core repo is found in one of the usual places,70,yes,hit,/mnt/c/rust-pid-core
+105,105b,All push guards pass,75,yes,hit,
+105,105c,Push succeeds and origin/main ends at 2a68b9c,75,yes,hit,351d31a..2a68b9c
+106,106b,pytest says 55 passed,70,no,miss,2 of the 7 new tests failed (53 passed); 106a and 106c to 106e not reached so not scored
+107,107a,tally prints 231 195 36,90,yes,hit,printed 231 195 36
+107,107b,all 7 new tests pass,10,no,hit,5 passed and 2 failed
+107,107c,first failure is the 0.9 match assertion,40,no,hit,failure was ValueError for bias index -1
+107,107d,both failures share one error,60,yes,hit,same ValueError in run_dense
+108,108a,all 7 new tests pass,65,yes,hit,7 passed
+108,108b,full suite says 55 passed,60,yes,hit,55 passed
+108,108c,channel 0 recompute matches board on 3598,85,yes,hit,3598
+108,108d,own scales recompute matches board on 576,80,yes,hit,576
+108,108e,after fix exact board vs pc is 3587,85,yes,hit,3587
