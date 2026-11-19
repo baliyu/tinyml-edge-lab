@@ -1,0 +1,43 @@
+step,id,prediction,pct,event_happened,result,note
+47,47a,Folder exists and block prints,95,yes,hit,
+47,47b,README.md exists at repo root,90,yes,hit,
+47,47c,Tree has a tests folder or test files,75,yes,hit,
+47,47d,Working tree is clean,60,yes,hit,
+48,48a,arduino-cli is installed,55,no,miss,Guessed dsp-lab was built with arduino-cli in WSL
+48,48b,arduino:mbed_nano core installed,45,no,hit,
+48,48c,TFLite or LiteRT Arduino library installed,15,no,hit,
+48,48d,python3 is 3.10 or newer,90,yes,hit,Python 3.13.5
+48,48e,Repo visible from WSL,95,yes,hit,
+48,48f,~/.venvs exists,95,yes,hit,
+49,49a,arduino-cli installs and prints a version,80,yes,hit,1.6.0
+49,49b,mbed_nano core installs,80,yes,hit,4.6.0
+49,49c,Library search lists Arduino_TensorFlowLite,85,no,miss,Official library not in the index
+49,49d,Library search lists a litert-named library,25,no,hit,
+50,50a,Chirale lists mbed_nano or * architecture,60,yes,hit,
+50,50b,A candidate website is under github.com/tensorflow,20,no,hit,
+50,50c,tflm_cortexm architecture is not *,50,no,miss,It lists *
+51,51a,Install succeeds and shows 2.0.0,85,yes,hit,
+51,51b,Library folder at the expected path,80,yes,hit,
+51,51c,examples folder has at least one example,85,yes,hit,hello_world only
+51,51d,A cmsis path is found in the library,40,yes,miss,cmsis_nn sources are present
+52,52a,hello_world compiles,70,yes,hit,
+52,52b,Flash use under 50 percent,85,yes,hit,36 percent
+52,52c,Compile takes under 5 minutes,75,no,miss,6m30s for the first mbed core build
+53,53a,venv created with Python 3.13.x,95,yes,hit,
+53,53b,tensorflow dry run resolves,65,yes,hit,tensorflow 2.21.0
+53,53c,ai-edge-litert dry run resolves,60,yes,hit,2.3.0
+54,54a,Install finishes without error,80,yes,hit,
+54,54b,import tensorflow prints 2.21.0,85,yes,hit,
+54,54c,tf.lite.TFLiteConverter exists,80,yes,hit,
+54,54d,ai_edge_litert Interpreter imports,90,yes,hit,
+55,55a,pytest.ini sets testpaths to tests,70,yes,hit,
+55,55b,requirements.txt lists scikit-learn,85,yes,hit,
+55,55c,ci.yml runs on ubuntu-latest,90,no,miss,It runs on ubuntu-24.04
+55,55d,ci.yml has only one job,60,yes,hit,
+56,56a,All guards pass and files are written,85,yes,hit,Paste garbled but files whole
+56,56b,pytest reports 5 passed,80,yes,hit,
+56,56c,Split prints train 1437 and test 360,85,yes,hit,
+56,56d,Em-dash check finds none,95,yes,hit,
+57,57a,All 5 files exist,90,yes,hit,
+57,57b,requirements.txt has 6 lines,85,yes,hit,
+57,57c,__init__.py has the AI-assisted line,80,yes,hit,
