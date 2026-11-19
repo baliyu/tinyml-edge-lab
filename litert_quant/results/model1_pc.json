@@ -1,0 +1,26 @@
+{
+  "model": "digits_cnn",
+  "parameters": 1898,
+  "seed": 0,
+  "epochs": 40,
+  "test_fraction": 0.2,
+  "representative_samples": 300,
+  "n_train": 1437,
+  "n_test": 360,
+  "test_fingerprint": "8110e5c2c9d024b578f2c2692341cc0a635dc6f45899bb78b73bbee43d45a90f",
+  "accuracy_keras": 0.9361111111111111,
+  "accuracy_float_tflite": 0.9361111111111111,
+  "accuracy_int8_tflite": 0.9388888888888889,
+  "agree_keras_float": 1.0,
+  "agree_float_int8": 0.9972222222222222,
+  "disagree_float_int8": 1,
+  "float_bytes": 10924,
+  "int8_bytes": 6456,
+  "input_scale": 0.003921568859368563,
+  "input_zero_point": -128,
+  "versions": {
+    "tensorflow": "2.21.0",
+    "ai_edge_litert": "2.3.0",
+    "numpy": "2.5.5"
+  }
+}

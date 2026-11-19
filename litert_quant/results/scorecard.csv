@@ -41,3 +41,23 @@ step,id,prediction,pct,event_happened,result,note
 57,57a,All 5 files exist,90,yes,hit,
 57,57b,requirements.txt has 6 lines,85,yes,hit,
 57,57c,__init__.py has the AI-assisted line,80,yes,hit,
+58,58a,pytest reports 10 passed,80,yes,hit,
+58,58b,Tally prints 42 36 6,85,yes,hit,
+58,58c,Em-dash check finds none,95,yes,hit,
+59,59a,pytest reports 15 passed,55,yes,hit,
+59,59b,from_keras_model converts without an error,65,yes,hit,
+59,59c,int8 file is smaller than the float file,90,yes,hit,
+59,59d,Whole pytest run takes under 2 minutes,70,yes,hit,18s
+60,60a,pytest reports 17 passed,80,yes,hit,
+60,60b,Float accuracy on the 360 test samples is at least 95 percent,80,no,miss,Float accuracy was 93.6 percent
+60,60c,int8 accuracy within 2 points of float,80,yes,hit,+0.28 points (one sample)
+60,60d,Float and int8 agree on at least 353 of 360,75,yes,hit,359 agree
+60,60e,int8 file under 5000 bytes,70,no,miss,6456 bytes (flatbuffer overhead)
+60,60f,Float file at least 2.5 times the int8 file,65,no,miss,Ratio is 1.69
+60,60g,Script run takes under 3 minutes,85,yes,hit,16s
+61,61a,pytest reports 21 passed,85,no,miss,20 passed and 1 failed (negative yerr for perfect-accuracy test data)
+61,61b,Figure PNG is written and over 30 KB,75,no,miss,First run stopped at the failing test
+61,61c,Em-dash check finds none,95,yes,hit,
+61,61d,Git does not ignore the tflite npz or png files,70,yes,hit,
+62,62a,pytest reports 21 passed,85,yes,hit,
+62,62b,Figure PNG is written and over 30 KB,75,yes,hit,95 KB
