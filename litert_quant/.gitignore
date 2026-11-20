@@ -2,3 +2,7 @@
 # their SHA-256 hashes are in results/model2_subset.json.
 firmware/har_bench/test_input_float.h
 firmware/har_bench/test_input_int8.h
+# Large generated CWRU firmware inputs. Regenerate with scripts/make_cwru_firmware_data.py;
+# their SHA-256 hashes are in results/model3_subset.json.
+firmware/cwru_bench/test_input_float.h
+firmware/cwru_bench/test_input_int8.h

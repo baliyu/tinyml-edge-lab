@@ -478,3 +478,224 @@ step,id,prediction,pct,event_happened,result,note
 149,149b,push succeeds from WSL without a login prompt,75,yes,hit,exit 0
 149,149c,0 ahead and 0 behind after push,90,yes,hit,0 and 0
 149,149d,remote head is cda13ba,90,yes,hit,cda13ba
+150,150a,tally after adding 16 rows prints 479 425 54,90,yes,hit,printed 479 425 54
+150,150b,test_scorecard passes,90,yes,hit,5 passed
+150,150c,status shows exactly 1 entry,95,yes,hit,1 entry
+150,150d,CSV has 0 em dashes,95,yes,hit,0
+151,151a,head moved and is 1 ahead 0 behind,90,yes,hit,0c075ca 1 and 0
+151,151b,last 3 message lines match exactly,85,no,miss,GitHub Desktop description paste was truncated
+151,151c,session line correct and no other,90,no,miss,0 session lines
+151,151d,message has 0 em dashes,95,yes,hit,0
+151,151e,tree clean,90,yes,hit,0 entries
+151,151f,commit contains exactly 1 file,95,yes,hit,1
+152,152a,amend works from WSL,80,yes,hit,exit 0
+152,152b,new head differs from 0c075ca,90,yes,hit,8200a2c
+152,152c,all three trailer lines show 1,90,yes,hit,1 1 1
+152,152d,exactly 1 Claude-Session line,90,yes,hit,1
+152,152e,still 1 ahead 0 behind clean and 1 file,85,yes,hit,matched
+153,153a,all guards pass,90,yes,hit,matched
+153,153b,new head differs from 8200a2c,90,yes,hit,eb6acaf
+153,153c,one AI-assisted line and 0 of the other two,90,yes,hit,1 0 0
+153,153d,1 ahead 0 behind clean and 1 file,90,yes,hit,matched
+154,154a,all push guards pass,90,yes,hit,ahead 1 behind 0
+154,154b,push succeeds from WSL,90,yes,hit,exit 0
+154,154c,0 ahead and 0 behind after push,90,yes,hit,0 and 0
+154,154d,remote head is eb6acaf,90,yes,hit,eb6acaf
+155,155a,before tally guard passes,90,yes,hit,479 425 54
+155,155b,after tally prints 502 446 56,90,yes,hit,printed 502 446 56
+155,155c,test_scorecard passes,90,yes,hit,5 passed
+155,155d,status shows exactly 1 entry,95,yes,hit,1 entry
+155,155e,CSV has 0 em dashes,95,yes,hit,0
+155,155f,data/raw exists,80,yes,hit,data/raw listed
+155,155g,at least one CWRU mat file is found under data,55,yes,hit,40 mat files
+155,155h,full 161 file CWRU set is present,10,no,hit,40 mat files
+156,156a,before tally guard passes,90,yes,hit,510 454 56
+156,156b,after tally prints 510 454 56,90,yes,hit,printed 510 454 56
+156,156c,test_scorecard passes,90,yes,hit,5 passed
+156,156d,scipy imports in the venv,75,yes,hit,imported
+156,156e,all 40 files load with 0 failures,85,yes,hit,0 failures
+156,156f,every file has a DE_time channel,95,yes,hit,no DE 0
+156,156g,files 97 to 100 have a different DE length range from the fault files,70,no,miss,normal 243938 to 485643 lies inside fault 63788 to 491446
+156,156h,every file has an RPM value,85,no,miss,2 files without RPM (98 and 99)
+156,156i,git status shows exactly 1 entry,95,yes,hit,1 entry
+157,157a,before tally guard passes,90,yes,hit,510 454 56
+157,157b,after tally prints 519 461 58,90,yes,hit,printed 519 461 58
+157,157c,test_scorecard passes,90,yes,hit,5 passed
+157,157d,status shows exactly 1 entry,95,yes,hit,1 entry
+157,157e,at least one pair of files has identical DE arrays,60,yes,hit,pairs 98 99 and 215 217
+157,157f,174.mat is the only file under 100000 DE samples,90,yes,hit,list was 174 only
+157,157g,every file has above-6 kHz power fraction over 0.001,70,no,miss,min fraction 0.00023
+158,158a,before tally guard passes,90,yes,hit,519 461 58
+158,158b,after tally prints 526 467 59,90,yes,hit,printed 526 467 59
+158,158c,test_scorecard passes,90,yes,hit,5 passed
+158,158d,status shows exactly 1 entry,95,yes,hit,1 entry
+158,158e,src/litert_quant/har_data.py exists,95,yes,hit,listed
+158,158f,tests/test_har_data.py exists,90,yes,hit,listed
+158,158g,scipy is listed in a litert_quant dependency file,55,no,miss,requirements has tensorflow numpy pytest only
+158,158h,har_data.py is under 200 lines,65,yes,hit,65 lines
+159,159a,before tally guard passes,90,yes,hit,526 467 59
+159,159b,after tally prints 534 474 60,90,yes,hit,printed 534 474 60
+159,159c,all new tests pass first time,70,yes,hit,20 passed
+159,159d,scipy pin appended to requirements.txt,90,yes,hit,scipy==1.18.1
+159,159e,status shows exactly 4 entries,85,yes,hit,4 entries
+159,159f,test_scorecard passes,90,yes,hit,included in 20 passed
+159,159g,0 em dashes in the two new files,95,yes,hit,0 0
+160,160a,before tally guard passes,90,yes,hit,534 474 60
+160,160b,after tally prints 541 481 60,90,yes,hit,printed 541 481 60
+160,160c,test_scorecard passes,90,yes,hit,5 passed
+160,160d,status shows exactly 4 entries,90,yes,hit,4 entries
+160,160e,make_split runs on the real data without error,85,no,miss,KeyError 175.mat has two DE_time arrays
+161,161a,before tally guard passes,90,yes,hit,541 481 60
+161,161b,after tally prints 546 485 61,90,yes,hit,printed 546 485 61
+161,161c,the loader edit anchor is found exactly once,90,yes,hit,anchor count 1
+161,161d,21 tests pass (cwru plus scorecard),85,yes,hit,21 passed
+161,161e,the channel scan flags 175.mat,90,yes,hit,175 listed
+161,161f,the channel scan flags more than one file,30,yes,miss,39 files flagged (my scan also flagged the RPM key names)
+161,161g,make_split on the real data runs without error,70,no,miss,KeyError 174.mat has only X173_DE_time
+161,161i,git status shows exactly 4 entries,90,yes,hit,4 entries
+162,162a,before tally guard passes,90,yes,hit,546 485 61
+162,162b,after tally prints 554 491 63,90,yes,hit,printed 554 491 63
+162,162c,all edit anchors are found exactly once,90,yes,hit,10 anchors count 1
+162,162d,22 tests pass,80,yes,hit,22 passed
+162,162e,make_split on the real data runs without error,80,yes,hit,ran
+162,162f,x_train has exactly 2368 windows,55,yes,hit,2368
+162,162g,normal test windows number exactly 948,60,yes,hit,948
+162,162h,no two catalogue recordings have identical DE arrays,85,yes,hit,empty list
+162,162i,git status shows exactly 4 entries,90,yes,hit,4 entries
+163,163a,before tally guard passes,90,yes,hit,554 491 63
+163,163b,after tally prints 563 500 63,90,yes,hit,printed 563 500 63
+163,163c,all new tests pass first time,65,no,miss,1 failed (std tolerance 1e-9 too tight for float32)
+163,163d,parameter count is 4520,90,yes,hit,4520
+163,163e,the int8 model op set is exactly FULLY_CONNECTED,70,yes,hit,FULLY_CONNECTED only
+163,163f,the int8 tflite is under 8000 bytes,70,yes,hit,6440 bytes
+163,163g,git status shows exactly 6 entries,90,yes,hit,6 entries
+164,164a,before tally guard passes,90,yes,hit,563 500 63
+164,164b,after tally prints 570 506 64,90,yes,hit,printed 570 506 64
+164,164c,the test tolerance anchor is found exactly once,95,yes,hit,anchor count 1
+164,164d,all 17 test_model3 tests pass,90,yes,hit,all passed (file has 12 tests so my count of 17 was wrong)
+164,164e,new test_run_model3 tests pass first time,55,yes,hit,4 passed (21 total)
+164,164f,git status shows exactly 9 entries,90,yes,hit,9 entries
+165,165a,before tally guard passes,90,yes,hit,570 506 64
+165,165b,after tally prints 576 512 64,90,yes,hit,printed 576 512 64
+165,165c,run_model3.py completes with exit code 0,85,yes,hit,exit 0 in 21 seconds
+165,165d,float overall AUC is at least 0.97,65,yes,hit,1.0000
+165,165e,int8 overall AUC is within 0.01 of float,80,yes,hit,1.0000 and 1.0000
+165,165f,the RMS baseline AUC is at least the float autoencoder AUC,55,no,miss,rms 0.9998 float 1.0000
+165,165g,Spearman float vs int8 is at least 0.99,75,yes,hit,0.99488
+165,165h,float operating-point FPR on the 3 hp normal windows is at most 0.05,55,yes,hit,0.0211
+165,165i,int8 file size is between 6000 and 7000 bytes,85,no,miss,7792 bytes
+165,165j,scaler clip is between 4 and 7,80,yes,hit,5.0
+166,166a,before tally guard passes,90,yes,hit,576 512 64
+166,166b,after tally prints 586 520 66,90,yes,hit,printed 586 520 66
+166,166c,new figure tests pass first time,65,yes,hit,7 passed (2 new plus 5)
+166,166d,the figure script exits 0 on the real results,80,yes,hit,exit 0
+166,166e,the PNG is between 50 KB and 600 KB,70,yes,hit,233466 bytes
+166,166f,git status shows exactly 17 entries,80,yes,hit,17 entries
+167,167a,before tally guard passes,90,yes,hit,586 520 66
+167,167b,after tally prints 592 526 66,90,yes,hit,printed 592 526 66
+167,167c,all 3 figure edit anchors are found exactly once,90,yes,hit,3 anchors count 1
+167,167d,figure tests pass (7 passed),90,yes,hit,7 passed
+167,167e,the figure script exits 0,90,yes,hit,exit 0
+167,167f,har_firmware_data.py is under 200 lines,75,yes,hit,105 lines
+167,167g,har_bench.ino is under 250 lines,70,yes,hit,134 lines
+167,167h,git status shows exactly 17 entries,90,yes,hit,17 entries
+168,168a,before tally guard passes,90,yes,hit,592 526 66
+168,168b,after tally prints 600 534 66,90,yes,hit,printed 600 534 66
+168,168c,all new tests pass first time,55,yes,hit,15 passed
+168,168d,make_cwru_firmware_data.py exits 0 on real data,70,yes,hit,exit 0
+168,168e,subset has exactly 316 windows,80,yes,hit,n 316
+168,168f,test_input_float.h between 400000 and 650000 bytes,70,yes,hit,471556 bytes
+168,168g,git status shows exactly 24 entries,65,yes,hit,24 entries
+169,169a,before tally guard passes,90,yes,hit,600 534 66
+169,169b,after tally prints 607 541 66,90,yes,hit,printed 607 541 66
+169,169c,float compile exits 0,70,yes,hit,exit 0
+169,169d,int8 compile exits 0,75,yes,hit,exit 0
+169,169e,float sketch size under 600000 bytes,70,yes,hit,310992 bytes
+169,169f,int8 sketch size smaller than float,90,yes,hit,177120 against 310992
+169,169g,int8 sketch size under 400000 bytes,55,yes,hit,177120 bytes
+170,170a,before tally guard passes,90,yes,hit,607 541 66
+170,170b,after tally prints 614 548 66,90,yes,hit,printed 614 548 66
+170,170c,both bin files exist in the build folders,90,yes,hit,both present
+170,170d,float bin size within 4096 bytes of 310992,75,yes,hit,311000 bytes
+170,170e,both copies to tinyml-builds succeed,90,yes,hit,copy exit 0
+170,170f,git status still shows 26 entries,85,yes,hit,26 entries
+171,171a,bossac 1.9.1-arduino2 found under Arduino15,85,yes,hit,found
+171,171b,bootloader port found,80,yes,hit,COM7
+171,171c,bossac exits 0,75,yes,hit,exit 0
+171,171d,output contains Verify successful,75,yes,hit,verify successful
+171,171e,sketch port appears within 10 s,80,no,miss,flashed at offset 0x10000 so the sketch never started
+172,172a,sketch port found within 15 s,70,no,miss,same wrong offset fault
+173,173a,GetPortNames lists at least one COM port,50,no,miss,count 0
+173,173b,a present device has VID_2341,55,no,miss,only com0com devices present
+173,173c,a port with PID_805A is found,45,no,hit,not present
+174,174a,bootloader port found,85,yes,hit,COM7
+174,174b,bossac exits 0 and verifies,85,yes,hit,verify successful
+174,174c,sketch port appears within 15 s,35,no,hit,int8 build also did not start at offset 0x10000
+175,175a,folder holds at least one har bin,80,yes,hit,2 har bins
+175,175b,folder holds at least 4 bin files,70,yes,hit,9 bin files
+176,176a,bootloader port found,85,yes,hit,COM7
+176,176b,bossac exits 0 and verifies,85,yes,hit,verify successful
+176,176c,sketch port appears within 15 s,85,no,miss,known good HAR binary also failed at offset 0x10000
+177,177a,boards.txt for mbed_nano 4.6.0 found,90,yes,hit,found
+177,177b,boards.txt has an upload offset line for nano33ble,65,no,miss,no offset line and the official pattern has no offset
+177,177c,the offset is 0x16000,65,no,miss,no offset in the package
+178,178a,bootloader port found,85,yes,hit,COM7
+178,178b,bossac exits 0,85,yes,hit,exit 0
+178,178c,chipErase address is not 0x10000,55,yes,hit,chipErase addr 0
+178,178d,sketch port appears within 15 s,70,yes,hit,COM6
+179,179a,bootloader port found and bossac exits 0,85,yes,hit,COM7 exit 0
+179,179b,sketch port appears within 15 s,85,yes,hit,COM6
+179,179c,board_capture.py exits 0,65,yes,hit,exit 0
+179,179d,capture file has a DONE line and no ERROR line,65,yes,hit,DONE float 1472 316 310 20384
+179,179e,capture file has exactly 316 S lines,65,yes,hit,316 S lines
+179,179f,DONE float correct between 300 and 316,70,yes,hit,310
+180,180a,bossac exits 0 and sketch port appears,85,yes,hit,COM6
+180,180b,capture exits 0 and file has 316 S lines,70,yes,hit,316 S lines
+180,180c,DONE int8 correct equals PC int8 value 310,70,yes,hit,310
+180,180d,int8 arena smaller than float arena,80,yes,hit,1076 against 1472
+180,180e,int8 first window cycles below float,45,yes,miss,35645 against 57334
+181,181a,before tally guard passes,90,yes,hit,614 548 66
+181,181b,after tally prints 655 581 74,90,yes,hit,printed 655 581 74
+181,181c,at least 3 har device flash or capture sources found,80,yes,hit,11 files listed
+182,182a,before tally guard passes,90,yes,hit,655 581 74
+182,182b,after tally prints 658 584 74,90,yes,hit,printed 658 584 74
+182,182c,all new tests pass first time,65,yes,hit,11 passed
+182,182d,analysis script exits 0 on the real captures,80,yes,hit,exit 0
+182,182e,board float against PC float has 0 decision differences,55,yes,hit,0 differences
+182,182f,board int8 against PC int8 has 0 decision differences,55,yes,hit,0 differences
+182,182g,float median relative score difference below 0.001,70,yes,hit,1.68e-07
+182,182h,int8 median relative score difference below 0.01,70,yes,hit,8.97e-05
+182,182i,median cycle ratio float over int8 between 1.4 and 1.8,70,yes,hit,1.6085
+183,183a,before tally guard passes,90,yes,hit,658 584 74
+183,183b,after tally prints 667 593 74,90,yes,hit,printed 667 593 74
+183,183c,both nm symbol files are written and hold test_labels and the model symbol,85,yes,hit,one of each symbol
+183,183d,all new tests pass first time,65,yes,hit,7 passed
+183,183e,the measurement script exits 0,90,yes,hit,exit 0
+183,183f,float test data bytes equal 162108,85,yes,hit,162108
+183,183g,int8 test data bytes equal 40764,85,yes,hit,40764
+183,183h,net flash difference float minus int8 between 12000 and 13100,75,yes,hit,12528
+184,184a,before tally guard passes,90,yes,hit,667 593 74
+184,184b,after tally prints 675 601 74,90,yes,hit,printed 675 601 74
+184,184c,all new tests pass first time,65,no,miss,perfect accuracy case gave a slightly negative yerr from float rounding
+184,184f,git status shows exactly 42 entries,75,no,miss,41 entries because the png was not written after the test failure
+185,185a,before tally guard passes,90,yes,hit,675 601 74
+185,185b,after tally prints 679 603 76,90,yes,hit,printed 679 603 76
+185,185c,the edit anchor is found exactly once,95,yes,hit,count 1
+185,185d,all 7 tests pass,85,yes,hit,7 passed
+185,185e,the figure script exits 0,90,yes,hit,exit 0
+185,185f,the PNG is between 50000 and 150000 bytes,65,no,miss,156262 bytes
+185,185g,git status shows exactly 42 entries,80,yes,hit,42 entries
+186,186a,before tally guard passes,90,yes,hit,679 603 76
+186,186b,after tally prints 686 609 77,90,yes,hit,printed 686 609 77
+186,186c,README.md exists,95,yes,hit,248 lines
+186,186d,README has a heading that mentions Model 2 or HAR,85,yes,hit,heading present
+187,187a,before tally guard passes,90,yes,hit,686 609 77
+187,187b,after tally prints 690 613 77,90,yes,hit,printed 690 613 77
+187,187c,the JSON has by fault kind AUC values for float,75,yes,hit,B IR OR present
+188,188a,before tally guard passes,90,yes,hit,690 613 77
+188,188b,after tally prints 693 616 77,90,yes,hit,printed 693 616 77
+188,188c,all 3 README anchors are found exactly once,90,yes,hit,3 anchors count 1
+188,188d,every number check against the JSONs passes,80,yes,hit,number checks passed
+188,188e,the README grows by between 90 and 160 lines,70,yes,hit,grew by 150
+188,188f,the full test suite passes,80,yes,hit,153 passed
+188,188g,git status shows exactly 43 entries,85,yes,hit,43 entries

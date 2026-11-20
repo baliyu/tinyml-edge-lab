@@ -1,0 +1,71 @@
+{
+  "clock_assumption": "64 MHz core clock for the ms figure; cycles are measured",
+  "float": {
+    "model": "float",
+    "n": 316,
+    "n_normal": 100,
+    "n_fault": 216,
+    "threshold": 0.7802155840396882,
+    "correct_board_done": 310,
+    "correct_from_printed_scores": 310,
+    "done_matches_printed": true,
+    "accuracy_board_done": 0.9810126582278481,
+    "tpr": 1.0,
+    "fpr": 0.06,
+    "auc_board": 1.0,
+    "auc_pc": 1.0,
+    "arena_used": 1472,
+    "model_bytes": 20384,
+    "board_pc_decision_disagree": 0,
+    "board_pc_decision_disagree_windows": [],
+    "score_max_abs_diff": 1.1623413087136214e-05,
+    "score_median_rel_diff": 1.68232262181885e-07,
+    "score_max_rel_diff": 1.7173740263066948e-06,
+    "score_spearman_board_pc": 1.0,
+    "cycles": {
+      "min": 57330,
+      "median": 57334.0,
+      "mean": 57333.72151898734,
+      "p95": 57334.0,
+      "max": 57334
+    },
+    "ms_median_at_64mhz": 0.89584375
+  },
+  "int8": {
+    "model": "int8",
+    "n": 316,
+    "n_normal": 100,
+    "n_fault": 216,
+    "threshold": 0.7757034891843795,
+    "correct_board_done": 310,
+    "correct_from_printed_scores": 310,
+    "done_matches_printed": true,
+    "accuracy_board_done": 0.9810126582278481,
+    "tpr": 1.0,
+    "fpr": 0.06,
+    "auc_board": 1.0,
+    "auc_pc": 1.0,
+    "arena_used": 1076,
+    "model_bytes": 7792,
+    "board_pc_decision_disagree": 0,
+    "board_pc_decision_disagree_windows": [],
+    "score_max_abs_diff": 0.00934759774780236,
+    "score_median_rel_diff": 8.967716571179661e-05,
+    "score_max_rel_diff": 0.00276126760546602,
+    "score_spearman_board_pc": 0.9999988591051963,
+    "cycles": {
+      "min": 35645,
+      "median": 35645.0,
+      "mean": 35645.0,
+      "p95": 35645.0,
+      "max": 35645
+    },
+    "ms_median_at_64mhz": 0.556953125
+  },
+  "board_float_vs_int8": {
+    "score_spearman": 0.9971489038853173,
+    "score_median_rel_diff": 0.11446735299073237,
+    "decision_disagree": 0
+  },
+  "median_cycle_ratio_float_over_int8": 1.6084724365268621
+}

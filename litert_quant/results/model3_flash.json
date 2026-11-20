@@ -1,0 +1,20 @@
+{
+  "note": "net = sketch bytes minus the test arrays; sketch bytes come from the arduino-cli log",
+  "float": {
+    "sketch_bytes": 310992,
+    "test_data_bytes": 162108,
+    "net_firmware_bytes": 148884,
+    "model_bytes": 20384,
+    "runtime_and_code_bytes": 128500
+  },
+  "int8": {
+    "sketch_bytes": 177120,
+    "test_data_bytes": 40764,
+    "net_firmware_bytes": 136356,
+    "model_bytes": 7792,
+    "runtime_and_code_bytes": 128564
+  },
+  "net_difference_float_minus_int8": 12528,
+  "model_difference_float_minus_int8": 12592,
+  "runtime_and_code_difference_float_minus_int8": -64
+}
