@@ -37,6 +37,7 @@ the device matches the PC.
 | `tools/mic_*.py` | Record microphone sessions over serial, mark which windows are valid, test a classifier on a sitting it never saw, and draw the figures |
 | `docs/API.md` | The interfaces: the C headers, the serial protocol, the Python package and the command-line tools. Its generated parts are checked by a test, so it cannot fall behind the code |
 | `docs/COMPONENTS.md` | Two diagrams: what feeds what across the repo, and the path of one desk gesture from recording to a scored live run. It has an evidence table and a Not drawn list |
+| `litert_quant/` | Float against int8 networks on the Nano 33 BLE (Cortex-M4F) under LiteRT Micro. For three models it reports cycles per inference, model size, tensor arena used and accuracy, and it keeps a scorecard of my predictions |
 
 ## Quick start
 ```bash
@@ -180,7 +181,7 @@ These are 3 sessions from one person and one board, so the numbers say little ab
 ## Roadmap
 1. SparkFun Edge: hello world is done and logged in `firmware/sparkfun_edge/`; the wake-word demo from the TinyML book is still to do.
 2. Nano 33 BLE: IMU data logger with microSD and a TFT user interface; collect my own labelled data.
-3. Compare a decision tree with a small neural network (int8), reporting size, RAM and latency.
+3. Done in `litert_quant/`: float against int8 networks on the Nano 33 BLE for three models, reporting cycles, model size, tensor arena and accuracy. The UCI HAR network is set against the decision tree there; see its README for what the tree figures include.
 4. <!-- live:roadmap -->On-device accuracy: measured live in 1 sitting (one person, one board): 0.967 over 180 windows. More sittings, other people and other boards are still to do; see `firmware/sparkfun_edge/gesture_demo/README.md`.<!-- /live:roadmap -->
 5. Signed model updates (reusing the secure-boot work).
 
