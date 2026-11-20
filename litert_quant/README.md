@@ -288,7 +288,7 @@ applies the same PC threshold.
 - The PC reference runs use the LiteRT Python interpreter. Its default XNNPACK
   delegate rewrites the graph, so checks of the model file use the interpreter
   without delegates.
-- No CI workflow exists yet for this folder.
+- CI (`.github/workflows/litert_quant.yml`) runs the Python tests on every change under this folder. It does not build the firmware and it does not run the board, so a green tick covers the tests only.
 
 ## Reproduce
 
