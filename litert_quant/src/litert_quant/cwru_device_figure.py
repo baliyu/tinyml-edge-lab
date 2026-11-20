@@ -4,6 +4,7 @@ AI-assisted: drafted with Claude, checked by the author.
 Inputs are results/model3_device.json and results/model3_flash.json.
 """
 import json
+import textwrap
 from pathlib import Path
 
 import matplotlib
@@ -16,6 +17,17 @@ from litert_quant.har_device_figure import wilson
 ROOT = Path(__file__).resolve().parents[2]
 KINDS = ("float", "int8")
 COLORS = {"float": "#4C78A8", "int8": "#F58518"}
+CAPTION = (
+    "CWRU bearing-fault autoencoder (dense 128-16-8-16-128) on the Arduino Nano 33 BLE (LiteRT Micro). "
+    "Subset: 100 normal windows (3 hp) and 24 per fault kind and size, seed 0. Threshold: each model's own PC "
+    "99th percentile of training scores. Milliseconds assume a 64 MHz core clock; cycles are measured. "
+    "Net flash = sketch minus the test arrays. One seeded run. AI-assisted: drafted with Claude, checked by the author."
+)
+CAPTION_WIDTH = 190
+
+
+def wrap_caption(text=CAPTION, width=CAPTION_WIDTH):
+    return textwrap.fill(text, width=width)
 
 
 def _label(ax, x, y, text, size=8):
@@ -25,7 +37,7 @@ def _label(ax, x, y, text, size=8):
 def make_device_figure(device_json, flash_json, out_png):
     dev = json.loads(Path(device_json).read_text())
     flash = json.loads(Path(flash_json).read_text())
-    fig, axes = plt.subplots(1, 4, figsize=(15, 4.2))
+    fig, axes = plt.subplots(1, 4, figsize=(15, 4.6))
     xs = [0, 1]
 
     ax = axes[0]
@@ -64,10 +76,14 @@ def make_device_figure(device_json, flash_json, out_png):
     rest = [flash[k]["runtime_and_code_bytes"] / 1000 for k in KINDS]
     ax.bar(xs, model, color="#54A24B", width=0.6, label="model")
     ax.bar(xs, rest, bottom=model, color="#BAB0AC", width=0.6, label="runtime and code")
+    top = max(m + r for m, r in zip(model, rest)) * 1.35
     for i, k in enumerate(KINDS):
         _label(ax, i, model[i] + rest[i], "%.1f kB" % (flash[k]["net_firmware_bytes"] / 1000))
-        ax.text(i, model[i] / 2, "%.1f" % model[i], ha="center", va="center", fontsize=7)
-    ax.set_ylim(0, max(m + r for m, r in zip(model, rest)) * 1.35)
+        if model[i] >= 0.08 * top:
+            ax.text(i, model[i] / 2, "model %.1f" % model[i], ha="center", va="center", fontsize=7)
+        else:
+            ax.text(i, model[i] + 0.01 * top, "model %.1f" % model[i], ha="center", va="bottom", fontsize=7)
+    ax.set_ylim(0, top)
     ax.set_ylabel("net firmware flash (kB)")
     ax.set_title("(d) Flash\ntest data excluded", fontsize=9)
     ax.legend(fontsize=7, loc="upper center", ncol=2, frameon=False)
@@ -76,16 +92,8 @@ def make_device_figure(device_json, flash_json, out_png):
         a.set_xticks(xs)
         a.set_xticklabels(KINDS)
         a.spines[["top", "right"]].set_visible(False)
-    fig.text(
-        0.01,
-        0.01,
-        "CWRU bearing-fault autoencoder (dense 128-16-8-16-128) on the Arduino Nano 33 BLE (LiteRT Micro). "
-        "Subset: 100 normal windows (3 hp) and 24 per fault kind and size, seed 0. Threshold: each model's own PC "
-        "99th percentile of training scores. Milliseconds assume a 64 MHz core clock; cycles are measured. "
-        "Net flash = sketch minus the test arrays. One seeded run. AI-assisted: drafted with Claude, checked by the author.",
-        fontsize=6.5,
-    )
-    fig.tight_layout(rect=(0, 0.05, 1, 1))
+    fig.text(0.01, 0.01, wrap_caption(), fontsize=6.5, va="bottom")
+    fig.tight_layout(rect=(0, 0.12, 1, 1))
     out_png = Path(out_png)
     out_png.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(out_png, dpi=150)

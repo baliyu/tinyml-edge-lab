@@ -735,3 +735,29 @@ step,id,prediction,pct,event_happened,result,note
 195,195d,pip install exits 0,85,yes,hit,pip exit 0
 195,195e,pytest passes with no failures in the clean clone,55,yes,hit,153 passed
 195,195f,the passed count is exactly 153,45,yes,miss,153 passed
+196,196a,before tally guard passes,90,yes,hit,730 653 77
+196,196b,after tally prints 736 658 78,90,yes,hit,printed 736 658 78
+196,196c,test_scorecard.py passes,90,yes,hit,5 passed
+196,196d,git status lists exactly 2 paths,90,yes,hit,2 paths
+196,196e,the branch is main with ahead 0 and behind 0,85,yes,hit,ahead 0 behind 0
+197,197a,the head hash differs from eecd02a,95,yes,hit,38e067f
+197,197b,the last line of the message is exactly the trailer,85,yes,hit,exact
+197,197c,the trailer occurs once with no Co-Authored-By or Claude-Session lines,90,yes,hit,1 and 0 and 0
+197,197d,0 em dashes in the message,95,yes,hit,0
+197,197e,the commit has 2 files and ahead 1 and behind 0,90,yes,hit,2 files ahead 1 behind 0
+197,197f,the tree is clean,90,yes,hit,0 status lines
+198,198a,before tally guard passes,90,yes,hit,736 658 78
+198,198b,after tally prints 747 669 78,90,yes,hit,printed 747 669 78
+198,198c,test_scorecard.py passes,90,yes,hit,5 passed
+198,198d,git status lists exactly 1 changed path,90,yes,hit,1 path
+199,199a,before tally guard passes,90,yes,hit,747 669 78
+199,199b,after tally prints 751 673 78,90,yes,hit,printed 751 673 78
+199,199c,the caption is drawn with fig.text,65,yes,hit,fig.text at line 79
+199,199d,the file does not already use textwrap,70,yes,hit,no textwrap
+200,200a,the before tally guard passes,90,yes,hit,751 673 78
+200,200b,all anchors match once and the edit applies,85,yes,hit,edit applied
+200,200c,the 4 new caption tests pass,85,yes,hit,6 passed with the existing 2
+200,200d,the full suite passes with exactly 157 tests,70,yes,hit,157 passed
+200,200e,make_cwru_device_figure.py exits 0 with no arguments,65,yes,hit,exit 0
+200,200f,the PNG size differs from 156262 B,90,yes,hit,168273 B
+200,200g,git status lists exactly 4 changed paths,75,yes,hit,4 paths
