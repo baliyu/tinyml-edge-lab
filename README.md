@@ -36,6 +36,7 @@ the device matches the PC.
 | `firmware/sparkfun_edge/mic_features/` | The microphone summary features (rms, peak, zero crossings, high-frequency change, clipping) in plain C, with a host test |
 | `tools/mic_*.py` | Record microphone sessions over serial, mark which windows are valid, test a classifier on a sitting it never saw, and draw the figures |
 | `docs/API.md` | The interfaces: the C headers, the serial protocol, the Python package and the command-line tools. Its generated parts are checked by a test, so it cannot fall behind the code |
+| `docs/COMPONENTS.md` | Two diagrams: what feeds what across the repo, and the path of one desk gesture from recording to a scored live run. It has an evidence table and a Not drawn list |
 
 ## Quick start
 ```bash

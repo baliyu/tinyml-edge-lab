@@ -803,3 +803,18 @@ step,id,prediction,pct,event_happened,result,note
 210,210b,the push output ends with cf4f275..667c1f5 main -> main,85,no,miss,no push was run
 210,210c,ls-remote shows 667c1f5 for main,90,yes,hit,667c1f5
 210,210d,ahead 0 and behind 0 after the push,90,yes,hit,0 and 0
+211,211a,src/tinyml_lab has separate modules for data loading and features and models,80,yes,hit,uci_har and features and har_baseline
+211,211b,docs/API.md describes the interfaces of those modules,85,yes,hit,C headers and serial protocol and Python package and tools
+211,211c,README What is here lists the components as a table,80,yes,hit,a table
+211,211d,litert_quant has one script or folder per model,75,yes,hit,run_model1 to 3 and digits_bench and har_bench and cwru_bench
+212,212a,COMPONENTS.md is created and git status shows only that file,90,yes,hit,88 lines
+212,212b,no em dash in COMPONENTS.md,97,yes,hit,0 found
+212,212c,both diagrams render on GitHub first time,65,yes,hit,both drew and diagram 1 is wide so the text is small at default zoom
+213,213a,the commit has only COMPONENTS.md,95,yes,hit,1 file and 88 insertions and 08d557e
+213,213b,the push succeeds,90,yes,hit,d7ab9ec..08d557e main -> main
+214,214a,README line 38 is followed by a blank line,70,yes,hit,line 39 blank then Quick start
+214,214b,a scorecard file is found,85,yes,hit,litert_quant/results/scorecard.csv
+214,214c,the scorecard is a csv under a results folder,60,yes,hit,litert_quant/results
+215,215a,scorecard.csv header has step and id and prediction and pct and event and result and note,75,yes,hit,7 columns
+215,215b,the last step number is 210 or higher,85,yes,hit,210
+215,215c,test_scorecard.py checks the format and the fifty percent rule,70,yes,hit,header and 7 fields and unique ids and 50 percent rule and miss notes
