@@ -1,0 +1,253 @@
+{
+  "toolchain": "arm-none-eabi-gcc (15:13.2.rel1-2) 13.2.1 20231009",
+  "flags": {
+    "common": [
+      "-Os",
+      "-ffunction-sections",
+      "-fdata-sections"
+    ],
+    "link": [
+      "-nostartfiles",
+      "-nostdlib",
+      "-Wl,--gc-sections",
+      "-Wl,-e,main"
+    ],
+    "targets": {
+      "cortex-m0plus": [
+        "-mcpu=cortex-m0plus",
+        "-mthumb",
+        "-mfloat-abi=soft"
+      ],
+      "cortex-m4f": [
+        "-mcpu=cortex-m4",
+        "-mthumb",
+        "-mfloat-abi=hard",
+        "-mfpu=fpv4-sp-d16"
+      ]
+    }
+  },
+  "target_labels": {
+    "cortex-m0plus": "Cortex-M0+ (no FPU): STM32L0, SAMD21",
+    "cortex-m4f": "Cortex-M4F (FPU): nRF52840 on the Nano 33 BLE, Apollo3 on the SparkFun Edge"
+  },
+  "n_test_windows": 2947,
+  "refit_matches_saved": {
+    "tree_fixed6": true,
+    "tree_baseline_cv": true,
+    "tree_extended_cv": true,
+    "forest_extended_cv": true
+  },
+  "models": [
+    {
+      "id": "tree_fixed6",
+      "label": "Tree, depth 6 fixed in advance",
+      "short": "tree d6",
+      "features": "baseline",
+      "n_features": 40,
+      "nodes": 61,
+      "leaves": 31,
+      "variants": [
+        {
+          "variant": "double thresholds",
+          "c_source_bytes": 4654,
+          "agreement": {
+            "matches": 2947,
+            "total": 2947,
+            "rate": 1.0
+          },
+          "targets": {
+            "cortex-m0plus": {
+              "flash_bytes": 1964,
+              "ram_bytes": 0,
+              "linked_flash_bytes": 2004,
+              "stub_flash_bytes": 40
+            },
+            "cortex-m4f": {
+              "flash_bytes": 1876,
+              "ram_bytes": 0,
+              "linked_flash_bytes": 1920,
+              "stub_flash_bytes": 44
+            }
+          }
+        },
+        {
+          "variant": "float thresholds",
+          "c_source_bytes": 4234,
+          "agreement": {
+            "matches": 2947,
+            "total": 2947,
+            "rate": 1.0
+          },
+          "targets": {
+            "cortex-m0plus": {
+              "flash_bytes": 928,
+              "ram_bytes": 0,
+              "linked_flash_bytes": 968,
+              "stub_flash_bytes": 40
+            },
+            "cortex-m4f": {
+              "flash_bytes": 552,
+              "ram_bytes": 0,
+              "linked_flash_bytes": 596,
+              "stub_flash_bytes": 44
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "tree_baseline_cv",
+      "label": "Tree, depth chosen by CV",
+      "short": "tree CV",
+      "features": "baseline",
+      "n_features": 40,
+      "nodes": 17,
+      "leaves": 9,
+      "variants": [
+        {
+          "variant": "double thresholds",
+          "c_source_bytes": 1087,
+          "agreement": {
+            "matches": 2947,
+            "total": 2947,
+            "rate": 1.0
+          },
+          "targets": {
+            "cortex-m0plus": {
+              "flash_bytes": 1516,
+              "ram_bytes": 0,
+              "linked_flash_bytes": 1556,
+              "stub_flash_bytes": 40
+            },
+            "cortex-m4f": {
+              "flash_bytes": 1308,
+              "ram_bytes": 0,
+              "linked_flash_bytes": 1352,
+              "stub_flash_bytes": 44
+            }
+          }
+        },
+        {
+          "variant": "float thresholds",
+          "c_source_bytes": 973,
+          "agreement": {
+            "matches": 2947,
+            "total": 2947,
+            "rate": 1.0
+          },
+          "targets": {
+            "cortex-m0plus": {
+              "flash_bytes": 584,
+              "ram_bytes": 0,
+              "linked_flash_bytes": 624,
+              "stub_flash_bytes": 40
+            },
+            "cortex-m4f": {
+              "flash_bytes": 128,
+              "ram_bytes": 0,
+              "linked_flash_bytes": 172,
+              "stub_flash_bytes": 44
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "tree_extended_cv",
+      "label": "Tree, depth chosen by CV",
+      "short": "tree CV + extra features",
+      "features": "extended",
+      "n_features": 123,
+      "nodes": 33,
+      "leaves": 17,
+      "variants": [
+        {
+          "variant": "double thresholds",
+          "c_source_bytes": 2298,
+          "agreement": {
+            "matches": 2947,
+            "total": 2947,
+            "rate": 1.0
+          },
+          "targets": {
+            "cortex-m0plus": {
+              "flash_bytes": 1708,
+              "ram_bytes": 0,
+              "linked_flash_bytes": 1748,
+              "stub_flash_bytes": 40
+            },
+            "cortex-m4f": {
+              "flash_bytes": 1564,
+              "ram_bytes": 0,
+              "linked_flash_bytes": 1608,
+              "stub_flash_bytes": 44
+            }
+          }
+        },
+        {
+          "variant": "float thresholds",
+          "c_source_bytes": 2079,
+          "agreement": {
+            "matches": 2947,
+            "total": 2947,
+            "rate": 1.0
+          },
+          "targets": {
+            "cortex-m0plus": {
+              "flash_bytes": 744,
+              "ram_bytes": 0,
+              "linked_flash_bytes": 784,
+              "stub_flash_bytes": 40
+            },
+            "cortex-m4f": {
+              "flash_bytes": 320,
+              "ram_bytes": 0,
+              "linked_flash_bytes": 364,
+              "stub_flash_bytes": 44
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "forest_extended_cv",
+      "label": "Random forest, size chosen by CV",
+      "short": "forest CV + extra features",
+      "features": "extended",
+      "n_features": 123,
+      "nodes": 2186,
+      "leaves": 1108,
+      "variants": [
+        {
+          "variant": "float thresholds",
+          "c_source_bytes": 216162,
+          "agreement": {
+            "matches": 2947,
+            "total": 2947,
+            "rate": 1.0
+          },
+          "targets": {
+            "cortex-m0plus": {
+              "flash_bytes": 52244,
+              "ram_bytes": 0,
+              "linked_flash_bytes": 52284,
+              "stub_flash_bytes": 40
+            },
+            "cortex-m4f": {
+              "flash_bytes": 56088,
+              "ram_bytes": 0,
+              "linked_flash_bytes": 56132,
+              "stub_flash_bytes": 44
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "not_measured": [
+    "stack use",
+    "execution time",
+    "feature extraction (FFT and statistics)",
+    "anything on a real board"
+  ]
+}

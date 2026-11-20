@@ -1,0 +1,40 @@
+{
+  "clock_assumption": "64 MHz core clock for the ms figure; cycles are measured",
+  "float": {
+    "model": "float",
+    "n": 360,
+    "correct": 315,
+    "accuracy": 0.875,
+    "arena_used": 4896,
+    "model_bytes": 16356,
+    "board_pc_disagree": 0,
+    "board_pc_disagree_windows": [],
+    "cycles": {
+      "min": 1182660,
+      "median": 1182660.0,
+      "mean": 1182660.0,
+      "p95": 1182660.0,
+      "max": 1182660
+    },
+    "ms_median_at_64mhz": 18.4790625
+  },
+  "int8": {
+    "model": "int8",
+    "n": 360,
+    "correct": 315,
+    "accuracy": 0.875,
+    "arena_used": 2580,
+    "model_bytes": 7864,
+    "board_pc_disagree": 0,
+    "board_pc_disagree_windows": [],
+    "cycles": {
+      "min": 391300,
+      "median": 391304.0,
+      "mean": 391303.5055555556,
+      "p95": 391304.0,
+      "max": 391304
+    },
+    "ms_median_at_64mhz": 6.114125
+  },
+  "median_cycle_ratio_float_over_int8": 3.0223560198720176
+}

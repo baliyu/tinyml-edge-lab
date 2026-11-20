@@ -239,3 +239,226 @@ step,id,prediction,pct,event_happened,result,note
 108,108c,channel 0 recompute matches board on 3598,85,yes,hit,3598
 108,108d,own scales recompute matches board on 576,80,yes,hit,576
 108,108e,after fix exact board vs pc is 3587,85,yes,hit,3587
+110,110a,edit applies first try,95,yes,hit,edit applied
+110,110b,full suite says 55 passed,90,yes,hit,55 passed
+110,110c,no em dashes under litert_quant,90,yes,hit,0 files
+111,111a,trailer ends with Cs7gux after amend,90,yes,hit,amended; head 36ee496
+111,111b,tree clean and one ahead,95,yes,hit,dirty 0; ahead 1
+112,112a,tally prints 245 209 36,90,yes,hit,printed 245 209 36
+112,112b,repo already has HAR loader or dataset,65,yes,hit,uci_har.py and data/raw/UCI HAR Dataset exist
+112,112c,footprint json has tree size and latency number,60,no,miss,flash and RAM present but no latency field for first model
+113,113b,accuracy field per model in footprint json,55,no,miss,only agreement field; accuracy likely in har_baseline.json
+113,113c,loader returns raw inertial windows,50,yes,hit,load_signal stacks raw channels on last axis
+114,114a,tally prints 250 212 38,90,yes,hit,printed 250 212 38
+114,114b,test_scorecard passes,90,yes,hit,5 passed
+114,114c,har_baseline json has tree accuracy,80,yes,hit,test_accuracy 0.7974
+114,114d,not_measured includes a latency item,70,yes,hit,execution time is listed
+114,114e,tree used official UCI split,85,yes,hit,n_train 7352 and n_test 2947; 21 and 9 subjects
+114,114f,features computed from raw windows not the 561,55,yes,hit,batch_features on total_acc plus magnitude
+114,114g,tests conftest has HAR fixture,55,yes,hit,fake_uci_root fixture (synthetic)
+115,115a,tally prints 257 219 38,90,yes,hit,printed 257 219 38
+115,115b,test_scorecard passes,90,yes,hit,5 passed
+115,115c,model1 has to_int8_tflite with representative set,85,yes,hit,to_int8_tflite(model; x_rep)
+115,115d,test_dense_per_tensor exists,90,yes,hit,file listed
+115,115e,model1 seeds training,75,yes,hit,tf.keras.utils.set_random_seed(seed)
+115,115f,figure script for model 1 exists,80,yes,hit,make_model1_figure.py
+115,115g,litert_quant has pyproject.toml,60,no,miss,only pytest.ini and requirements.txt
+116,116a,tally prints 264 225 39,90,yes,hit,printed 264 225 39
+116,116b,test_scorecard passes,90,yes,hit,5 passed
+116,116c,pytest.ini pythonpath includes src,65,yes,hit,pythonpath = src
+116,116d,requirements lists tensorflow and ai-edge-litert,85,yes,hit,pinned 2.21.0 and 2.3.0
+116,116e,dense test checks dense weight scales,80,yes,hit,asserts one scale on the FULLY_CONNECTED weights
+116,116f,data.py loads sklearn digits with fixed split,70,yes,hit,stratified split seed 0
+116,116g,run_model1 writes model1_pc.json and npz,85,yes,hit,both written
+116,116h,litert_quant imports tinyml_lab,40,no,hit,grep found none; folder is self-contained
+117,117a,tally prints 272 233 39,90,yes,hit,printed 272 233 39
+117,117b,all 7 new har tests pass first time,80,yes,hit,7 passed in 0.55s
+117,117c,full litert_quant suite passes,85,yes,hit,62 passed
+117,117d,real shapes are 7352 train and 2947 test windows,90,yes,hit,windows of 128 by 3
+117,117e,real subject lists equal baseline json,90,yes,hit,subjects match baseline True
+117,117f,smallest test class is walking downstairs,90,yes,hit,420 windows
+117,117g,x_train abs max below 4 g,80,yes,hit,2.198
+117,117h,x_train mean of x channel above 0.5 g,75,yes,hit,0.804
+118,118a,tally prints 280 241 39,90,yes,hit,printed 280 241 39
+118,118b,test_scorecard passes,90,yes,hit,5 passed
+118,118c,all 8 model2 tests pass first time,65,yes,hit,8 passed in 12.19s
+118,118d,op set test passes,70,yes,hit,only CONV_2D RESHAPE FULLY_CONNECTED
+118,118e,dense per tensor test passes,85,yes,hit,one scale on the FC weights
+118,118f,seeded retraining is reproducible,75,yes,hit,weights equal after two 1 epoch runs
+118,118g,full suite passes with 70 tests,80,yes,hit,70 passed
+118,118h,untrained float tflite under 20000 bytes,80,yes,hit,15616 bytes
+118,118i,untrained int8 tflite under 8000 bytes,80,yes,hit,7160 bytes
+119,119a,tally prints 289 250 39,90,yes,hit,printed 289 250 39
+119,119b,test_scorecard passes,90,yes,hit,5 passed
+119,119c,all 3 run_model2 tests pass first time,65,no,miss,byte reproducibility test failed; 2 passed
+119,119d,byte reproducibility test passes,70,no,miss,two in-process exports differ in tflite bytes
+119,119e,full suite passes with 73 tests,80,no,miss,72 passed and 1 failed
+119,119f,scripts/run_model1 puts src on sys.path,55,no,miss,script is 8 lines and relies on PYTHONPATH=src
+119,119g,wilson helper already exists,85,yes,hit,wilson_interval in figures.py and wilson in device_figure.py
+119,119h,figures.py selects Agg backend,70,yes,hit,matplotlib.use Agg
+120,120a,tally prints 297 254 43,90,yes,hit,printed 297 254 43
+120,120b,test_scorecard passes,90,yes,hit,5 passed
+120,120c,two in-process float exports differ,75,yes,hit,equal False; 68 differing bytes
+120,120d,tensor names differ between the exports,70,yes,hit,keras_tensor_6 and keras_tensor_12
+120,120e,clear_session before each export gives identical float blobs,65,yes,hit,equal True
+120,120f,two full runs with clear_session give identical blobs,60,yes,hit,float and int8 equal True
+120,120g,separate processes give identical hashes,80,yes,hit,02526804f409 and 56bf0628daf8 both times
+121,121a,tally prints 297 254 43,90,yes,hit,printed 297 254 43
+121,121b,test_scorecard passes,90,yes,hit,5 passed
+121,121c,new regression test fails before the fix,85,yes,hit,failed at byte index 156
+121,121d,new regression test passes after the fix,90,yes,hit,PASSED
+121,121e,identical files test passes after the fix,80,yes,hit,PASSED
+121,121f,full suite passes with 74 tests,80,yes,hit,74 passed
+121,121g,fresh process float hash differs after the fix,80,yes,hit,0d1b121be579 vs 02526804f409
+122,122a,tally prints 311 268 43,90,yes,hit,printed 311 268 43
+122,122b,test_scorecard passes,90,yes,hit,5 passed
+122,122c,keras test accuracy at least 0.85,65,yes,hit,0.8510
+122,122d,keras test accuracy at least 0.90,25,no,hit,0.8510
+122,122e,int8 accuracy within 1 point of float,85,yes,hit,0.8517 vs 0.8510
+122,122f,float and int8 disagree on 30 windows or fewer,75,no,miss,131 windows disagree (4.4 percent)
+122,122g,int8 macro-F1 above the tree 0.7895,80,yes,hit,0.8522
+122,122h,lowest int8 per-class recall is SITTING or STANDING,60,yes,hit,STANDING 0.737
+122,122i,int8 tflite under 8000 bytes,90,yes,hit,7864 bytes
+122,122j,second process gives byte-identical files,75,yes,hit,float and int8 and json identical
+123,123a,tally prints 311 268 43,90,yes,hit,printed 311 268 43
+123,123b,test_scorecard passes,90,yes,hit,5 passed
+123,123c,all 3 new figure tests pass first time,75,yes,hit,3 passed
+123,123d,full suite passes with 77 tests,80,yes,hit,77 passed
+123,123e,figure script writes the PNG,80,yes,hit,model2_pc.png written
+123,123f,PNG between 50 kB and 400 kB,75,yes,hit,165783 bytes
+123,123g,at most 10 both wrong windows,70,yes,hit,3 of 131
+123,123h,tree Wilson upper below int8 lower,90,yes,hit,0.8115 vs 0.8384
+124,124a,tally prints 321 277 44,90,yes,hit,printed 321 277 44
+124,124b,test_scorecard passes,90,yes,hit,5 passed
+124,124c,legend edit applies and figure tests still pass,85,yes,hit,3 passed; png 164548 bytes
+124,124d,full suite passes with 77 tests,85,yes,hit,77 passed
+124,124e,sketch switches variants with an if on USE_INT8,90,yes,hit,#if defined(USE_INT8)
+124,124f,arena size is a fixed constant in the sketch,85,yes,hit,kArenaSize = 16 * 1024
+124,124g,op resolver declared with size 4 or less,70,yes,hit,MicroMutableOpResolver<3>
+124,124h,make_firmware_data script under 30 lines,75,yes,hit,9 lines
+125,125a,tally after adding 8 rows prints 337 293 44,90,yes,hit,printed 337 293 44
+125,125b,test_scorecard passes,90,yes,hit,5 passed
+125,125c,all 4 new tests pass first time,70,yes,hit,4 passed
+125,125d,full suite passes with 81 tests,75,yes,hit,81 passed
+125,125e,real run writes five headers and subset json,80,yes,hit,five headers plus model2_subset.json
+125,125f,float input header between 1.0 and 3.0 MB,80,yes,hit,1878547 bytes
+125,125g,PC float accuracy on subset within 3 points of 0.851,85,yes,hit,0.8750
+125,125h,float and int8 disagree on 20 or fewer of 360,60,yes,hit,14 windows
+126,126a,tally after adding 8 rows prints 345 301 44,90,yes,hit,printed 345 301 44
+126,126b,test_scorecard passes,90,yes,hit,5 passed
+126,126c,digits_bench.ino is exactly 132 lines,85,yes,hit,132 lines
+126,126d,sketch calls Serial.begin with 115200,65,yes,hit,one match
+127,127a,tally after adding 4 rows prints 349 305 44,90,yes,hit,printed 349 305 44
+127,127b,all 3 sketch tests pass first time,75,yes,hit,3 passed
+127,127c,full suite passes with 84 tests,75,yes,hit,84 passed
+127,127d,float build compiles first time,75,no,miss,exit code 127; arduino-cli not on PATH in this shell
+127,127e,int8 build compiles first time,75,no,miss,exit code 127; arduino-cli not on PATH in this shell
+128,128a,tally after adding 5 rows prints 354 308 46,90,yes,hit,printed 354 308 46
+128,128b,arduino-cli found in a common folder under home,80,yes,hit,/home/astro/.local/bin/arduino-cli
+128,128c,float build compiles,75,yes,hit,exit code 0; 710440 byte binary
+128,128d,int8 build compiles,75,yes,hit,exit code 0; 287296 byte binary
+128,128e,float binary under 1000000 bytes,65,yes,hit,710440
+128,128f,int8 binary under 600000 bytes,70,yes,hit,287296
+129,129a,bossac flash succeeds first time,85,no,miss,PATH bossac was 1.7.0-arduino3 which rejects -i; model 1 used 1.9.1-arduino2
+130,130a,flash succeeds first time,85,yes,hit,bossac 1.9.1-arduino2 exit code 0
+130,130b,sketch port appears within 6 s,85,yes,hit,COM6
+130,130c,capture ends on a DONE line,85,yes,hit,DONE float
+130,130d,capture has 362 lines,85,yes,hit,362 lines
+130,130e,board float correct within 2 of 315,85,yes,hit,315
+130,130f,board float correct exactly 315,55,yes,hit,315
+130,130g,arena used under 12000 bytes,75,yes,hit,4896
+130,130h,model size in DONE line is 16356,90,yes,hit,16356
+131,131a,int8 flash succeeds first time,90,yes,hit,exit code 0
+131,131b,sketch port appears within 6 s,90,yes,hit,COM6
+131,131c,capture ends on a DONE line,90,yes,hit,DONE int8
+131,131d,capture has 722 lines,90,yes,hit,722 lines
+131,131e,board int8 correct exactly 315,65,yes,hit,315
+131,131f,board int8 correct within 2 of 315,85,yes,hit,315
+131,131g,int8 arena below float 4896,85,yes,hit,2580
+131,131h,model size in DONE line is 7864,90,yes,hit,7864
+132,132a,tally after adding 23 rows prints 377 330 47,90,yes,hit,printed 377 330 47
+132,132b,test_scorecard passes,90,yes,hit,5 passed
+132,132c,all 4 new tests pass first time,70,yes,hit,4 passed
+132,132d,full suite passes with 88 tests,75,yes,hit,88 passed
+132,132e,board float identical to PC float on all 360 windows,70,yes,hit,0 disagree
+132,132f,board int8 identical to PC int8 on all 360 windows,70,yes,hit,0 disagree
+132,132g,int8 median cycles lower than float,55,yes,hit,391304 against 1182660
+132,132h,float median between 300000 and 3000000 cycles,75,yes,hit,1182660
+133,133a,tally after adding 8 rows prints 385 338 47,90,yes,hit,printed 385 338 47
+133,133b,test_scorecard passes,90,yes,hit,5 passed
+133,133c,at least one arm-none-eabi-nm found under .arduino15,75,yes,hit,gcc 7-2017q4
+133,133d,each symbol file has exactly 3 lines,80,no,miss,0 lines each; the symbol names differ in the ELF
+134,134a,tally after adding 4 rows prints 389 341 48,90,yes,hit,printed 389 341 48
+134,134b,test_scorecard passes,90,yes,hit,5 passed
+134,134c,float ELF has at least 1000 symbols,85,yes,hit,1964 symbols
+134,134d,float ELF has a symbol of exactly 552960 bytes,60,yes,hit,_ZL16test_input_float
+134,134e,int8 ELF has a symbol of exactly 138240 bytes,60,yes,hit,_ZL15test_input_int8
+134,134f,a test_ or g_model symbol exists with a suffix after the name,50,no,miss,names are C++ mangled with a prefix (_ZL16...) not a suffix
+135,135a,tally after adding 6 rows prints 395 346 49,90,yes,hit,printed 395 346 49
+135,135b,test_scorecard passes,90,yes,hit,5 passed
+135,135c,each symbol file now has exactly 3 lines,90,yes,hit,3 lines each
+135,135d,all 4 new tests pass first time,75,yes,hit,4 passed
+135,135e,full suite passes with 92 tests,80,yes,hit,92 passed
+135,135f,float test data bytes exactly 553320,95,yes,hit,553320
+135,135g,float and int8 net firmware within 10000 bytes,75,yes,hit,difference 8424
+135,135h,runtime and code bytes differ by under 200,60,yes,hit,difference 68
+136,136a,tally after adding 8 rows prints 403 354 49,90,yes,hit,printed 403 354 49
+136,136b,test_scorecard passes,90,yes,hit,5 passed
+136,136c,all 3 new tests pass first time,75,yes,hit,3 passed
+136,136d,full suite passes with 95 tests,80,yes,hit,95 passed
+136,136e,real figure written between 40000 and 400000 bytes,75,yes,hit,145149 bytes
+136,136f,wilson for 315 of 360 prints 0.837 to 0.905,70,yes,hit,printed 0.837 to 0.905
+137,137a,tally after adding 6 rows prints 409 360 49,90,yes,hit,printed 409 360 49
+137,137b,test_scorecard passes,90,yes,hit,5 passed
+137,137c,all 5 edit anchors found exactly once,90,yes,hit,edits applied 5
+137,137d,3 device figure tests still pass,90,yes,hit,3 passed
+137,137e,full suite passes with 95 tests,85,yes,hit,95 passed
+137,137f,regenerated png size differs from 145149,85,yes,hit,145024 bytes
+137,137g,legend no longer covers the int8 model label judged by eye,75,yes,hit,legend across the top; 7.9 label visible
+138,138a,tally after adding 7 rows prints 416 367 49,90,yes,hit,printed 416 367 49
+138,138b,test_scorecard passes,90,yes,hit,5 passed
+138,138c,exactly one footprint.json found,60,yes,hit,./results/footprint.json
+138,138d,footprint.json contains tree_fixed6,70,yes,hit,2 matches
+138,138e,footprint.json contains 1876,80,yes,hit,1 match
+138,138f,text cycle does not appear in footprint.json,75,yes,hit,0 matches
+139,139a,tally after adding 6 rows prints 422 373 49,90,yes,hit,printed 422 373 49
+139,139b,test_scorecard passes,90,yes,hit,5 passed
+139,139c,footprint.json lists at least 3 model ids,75,yes,hit,4 model ids
+139,139d,not_measured list mentions execution time or latency,85,yes,hit,execution time
+139,139e,exactly one har_baseline.json found,70,yes,hit,./results/har_baseline.json
+140,140a,tally after adding 5 rows prints 427 378 49,90,yes,hit,printed 427 378 49
+140,140b,test_scorecard passes,90,yes,hit,5 passed
+140,140c,footprint copy byte-identical to the original,95,yes,hit,sha256 prefix 787365715e8bb816
+140,140d,all 3 new tests pass first time,70,no,miss,figure test failed with TypeError; a bare percent sign in a title string
+140,140e,full suite passes with 98 tests,75,no,miss,97 passed and 1 failed
+140,140f,real figure written between 40000 and 500000 bytes,80,no,miss,figure missing; same TypeError
+141,141a,tally after adding 6 rows prints 433 381 52,90,yes,hit,printed 433 381 52
+141,141b,test_scorecard passes,90,yes,hit,5 passed
+141,141c,edit anchor found exactly once,90,yes,hit,edit applied 1
+141,141d,all 3 comparison tests pass,85,yes,hit,3 passed
+141,141e,full suite passes with 98 tests,85,yes,hit,98 passed
+141,141f,real figure written between 40000 and 500000 bytes,80,yes,hit,172761 bytes
+141,141g,panel c table fits inside the figure with no cut-off text judged by eye,50,yes,hit,seen in the attached image
+141,141h,panel b value labels do not overlap each other judged by eye,65,yes,hit,seen in the attached image
+142,142a,tally after adding 6 rows prints 439 387 52,90,yes,hit,printed 439 387 52
+142,142b,test_scorecard passes,90,yes,hit,5 passed
+143,143a,tally after adding 4 rows prints 443 391 52,90,yes,hit,printed 443 391 52
+143,143b,test_scorecard passes,90,yes,hit,5 passed
+143,143c,litert_quant README exists,90,yes,hit,133 lines
+143,143d,README does not yet mention HAR,80,no,miss,one line says the UCI HAR 1D-CNN is not started
+143,143e,README under 200 lines,70,yes,hit,133 lines
+143,143f,check-ignore reports neither big input header as ignored,75,yes,hit,no output
+144,144a,tally after adding 6 rows prints 449 396 53,90,yes,hit,printed 449 396 53
+144,144b,test_scorecard passes,90,yes,hit,5 passed
+144,144c,all 4 README anchors found,80,yes,hit,4 edits applied
+144,144d,README has 0 em dashes,95,yes,hit,0
+144,144e,README between 200 and 300 lines,70,yes,hit,248 lines
+144,144f,check-ignore lists exactly the two big input headers,85,yes,hit,two lines
+144,144g,full suite still 98 tests,90,yes,hit,98 passed
+145,145a,tally after adding 7 rows prints 456 403 53,90,yes,hit,printed 456 403 53
+145,145b,both flash symbol files have 3 lines,80,yes,hit,3 and 3
+145,145c,five symbols anchor found once,90,yes,hit,wording fixed
+145,145d,no bak or failed files left,85,yes,hit,0
+145,145e,status shows 47 entries,85,yes,hit,47
+145,145f,big input headers not in status,95,yes,hit,0
+145,145g,largest file to be committed under 1 MB,80,yes,hit,172761 bytes
