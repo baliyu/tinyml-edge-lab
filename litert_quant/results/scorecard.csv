@@ -818,3 +818,16 @@ step,id,prediction,pct,event_happened,result,note
 215,215a,scorecard.csv header has step and id and prediction and pct and event and result and note,75,yes,hit,7 columns
 215,215b,the last step number is 210 or higher,85,yes,hit,210
 215,215c,test_scorecard.py checks the format and the fifty percent rule,70,yes,hit,header and 7 fields and unique ids and 50 percent rule and miss notes
+216,216a,no FAIL line from the guards,85,yes,hit,none
+216,216b,the scorecard test passes,90,yes,hit,5 passed
+216,216c,the commit has exactly 2 files,95,yes,hit,README.md and scorecard.csv
+216,216d,firmware/nano33ble lists only README.md,80,yes,hit,README.md only
+216,216e,rows up by 15 and all hits and misses unchanged,97,yes,hit,804 to 819 and 722 to 737 hits and 82 misses
+217,217a,no FAIL line from the guards,85,no,miss,the guard compared the count with a string containing a tab and the paste dropped the tab; behind 0 ahead 1 was the real state
+217,217b,the push output ends with 08d557e..fcc8f25 main -> main,90,no,miss,no push was run because the guard stopped first
+217,217c,ls-remote shows fcc8f25 for main,92,no,miss,not run because the guard stopped first
+217,217d,ahead 0 and behind 0 after the push,92,no,miss,not run because the guard stopped first
+218,218a,no FAIL line from the guards,90,yes,hit,none
+218,218b,the push output ends with 08d557e..fcc8f25 main -> main,92,yes,hit,08d557e..fcc8f25
+218,218c,ls-remote shows fcc8f25 for main,92,yes,hit,fcc8f25
+218,218d,ahead 0 and behind 0 after the push,92,yes,hit,0 and 0
