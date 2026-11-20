@@ -699,3 +699,39 @@ step,id,prediction,pct,event_happened,result,note
 188,188e,the README grows by between 90 and 160 lines,70,yes,hit,grew by 150
 188,188f,the full test suite passes,80,yes,hit,153 passed
 188,188g,git status shows exactly 43 entries,85,yes,hit,43 entries
+189,189a,before tally guard passes,90,yes,hit,693 616 77
+189,189b,after tally prints 700 623 77,90,yes,hit,printed 700 623 77
+189,189c,the scorecard tests pass,90,yes,hit,5 passed
+189,189d,both big input headers are reported as ignored,90,yes,hit,gitignore lines 7 and 8
+189,189e,no file in the commit set is larger than 1 MB,35,no,hit,model3_pc_scores.npz is 2963874 bytes
+189,189f,no em dash is found in any text file in the commit set,85,yes,hit,0 files
+190,190a,head is no longer eb6acaf,95,yes,hit,eecd02a
+190,190b,the trailer is the last line and appears exactly once,90,yes,hit,yes and 1
+190,190c,the message has 0 em dashes and no extra attribution lines,90,yes,hit,0 and 0
+190,190d,the commit contains exactly 46 files,85,yes,hit,46 files
+190,190e,ahead is exactly 1 and behind is exactly 0,90,yes,hit,1 and 0
+190,190f,the working tree is clean,85,yes,hit,0 entries
+191,191a,all guards pass,90,yes,hit,flag 1
+191,191b,git push exits 0,85,yes,hit,exit 0
+191,191c,after the push ahead is 0 and behind is 0,85,yes,hit,0 and 0
+191,191d,the remote main hash starts with eecd02a,80,yes,hit,eecd02a
+192,192a,before tally guard passes,90,yes,hit,700 623 77
+192,192b,after tally prints 716 639 77,90,yes,hit,printed 716 639 77
+192,192c,requirements.txt lists matplotlib,70,yes,hit,matplotlib 3.11.2
+192,192d,a .github folder already exists at the repo root,55,yes,hit,ci.yml found
+192,192e,the search finds at least one reference outside litert_quant,60,yes,hit,2 default data paths
+193,193a,before tally guard passes,90,yes,hit,716 639 77
+193,193b,after tally prints 721 644 77,90,yes,hit,printed 721 644 77
+193,193c,the existing ci.yml is under 30 lines,85,yes,hit,14 lines
+193,193d,litert_quant has a conftest.py or pytest.ini or pyproject.toml,80,yes,hit,pytest.ini
+193,193e,the existing ci.yml names a Python version,70,yes,hit,3.12
+194,194a,before tally guard passes,90,yes,hit,721 644 77
+194,194b,after tally prints 726 649 77,90,yes,hit,printed 726 649 77
+194,194d,0 em dashes in the workflow and the csv,95,yes,hit,0 and 0
+194,194e,git status lists exactly 2 changed paths,85,yes,hit,2 paths
+195,195a,before tally guard passes,90,yes,hit,726 649 77
+195,195b,after tally prints 730 653 77,90,yes,hit,printed 730 653 77
+195,195c,the clone head is eecd02a,90,yes,hit,eecd02a
+195,195d,pip install exits 0,85,yes,hit,pip exit 0
+195,195e,pytest passes with no failures in the clean clone,55,yes,hit,153 passed
+195,195f,the passed count is exactly 153,45,yes,miss,153 passed
