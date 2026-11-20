@@ -788,3 +788,18 @@ step,id,prediction,pct,event_happened,result,note
 207,207b,after tally prints 785 705 80,90,yes,hit,printed 785 705 80
 207,207c,test_scorecard.py passes,90,yes,hit,5 passed
 207,207d,git status lists exactly 1 changed path,90,yes,hit,1 path
+208,208a,before tally guard passes,90,yes,hit,785 705 80
+208,208b,after tally prints 789 709 80,90,yes,hit,printed 789 709 80
+208,208c,test_scorecard.py passes,90,yes,hit,5 passed
+208,208d,git status lists exactly 1 changed path,90,yes,hit,1 path
+209,209a,the head hash differs from cf4f275,95,yes,hit,667c1f5
+209,209b,the last line of the message is exactly the trailer,90,yes,hit,exact
+209,209c,the trailer occurs once with no extra attribution or pasted instruction lines,90,yes,hit,1 and 0 and 0 and 0
+209,209d,0 em dashes in the message,95,yes,hit,0
+209,209e,the commit has 1 file and ahead 1 and behind 0,90,yes,hit,1 file ahead 1 behind 0
+209,209f,the committed scorecard tally is 789 709 80,85,yes,hit,789 709 80
+209,209g,the tree is clean,90,yes,hit,0 status lines
+210,210a,no FAIL line from the guards,85,no,miss,FAIL: ahead not 1 because it was pushed from GitHub Desktop
+210,210b,the push output ends with cf4f275..667c1f5 main -> main,85,no,miss,no push was run
+210,210c,ls-remote shows 667c1f5 for main,90,yes,hit,667c1f5
+210,210d,ahead 0 and behind 0 after the push,90,yes,hit,0 and 0
