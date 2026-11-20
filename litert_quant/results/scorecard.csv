@@ -774,3 +774,17 @@ step,id,prediction,pct,event_happened,result,note
 203,203a,ahead is 0,60,yes,hit,ahead 0
 203,203b,behind is 0,85,yes,hit,behind 0
 203,203c,ls-remote shows 7400008 for main,60,yes,hit,7400008
+205,205a,the head hash differs from 7400008,95,yes,hit,cf4f275
+205,205b,the last line of the message is exactly the trailer,85,yes,hit,exact
+205,205c,the trailer occurs once with no extra attribution or pasted instruction lines,85,yes,hit,1 and 0 and 0 and 0
+205,205d,0 em dashes in the message,95,yes,hit,0
+205,205e,the commit has 1 file and ahead 1 and behind 0,90,yes,hit,1 file ahead 1 behind 0
+205,205f,the tree is clean,90,yes,hit,0 status lines
+206,206a,no FAIL line from the guards,90,no,miss,FAIL: ahead not 1 because it was already pushed
+206,206b,the push output ends with 7400008..cf4f275 main -> main,90,no,miss,no push was run
+206,206c,ls-remote shows cf4f275 for main,90,yes,hit,cf4f275
+206,206d,ahead 0 and behind 0 after the push,90,yes,hit,0 and 0
+207,207a,before tally guard passes,90,yes,hit,775 697 78
+207,207b,after tally prints 785 705 80,90,yes,hit,printed 785 705 80
+207,207c,test_scorecard.py passes,90,yes,hit,5 passed
+207,207d,git status lists exactly 1 changed path,90,yes,hit,1 path
