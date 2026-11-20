@@ -396,3 +396,5 @@ Before each run I wrote predictions with percentages and scored them afterwards 
 the scripts' own output, keeping the misses. `results/scorecard.csv` holds them.
 A prediction at 50% or more counts as a hit if the event happened. A prediction under
 50% counts as a hit if it did not happen. `tests/test_scorecard.py` enforces the rule.
+
+Not in the file: steps 219 and 220, which were 9 predictions about the commit and push of the step 216 to 218 rows (all 9 hit, by my tally). I did not keep their text, so I have not written them as rows.
