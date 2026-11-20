@@ -462,3 +462,19 @@ step,id,prediction,pct,event_happened,result,note
 145,145e,status shows 47 entries,85,yes,hit,47
 145,145f,big input headers not in status,95,yes,hit,0
 145,145g,largest file to be committed under 1 MB,80,yes,hit,172761 bytes
+146,146a,tally after adding 7 rows prints 463 410 53,90,yes,hit,printed 463 410 53
+146,146b,test_scorecard passes,90,yes,hit,5 passed
+146,146c,status still shows 47 entries,90,yes,hit,47
+146,146d,firmware folder lists exactly 4 files,85,yes,hit,4 files
+147,147a,head moved and is 1 ahead 0 behind origin/main,90,yes,hit,cda13ba 0 and 1
+147,147b,last 3 message lines match exactly,85,yes,hit,matched
+147,147c,session line is the one the author gave,90,yes,hit,matched
+147,147d,message has 0 em dashes,95,yes,hit,0
+147,147e,tree clean,90,yes,hit,0 entries
+147,147f,commit contains exactly 50 files,80,yes,hit,50
+147,147g,no test_input file in commit,95,yes,hit,0
+148,148a,all push guards pass,90,no,miss,my block compared against a tab that the terminal dropped on paste; nothing pushed
+149,149a,all guards pass,90,yes,hit,ahead 1 behind 0
+149,149b,push succeeds from WSL without a login prompt,75,yes,hit,exit 0
+149,149c,0 ahead and 0 behind after push,90,yes,hit,0 and 0
+149,149d,remote head is cda13ba,90,yes,hit,cda13ba
